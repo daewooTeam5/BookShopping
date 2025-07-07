@@ -29,9 +29,9 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
-	<mybatis-spring:scan base-package="book,payment,shopping_cart,user"/>
+	<mybatis-spring:scan base-package="book,payment,shopping_cart,user, book.admin"/>
 	
-	<context:component-scan base-package="book,payment,shopping_cart,user"/>
+	<context:component-scan base-package="book,payment,shopping_cart,user, book.admin"/>
 
 
 </beans>
