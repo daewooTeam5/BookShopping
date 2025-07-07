@@ -11,11 +11,14 @@ public class BookAdminService {
 	BookAdminMapper mapper;
 	
 	public BookAdminService() {
-		System.out.println("Book Admin service!!");
 	}
 	
 	public List<Book> findAll(){
-		System.out.println("===================================="+mapper.findAll());
 		return mapper.findAll();
 	}
+	
+	public List<Book> searchByField(String field, String keyword) {
+	    return mapper.searchByField(field, keyword);
+	}
+	
 }

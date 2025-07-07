@@ -17,9 +17,20 @@ public class BookAdminController {
 	}
 	
 	@RequestMapping("list")
-	public ModelAndView list(ModelAndView mv){
-		mv.addObject("list", service.findAll());
-		mv.setViewName("book/admin/list");
-		return mv;
+	public ModelAndView list(
+	    @RequestParam(value = "searchField", required = false, defaultValue = "title") String searchField,
+	    @RequestParam(value = "keyword", required = false) String keyword,
+	    ModelAndView mv) {
+
+	    if (keyword != null && !keyword.isEmpty()) {
+	        mv.addObject("list", service.searchByField(searchField, keyword));
+	    } else {
+	        mv.addObject("list", service.findAll());
+	    }
+
+	    mv.addObject("searchField", searchField);
+	    mv.addObject("keyword", keyword);
+	    mv.setViewName("book/admin/list");
+	    return mv;
 	}
 }

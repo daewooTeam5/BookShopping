@@ -26,7 +26,18 @@
 <body>
 
 <h2>📚 도서 목록</h2>
-
+<form method="get" action="${pageContext.request.contextPath}/book/admin/list" style="margin-bottom: 20px;">
+    <select name="searchField">
+        <option value="title" ${searchField == 'title' ? 'selected' : ''}>제목</option>
+        <option value="author" ${searchField == 'author' ? 'selected' : ''}>저자</option>
+        <option value="publisher" ${searchField == 'publisher' ? 'selected' : ''}>출판사</option>
+    </select>
+    <input type="text" name="keyword" placeholder="검색어 입력" value="${keyword}" />
+    <button type="submit">검색</button>
+</form>
+<c:if test="${not empty keyword}">
+    <button onclick="history.back()" style="margin-top: 20px;">🔙 뒤로가기</button>
+</c:if>
 <table>
     <thead>
         <tr>
