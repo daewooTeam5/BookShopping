@@ -12,7 +12,7 @@
 	<property name="suffix" value=".jsp"></property>
 	</bean>
 	<!-- Mybatis 설정 -->
-	<context:property-placeholder location="classpath:board/db.properties"/>
+	<context:property-placeholder location="classpath:BookShopping/db.properties"/>
 
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<property name="driverClassName" value="${db.driverClassName}" />
