@@ -48,7 +48,8 @@
     <input type="number" id="price" name="price" value="${book.price}" required />
 
     <label for="publishedAt">출간일</label>
-    <input type="date" id="publishedAt" name="publishedAt" value="<fmt:formatDate value='${book.publishedAt}' pattern='yyyy-MM-dd'/>" required />
+    <fmt:formatDate value="${book.publishedAt}" pattern="yyyy-MM-dd" var="publishedAtStr"/>
+	<input type="date" id="publishedAt" name="publishedAt" value="${publishedAtStr}" required />
 
     <label for="genre">장르</label>
     <input type="text" id="genre" name="genre" value="${book.genre}" />

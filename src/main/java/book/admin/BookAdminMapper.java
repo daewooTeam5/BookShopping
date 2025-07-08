@@ -37,10 +37,10 @@ public interface BookAdminMapper {
 	)
 	int save(Book book);
 	
-	@Select("SELECT * FROM book WHERE id = #{id}")
+	@Select("SELECT id, title, author, publisher, image, price, published_at AS publishedAt, genre, page, introduction FROM book WHERE id = #{id}")
 	Book findById(@Param("id") int id);
 	
-	@Update("UPDATE books " +
+	@Update("UPDATE book " +
 	        "SET title = #{title}, " +
 	        "author = #{author}, " +
 	        "publisher = #{publisher}, " +
@@ -52,4 +52,7 @@ public interface BookAdminMapper {
 	        "introduction = #{introduction, jdbcType=VARCHAR} " +
 	        "WHERE id = #{id}")
 	int update(Book book);
+	
+	@Delete("DELETE FROM book WHERE id = #{id}")
+	int delete(@Param("id") int id);
 }

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -90,6 +91,20 @@ public class BookAdminController {
 	            response.getOutputStream().write("<script>alert('Update Success!'); location.href='/book/admin/list';</script>".getBytes());
 	        } else {
 	            response.getOutputStream().write("<script>alert('Update Fail!'); history.back();</script>".getBytes());
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	@RequestMapping("delete")
+	public void delete(@RequestParam("id") int id, HttpServletResponse response) {
+		boolean success = service.delete(id);
+	    try {
+	        if (success) {
+	            response.getOutputStream().write("<script>alert('Delete Success!'); location.href='/book/admin/list';</script>".getBytes());
+	        } else {
+	            response.getOutputStream().write("<script>alert('Delete Fail!'); history.back();</script>".getBytes());
 	        }
 	    } catch (IOException e) {
 	        e.printStackTrace();

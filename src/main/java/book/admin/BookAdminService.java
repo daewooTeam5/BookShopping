@@ -1,6 +1,7 @@
 package book.admin;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,9 +48,25 @@ public class BookAdminService {
 	}
 
 	public boolean update(Book book, MultipartFile imageFile, HttpServletRequest request) {
-		
-		return false;
+	    try {
+	        // 이미지가 새로 업로드된 경우
+	        if (imageFile != null && !imageFile.isEmpty()) {
+	            String fileName = imageFile.getOriginalFilename();
+	            String savePath = request.getServletContext().getRealPath("/img");
+	            File file = new File(savePath, fileName);
+	            imageFile.transferTo(file); // 저장
+	            book.setImage(fileName);    // Book 객체에 이미지 파일명 설정
+	        }
+
+	        return mapper.update(book) > 0;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false;
+	    }
 	}
 
-	
+	public boolean delete(int id) {
+		int result = mapper.delete(id);
+	    return result > 0;
+	}	
 }
