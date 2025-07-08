@@ -35,6 +35,9 @@
     <input type="text" name="keyword" placeholder="검색어 입력" value="${keyword}" />
     <button type="submit">검색</button>
 </form>
+<a href="${pageContext.request.contextPath}/book/admin/create">
+    <button type="button" style="margin-bottom: 20px;">➕ 새로운 책 등록</button>
+</a>
 <c:if test="${not empty keyword}">
     <button onclick="history.back()" style="margin-top: 20px;">🔙 뒤로가기</button>
 </c:if>
@@ -49,6 +52,7 @@
             <th>출간일</th>
             <th>장르</th>
             <th>페이지 수</th>
+            <th>이미지</th>
         </tr>
     </thead>
     <tbody>
@@ -62,6 +66,9 @@
                 <td><fmt:formatDate value="${book.publishedAt}" pattern="MM/dd/yyyy" /></td>
                 <td>${book.genre}</td>
                 <td>${book.page}</td>
+                <td>
+                    <img src="${pageContext.request.contextPath}/resources/img/${book.image}" alt="표지" style="width: 60px; height: auto;" />
+                </td>
             </tr>
         </c:forEach>
     </tbody>

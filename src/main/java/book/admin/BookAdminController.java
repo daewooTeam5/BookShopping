@@ -33,4 +33,9 @@ public class BookAdminController {
 	    mv.setViewName("book/admin/list");
 	    return mv;
 	}
+	
+	@RequestMapping("writeform")
+	public String createForm() {
+	    return "book/admin/writeform";
+	}
 }
