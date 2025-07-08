@@ -19,7 +19,7 @@ public class BookService {
 		return dao.findAll();
 	}
 	
-	public Book detail(int id) {
+	public Book detail(Long id) {
 		return dao.findById(id);
 	}
 }

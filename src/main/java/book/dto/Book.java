@@ -9,13 +9,13 @@ import lombok.Data;
 @Component
 @Data
 public class Book {
-	private int id;
+	private Long id;
 	private String title; 
 	private String author; 
 	private String publisher; 
-	private int price;
+	private Integer price;
 	private String genre;
-	private Date publisherd_at;
-	private int page;
+	private Date published_at;
+	private Integer page;
 	private String introduction; 
 }

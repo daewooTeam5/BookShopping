@@ -15,5 +15,5 @@ public interface BookDao {
 	public List<Book> findAll();
 	
 	@Select("select * from book where id=#{id}")
-	public Book findById(int id);
+	public Book findById(Long id);
 }
