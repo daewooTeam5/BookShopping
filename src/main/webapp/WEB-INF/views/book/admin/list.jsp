@@ -35,7 +35,7 @@
     <input type="text" name="keyword" placeholder="검색어 입력" value="${keyword}" />
     <button type="submit">검색</button>
 </form>
-<a href="${pageContext.request.contextPath}/book/admin/create">
+<a href="${pageContext.request.contextPath}/book/admin/writeform">
     <button type="button" style="margin-bottom: 20px;">➕ 새로운 책 등록</button>
 </a>
 <c:if test="${not empty keyword}">
@@ -53,6 +53,7 @@
             <th>장르</th>
             <th>페이지 수</th>
             <th>이미지</th>
+            <th>관리</th>
         </tr>
     </thead>
     <tbody>
@@ -63,12 +64,23 @@
                 <td>${book.author}</td>
                 <td>${book.publisher}</td>
                 <td>${book.price}</td>
-                <td><fmt:formatDate value="${book.publishedAt}" pattern="MM/dd/yyyy" /></td>
+                <td><fmt:formatDate value="${book.publishedAt}" pattern="yyyy-MM-dd" /></td>
                 <td>${book.genre}</td>
                 <td>${book.page}</td>
                 <td>
-                    <img src="${pageContext.request.contextPath}/resources/img/${book.image}" alt="표지" style="width: 60px; height: auto;" />
+                    <img src="${pageContext.request.contextPath}/img/${book.image}" alt="표지" style="width: 60px; height: auto;" />
                 </td>
+                <td>
+                <a href="${pageContext.request.contextPath}/book/admin/updateform?id=${book.id}">
+                    <button type="button">수정</button>
+                </a>
+                
+                <form method="post" action="${pageContext.request.contextPath}/book/admin/delete" style="display:inline;" 
+                      onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                    <input type="hidden" name="id" value="${book.id}" />
+                    <button type="submit">삭제</button>
+                </form>
+            	</td>
             </tr>
         </c:forEach>
     </tbody>

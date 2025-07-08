@@ -26,4 +26,30 @@ public interface BookAdminMapper {
 	    "</script>"
 	})
 	List<Book> searchByField(@Param("field") String field, @Param("keyword") String keyword);
+	
+	@Insert(
+		    "INSERT INTO book (" +
+		    "title, author, publisher, image, price, published_at, genre, page, introduction" +
+		    ") VALUES (" +
+		    "#{title}, #{author}, #{publisher}, #{image}, #{price}, #{publishedAt}, " +
+		    "#{genre}, #{page}, #{introduction}" +
+		    ")"
+	)
+	int save(Book book);
+	
+	@Select("SELECT * FROM book WHERE id = #{id}")
+	Book findById(@Param("id") int id);
+	
+	@Update("UPDATE books " +
+	        "SET title = #{title}, " +
+	        "author = #{author}, " +
+	        "publisher = #{publisher}, " +
+	        "price = #{price}, " +
+	        "published_at = #{publishedAt}, " +
+	        "genre = #{genre}, " +
+	        "page = #{page}, " +
+	        "image = #{image}, " +
+	        "introduction = #{introduction, jdbcType=VARCHAR} " +
+	        "WHERE id = #{id}")
+	int update(Book book);
 }

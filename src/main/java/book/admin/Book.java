@@ -2,6 +2,8 @@ package book.admin;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +22,7 @@ public class Book {
     private String publisher;
     private String image;
     private int price;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date publishedAt;
     private String genre;
     private int page;
