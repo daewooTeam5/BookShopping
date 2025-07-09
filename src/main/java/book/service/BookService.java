@@ -18,11 +18,11 @@ public class BookService {
 	@Autowired
 	BookDao dao;
 	
-//	public List<Book> list(){
-//		return dao.findAll();
-//	}
-//	
-	public Book detail(int id) {
+	public List<Book> list(){
+		return dao.findAll();
+	}
+	
+	public Book detail(Long id) {
 		return dao.findById(id);
 	}
 	
@@ -53,10 +53,10 @@ public class BookService {
 			boolean isNext = endPage < totalPage ? true : false;
 			pageList.setPre(isPre);
 			pageList.setNext(isNext);
-			// db¿¡ ÀÖ´Â ÇÊµå ¸ðµÎ¸¦ °¡Áö°í ¿À´Â ¸í·É
+			// dbï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½Êµï¿½ ï¿½ï¿½Î¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			List<Book> list = dao.findAll(startnum, endnum);
 
-			// ÆäÀÌÁö¿¡ Ç¥½ÃÇÒ µ¥ÀÌÅÍ´Â BoardList
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í´ï¿½ BoardList
 			List<Book> booklists = new ArrayList<Book>();
 			for (Book book : list) {
 				Book booklist = new Book(book.getId() ,book.getTitle(), book.getAuthor(), book.getPublisher(),

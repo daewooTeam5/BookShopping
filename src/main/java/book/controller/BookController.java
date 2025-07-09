@@ -29,7 +29,7 @@ public class BookController {
 	}
 	
 	@RequestMapping("view")
-	public String detail(@RequestParam("id") int id, Model model) {
+	public String detail(@RequestParam("id") Long id, Model model) {
 	    Book book = service.detail(id);
 	    model.addAttribute("book", book);
 	    return "book/view";

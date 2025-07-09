@@ -20,7 +20,7 @@ public interface BookDao {
 	List<Book> findAll(@Param("startnum") int startnum, @Param("endnum") int endnum);
 	
 	@Select("select * from book where id=#{id}")
-	public Book findById(int id);
+	public Book findById(Long id);
 	
 	@Select("select count(*) count from book")
 	public int count();
