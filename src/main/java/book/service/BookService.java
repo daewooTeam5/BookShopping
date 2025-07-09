@@ -18,10 +18,6 @@ public class BookService {
 	@Autowired
 	BookDao dao;
 	
-	public List<Book> list(){
-		return dao.findAll();
-	}
-	
 	public Book detail(Long id) {
 		return dao.findById(id);
 	}
@@ -53,10 +49,9 @@ public class BookService {
 			boolean isNext = endPage < totalPage ? true : false;
 			pageList.setPre(isPre);
 			pageList.setNext(isNext);
-			// db�� �ִ� �ʵ� ��θ� ������ ���� ����
+			
 			List<Book> list = dao.findAll(startnum, endnum);
 
-			// �������� ǥ���� �����ʹ� BoardList
 			List<Book> booklists = new ArrayList<Book>();
 			for (Book book : list) {
 				Book booklist = new Book(book.getId() ,book.getTitle(), book.getAuthor(), book.getPublisher(),
