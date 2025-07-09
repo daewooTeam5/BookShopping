@@ -18,9 +18,6 @@ public class BookService {
 	@Autowired
 	BookDao dao;
 	
-	public List<Book> list(){
-		return dao.findAll();
-	}
 	
 	public Book detail(Long id) {
 		return dao.findById(id);
