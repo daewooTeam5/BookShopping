@@ -1,37 +1,91 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
-<title>µµ¼­ ¸ñ·Ï</title>
+<meta charset="utf-8">
+<title>ë„ì„œ ëª©ë¡</title>
+<!-- Bootstrap CDN -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<style>
+.narrow-container {
+	max-width: 800px;
+}
+
+.book-text {
+	flex-basis: 70%;
+}
+
+.button-area {
+	flex-basis: 20%;
+}
+
+.book-title-link {
+	text-decoration: none;
+	color: #000;
+}
+
+.book-title-link:hover {
+	text-decoration: underline;
+}
+</style>
 </head>
 <body>
+	<div class="container narrow-container mt-5">
+		<h2 class="mb-4 text-center">OLDDEMERONA</h2>
 
-<h2>µµ¼­ ¸ñ·Ï</h2>
+		<div class="row row-cols-1 g-0">
+			<c:forEach var="book" items="${books}">
+				<div class="col">
+					<div class="d-flex align-items-start py-3 border-bottom">
+						<a href="/book/view?id=${book.id}"> <img src="${book.image}"
+							class="img-thumbnail border-0"
+							style="width: 120px; height: 160px;"
+							onerror="this.src='https://via.placeholder.com/120x160?text=No+Image';">
+						</a>
 
-<table border="1">
-  <tr>
-    <th>Á¦¸ñ</th>
-    <th>ÀúÀÚ</th>
-    <th>ÃâÆÇ»ç</th>
-    <th>°¡°İ</th>
-    <th>¹ßÇàÀÏ</th>
-  </tr>
+						<div class="ms-3 book-text">
+							<h5 class="mb-1">
+								<a href="/book/view?id=${book.id}" class="book-title-link">${book.title}</a>
+							</h5>
+							<p class="text-muted mb-1">${book.author}Â· ${book.publisher}
+								Â· ${book.published_at}</p>
+							<p class="fw-bold mb-1">${book.price}ì›</p>
+							<p class="mb-0">${book.introduction}</p>
+						</div>
 
-  <c:forEach var="book" items="${book}">
-    <tr>
-      <td>
-        <a href="/book/view?id=${book.id}">${book.title}</a>
-      </td>
-      <td>${book.author}</td>
-      <td>${book.publisher}</td>
-      <td>${book.price}</td>
-      <td>${book.published_at}</td>
-    </tr>
-  </c:forEach>
-</table>
+						<div class="ms-2 button-area">
+							<button class="btn btn-secondary btn-sm mb-1 w-60 fs-8">ì¥ë°”êµ¬ë‹ˆ</button>
+							<button class="btn btn-primary btn-sm w-60 fs-8">êµ¬ë§¤í•˜ê¸°</button>
+						</div>
+					</div>
+				</div>
+			</c:forEach>
+		</div>
 
+		<!-- Pagination -->
+		<nav class="mt-5" aria-label="Page navigation">
+			<ul class="pagination justify-content-center">
+				<li class="page-item ${pageList.pre ? '' : 'disabled'}"><a
+					class="page-link"
+					href="/book/list?requestPage=${pageList.startPage - 5}">ì´ì „</a></li>
+				<c:forEach begin="${pageList.startPage}" end="${pageList.endPage}"
+					var="i">
+					<li class="page-item ${pageList.currentPage eq i ? 'active' : ''}">
+						<a class="page-link" href="/book/list?requestPage=${i}">${i}</a>
+					</li>
+				</c:forEach>
+				<li class="page-item ${pageList.next ? '' : 'disabled'}"><a
+					class="page-link"
+					href="/book/list?requestPage=${pageList.startPage + 5}">ë‹¤ìŒ</a></li>
+			</ul>
+		</nav>
+	</div>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

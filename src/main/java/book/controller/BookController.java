@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import book.dto.Book;
+import book.dto.PageList;
 import book.service.BookService;
 
 
@@ -20,10 +21,11 @@ public class BookController {
 	BookService service;
 
 	@RequestMapping("list")
-	public String list(Model model) {
-		List<Book> list = service.list();
-		model.addAttribute("book", list);
-		return "book/list";
+	public String list(Model model, @RequestParam(defaultValue = "1") int requestPage) {
+	    PageList pageList = service.getPageList(requestPage);
+	    model.addAttribute("books", pageList.getList());     // ✅ 도서 목록만 따로
+	    model.addAttribute("pageList", pageList);            // ✅ 페이지 정보 따로
+	    return "book/list";
 	}
 	
 	@RequestMapping("view")
