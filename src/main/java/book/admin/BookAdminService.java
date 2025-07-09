@@ -27,20 +27,31 @@ public class BookAdminService {
 	}
 
 	public boolean save(Book book, MultipartFile imageFile, HttpServletRequest request) {
-		String realPath = request.getServletContext().getRealPath("/img/");
-		String filename=imageFile.getOriginalFilename();
-		String fullname = realPath + File.separator + filename;
-		
-		try {
-			if (!imageFile.isEmpty()) {
-				imageFile.transferTo(new File(fullname));
-			}
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		book.setImage(filename);
-		int result = mapper.save(book);
-		return result > 0; // 저장 성공 여부 반환
+	    // 업로드 폴더 경로 (경로는 운영 환경에 맞게 조정)
+		String realPath = request.getServletContext().getRealPath("/img");
+
+	    // 업로드할 파일명
+	    String originalName = imageFile.getOriginalFilename();
+
+	    // 실제 저장될 전체 경로
+	    File saveFile = new File(realPath, originalName);
+	    try {
+	        // 파일이 비어있지 않으면 저장
+	        if (!imageFile.isEmpty()) {
+	            imageFile.transferTo(saveFile);
+	        }
+
+	        // 책 객체에 파일명 저장 (DB에 저장할 용도)
+	        book.setImage(originalName);
+
+	        // DB 저장
+	        int result = mapper.save(book);
+	        return result > 0;
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false;
+	    }
 	}
 
 	public Book findById(int id) {

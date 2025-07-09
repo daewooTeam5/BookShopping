@@ -47,7 +47,7 @@ public class BookAdminController {
 	}
 
 	@RequestMapping("write")
-	public void write(Book book, @RequestParam("imageFile") MultipartFile imageFile, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void write(Book book, @RequestParam("imageFile") MultipartFile imageFile, HttpServletRequest request,HttpServletResponse response) throws IOException {
 	    boolean success = service.save(book, imageFile, request);
 	   
 	    response.setContentType("text/html; charset=UTF-8");

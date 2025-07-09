@@ -40,6 +40,6 @@
 		<property name="maxInMemorySize" value="4096"></property>
 	</bean>
 	
-	<mvc:resources  mapping="/img/**" location="/static/img/" />
+	<mvc:resources mapping="/img/**" location="/img/" />
 	<mvc:annotation-driven/>
 </beans>
