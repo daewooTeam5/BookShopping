@@ -1,28 +1,26 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>µµ¼­ »ó¼¼ º¸±â</title>
+<title>ë„ì„œ ìƒì„¸ ë³´ê¸°</title>
 </head>
 <body>
 
-<h2>µµ¼­ »ó¼¼ Á¤º¸</h2>
+<h2>ë„ì„œ ìƒì„¸ ì •ë³´</h2>
 
 <table border="1">
-  <tr><th>Á¦¸ñ</th><td>${book.title}</td></tr>
-  <tr><th>ÀúÀÚ</th><td>${book.author}</td></tr>
-  <tr><th>ÃâÆÇ»ç</th><td>${book.publisher}</td></tr>
-  <tr><th>°¡°İ</th><td>${book.price}</td></tr>
-  <tr><th>Àå¸£</th><td>${book.genre}</td></tr>
-  <tr><th>¹ßÇàÀÏ</th><td>${book.published_at}</td></tr>
-  <tr><th>ÂÊ¼ö</th><td>${book.page}</td></tr>
-  <tr><th>¼Ò°³</th><td>${book.introduction}</td></tr>
+  <tr><th>ì œëª©</th><td>${book.title}</td></tr>
+  <tr><th>ì €ì</th><td>${book.author}</td></tr>
+  <tr><th>ì¶œíŒì‚¬</th><td>${book.publisher}</td></tr>
+  <tr><th>ê°€ê²©</th><td>${book.price}</td></tr>
+  <tr><th>ì¥ë¥´</th><td>${book.genre}</td></tr>
+  <tr><th>ë°œí–‰ì¼</th><td>${book.published_at}</td></tr>
+  <tr><th>ìª½ìˆ˜</th><td>${book.page}</td></tr>
+  <tr><th>ì†Œê°œ</th><td>${book.introduction}</td></tr>
 </table>
-
-<a href="/book/list">¡ç ¸ñ·ÏÀ¸·Î</a>
+<a href="/book/list">â† ëª©ë¡ìœ¼ë¡œ</a>
 
 </body>
 </html>
