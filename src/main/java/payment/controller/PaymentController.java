@@ -23,7 +23,7 @@ public class PaymentController {
 
     @GetMapping("/buyNow")
     public void buyNow(@RequestParam("bookId") Long bookId,
-                       @RequestParam(value = "accountId", defaultValue = "5") Long accountId, // 임시로 accountId=1 사용
+                       @RequestParam(value = "accountId", defaultValue = "1") Long accountId, // 임시로 accountId=1 사용
                        HttpServletResponse response) throws IOException {
         
         boolean success = paymentService.processSinglePurchase(accountId, bookId);
@@ -38,7 +38,7 @@ public class PaymentController {
 
 
     @GetMapping("/buyFromCart")
-    public void buyFromCart(@RequestParam(value = "accountId", defaultValue = "5") Long accountId, // 임시로 accountId=1 사용
+    public void buyFromCart(@RequestParam(value = "accountId", defaultValue = "1") Long accountId, // 임시로 accountId=1 사용
                             HttpServletResponse response) throws IOException {
 
         boolean success = paymentService.processCartPurchase(accountId);
