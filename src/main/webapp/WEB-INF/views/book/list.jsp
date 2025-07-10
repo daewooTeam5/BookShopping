@@ -43,8 +43,7 @@
 					<div class="d-flex align-items-start py-3 border-bottom">
 						<a href="/book/view?id=${book.id}"> <img src="${book.image}"
 							class="img-thumbnail border-0"
-							style="width: 120px; height: 160px;"
-							onerror="this.src='https://via.placeholder.com/120x160?text=No+Image';">
+							style="width: 120px; height: 160px;">
 						</a>
 
 						<div class="ms-3 book-text">
@@ -58,7 +57,12 @@
 						</div>
 
 						<div class="ms-2 button-area">
-							<button class="btn btn-secondary btn-sm mb-1 w-60 fs-8">장바구니</button>
+							<form action="/cart" method="post" onsubmit="return confirm('장바구니에 추가하시겠습니까?');">
+								<input type="hidden" name="bookId" value="${book.id}">
+								<input type="hidden" name="accountId" value="1">
+								<input type="hidden" name="quantity" value="1">
+								<button type="submit" class="btn btn-secondary btn-sm mb-1 w-60 fs-8">장바구니</button>
+							</form>
 							<button class="btn btn-primary btn-sm w-60 fs-8">구매하기</button>
 						</div>
 					</div>
