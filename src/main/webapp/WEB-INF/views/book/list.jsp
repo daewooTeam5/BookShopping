@@ -57,6 +57,9 @@
 						</div>
 
 						<div class="ms-2 button-area">
+							<button class="btn btn-secondary btn-sm mb-1 w-60 fs-8">장바구니</button>
+							<a href="/payment/buyNow?bookId=${book.id}&accountId=5"> <%-- 임시 유저 ID --%>
+							<button class="btn btn-primary btn-sm w-60 fs-8">구매하 	기</button></a>
 							<form action="/cart" method="post" onsubmit="return confirm('장바구니에 추가하시겠습니까?');">
 								<input type="hidden" name="bookId" value="${book.id}">
 								<input type="hidden" name="accountId" value="1">
