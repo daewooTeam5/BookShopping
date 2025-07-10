@@ -1,4 +1,4 @@
 eclipse.preferences.version=1
-encoding//src/main/java/book/controller/BookController.java=UTF-8
-encoding//src/main/java/book/service/BookService.java=UTF-8
-encoding//src/main/webapp/WEB-INF/views/book/list.jsp=UTF-8
+encoding//src/main/java/book/user/controller/BookController.java=UTF-8
+encoding//src/main/java/shopping_cart/service/ShoppingCartService.java=UTF-8
+encoding//src/main/webapp/WEB-INF/views/book/user/list.jsp=UTF-8
