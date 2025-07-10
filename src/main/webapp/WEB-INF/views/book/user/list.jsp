@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,9 +51,13 @@
 							<h5 class="mb-1">
 								<a href="/book/view?id=${book.id}" class="book-title-link">${book.title}</a>
 							</h5>
-							<p class="text-muted mb-1">${book.author}· ${book.publisher}
-								· ${book.published_at}</p>
-							<p class="fw-bold mb-1">${book.price}원</p>
+							<p class="text-muted mb-1">${book.author}·${book.publisher} ·
+								${book.published_at}</p>
+							<p class="fw-bold mb-1">
+								<fmt:formatNumber value="${book.price}" type="number"
+									groupingUsed="true" />
+								원
+							</p>
 							<p class="mb-0">${book.introduction}</p>
 						</div>
 

@@ -1,15 +1,15 @@
-package book.service;
+package book.user.service;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import book.dao.BookDao;
-import book.dto.Book;
-import book.dto.PageList;
+import book.user.dao.BookDao;
+import book.user.dto.Book;
+import book.user.dto.PageList;
+
 
 
 @Service
@@ -17,7 +17,6 @@ public class BookService {
 
 	@Autowired
 	BookDao dao;
-	
 	
 	public Book detail(Long id) {
 		return dao.findById(id);
@@ -50,10 +49,9 @@ public class BookService {
 			boolean isNext = endPage < totalPage ? true : false;
 			pageList.setPre(isPre);
 			pageList.setNext(isNext);
-			// db�� �ִ� �ʵ� ��θ� ������ ���� ����
+			
 			List<Book> list = dao.findAll(startnum, endnum);
 
-			// �������� ǥ���� �����ʹ� BoardList
 			List<Book> booklists = new ArrayList<Book>();
 			for (Book book : list) {
 				Book booklist = new Book(book.getId() ,book.getTitle(), book.getAuthor(), book.getPublisher(),

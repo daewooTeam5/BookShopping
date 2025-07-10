@@ -1,4 +1,4 @@
-package book.dto;
+package book.user.dto;
 
 import java.sql.Date;
 
