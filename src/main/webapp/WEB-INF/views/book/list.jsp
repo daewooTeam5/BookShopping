@@ -59,7 +59,8 @@
 
 						<div class="ms-2 button-area">
 							<button class="btn btn-secondary btn-sm mb-1 w-60 fs-8">장바구니</button>
-							<button class="btn btn-primary btn-sm w-60 fs-8">구매하기</button>
+							<a href="/payment/buyNow?bookId=${book.id}&accountId=5"> <%-- 임시 유저 ID --%>
+							<button class="btn btn-primary btn-sm w-60 fs-8">구매하 	기</button></a>
 						</div>
 					</div>
 				</div>
