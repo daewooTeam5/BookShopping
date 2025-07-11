@@ -46,4 +46,36 @@
 		</where>
 		ORDER BY p.created_at DESC
 	</select>
+
+	<!-- 도서별 결제 TOP 5 -->
+	<select id="topBooks" resultType="payment.admin.PaymentRank">
+		SELECT * FROM (
+		SELECT
+		b.title AS name,
+		COUNT(*) AS count,
+		SUM(b.price) AS totalPrice
+		FROM payment p
+		JOIN book b ON p.book_id = b.id
+		GROUP BY b.title
+		ORDER BY totalPrice DESC
+		)
+		WHERE ROWNUM &lt;= #{limit}
+	</select>
+
+	<!-- 회원별 결제 TOP 5 -->
+	<select id="topUsers" resultType="payment.admin.PaymentRank">
+		SELECT * FROM (
+		SELECT
+		a.name AS name,
+		COUNT(*) AS count,
+		SUM(b.price) AS totalPrice
+		FROM payment p
+		JOIN account a ON p.account_id = a.id
+		JOIN book b ON p.book_id = b.id
+		GROUP BY a.name
+		ORDER BY totalPrice DESC
+		)
+		WHERE ROWNUM &lt;= #{limit}
+	</select>
+
 </mapper>

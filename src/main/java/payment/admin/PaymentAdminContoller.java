@@ -29,6 +29,10 @@ public class PaymentAdminContoller {
 		System.out.println(userName+"=======================");
 		mv.addObject("paymentList",
 				service.search(userName, userId, bookTitle, publisher, fromDate, toDate, minPrice, maxPrice));
+	    mv.addObject("totalCount", service.getTotalCount());
+	    mv.addObject("totalAmount", service.getTotalAmount());
+	    mv.addObject("topBooks", service.getTopBooks(5));
+	    mv.addObject("topUsers", service.getTopUsers(5));
 		mv.setViewName("/payment/admin/list");
 		return mv;
 	}

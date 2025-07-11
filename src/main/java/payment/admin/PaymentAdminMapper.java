@@ -36,4 +36,18 @@ public interface PaymentAdminMapper {
                                @Param("toDate") String toDate,
                                @Param("minPrice") Integer minPrice,
                                @Param("maxPrice") Integer maxPrice);
+    
+    // 전체 결제 건수
+    @Select("SELECT COUNT(*) FROM payment")
+    int countAll();
+
+    // 전체 결제 금액
+    @Select("SELECT COALESCE(SUM(b.price), 0) FROM payment p JOIN book b ON p.book_id = b.id")
+    int sumAll();
+
+    // 도서별 결제 TOP 5
+    List<PaymentRank> topBooks(@Param("limit") int limit);
+
+    // 회원별 결제 TOP 5
+    List<PaymentRank> topUsers(@Param("limit") int limit);
 }
