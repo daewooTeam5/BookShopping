@@ -1,8 +1,12 @@
 package payment.admin;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
+
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface PaymentAdminMapper {
@@ -23,4 +27,13 @@ public interface PaymentAdminMapper {
             "ORDER BY p.created_at DESC"
     )
     List<AdminPayment> findAll();
+    
+    List<AdminPayment> search(@Param("userName") String userName,
+                               @Param("userId") String userId,
+                               @Param("bookTitle") String bookTitle,
+                               @Param("publisher") String publisher,
+                               @Param("fromDate") String fromDate,
+                               @Param("toDate") String toDate,
+                               @Param("minPrice") Integer minPrice,
+                               @Param("maxPrice") Integer maxPrice);
 }
