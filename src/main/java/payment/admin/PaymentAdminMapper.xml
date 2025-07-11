@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="payment.admin.PaymentAdminMapper">
+
+	<select id="search" resultType="payment.admin.PaymentAdmin">
+		SELECT
+		p.id,
+		p.created_at AS createdAt,
+		a.name AS userName,
+		a.user_id AS
+		userId,
+		b.id AS bookId,
+		b.title AS bookTitle,
+		b.author AS bookAuthor,
+		b.publisher AS bookPublisher,
+		b.price AS bookPrice
+		FROM payment p
+		JOIN
+		account a ON p.account_id = a.id
+		JOIN book b ON p.book_id = b.id
+		<where>
+			<if test="userName != null and userName != ''">
+                <![CDATA[ AND a.name LIKE '%' || #{userName} || '%' ]]>
+			</if>
+			<if test="userId != null and userId != ''">
+                <![CDATA[ AND a.user_id LIKE '%' || #{userId} || '%' ]]>
+			</if>
+			<if test="bookTitle != null and bookTitle != ''">
+                <![CDATA[ AND b.title LIKE '%' || #{bookTitle} || '%' ]]>
+			</if>
+			<if test="publisher != null and publisher != ''">
+                <![CDATA[ AND b.publisher LIKE '%' || #{publisher} || '%' ]]>
+			</if>
+			<if test="fromDate != null and fromDate != ''">
+    			<![CDATA[ AND p.created_at >= #{fromDate, jdbcType=DATE} ]]>
+			</if>
+			<if test="toDate != null and toDate != ''">
+    			<![CDATA[ AND p.created_at <= #{toDate, jdbcType=DATE} ]]>
+			</if>
+			<if test="minPrice != null">
+    			<![CDATA[ AND b.price >= #{minPrice} ]]>
+			</if>
+			<if test="maxPrice != null">
+    			<![CDATA[ AND b.price <= #{maxPrice} ]]>
+			</if>
+		</where>
+		ORDER BY p.created_at DESC
+	</select>
+
+	<!-- 도서별 결제 TOP 5 -->
+	<select id="topBooks" resultType="payment.admin.PaymentRank">
+		SELECT * FROM (
+		SELECT
+		b.title AS name,
+		COUNT(*) AS count,
+		SUM(b.price) AS totalPrice
+		FROM payment p
+		JOIN book b ON p.book_id = b.id
+		GROUP BY b.title
+		ORDER BY totalPrice DESC
+		)
+		WHERE ROWNUM &lt;= #{limit}
+	</select>
+
+	<!-- 회원별 결제 TOP 5 -->
+	<select id="topUsers" resultType="payment.admin.PaymentRank">
+		SELECT * FROM (
+		SELECT
+		a.name AS name,
+		COUNT(*) AS count,
+		SUM(b.price) AS totalPrice
+		FROM payment p
+		JOIN account a ON p.account_id = a.id
+		JOIN book b ON p.book_id = b.id
+		GROUP BY a.name
+		ORDER BY totalPrice DESC
+		)
+		WHERE ROWNUM &lt;= #{limit}
+	</select>
+
+</mapper>
