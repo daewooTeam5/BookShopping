@@ -12,11 +12,11 @@ public class PaymentAdminService {
 	@Autowired
 	PaymentAdminMapper mapper;
 	
-	public List<AdminPayment> findAll() {
+	public List<PaymentAdmin> findAll() {
 		return mapper.findAll();
 	}
 
-	public List<AdminPayment> search(String userName, String userId, String bookTitle, String publisher, String fromDate, String toDate, Integer minPrice, Integer maxPrice) {
+	public List<PaymentAdmin> search(String userName, String userId, String bookTitle, String publisher, String fromDate, String toDate, Integer minPrice, Integer maxPrice) {
         return mapper.search(userName, userId, bookTitle, publisher, fromDate, toDate, minPrice, maxPrice);
     }
 }

@@ -13,7 +13,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class AdminPayment {
+public class PaymentAdmin {
 	private int id;              // 결제 PK
     private Date createdAt;      // 결제일
     private String userName;     // 회원 이름

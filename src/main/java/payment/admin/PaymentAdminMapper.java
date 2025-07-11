@@ -26,9 +26,9 @@ public interface PaymentAdminMapper {
             "JOIN book b ON p.book_id = b.id " +
             "ORDER BY p.created_at DESC"
     )
-    List<AdminPayment> findAll();
+    List<PaymentAdmin> findAll();
     
-    List<AdminPayment> search(@Param("userName") String userName,
+    List<PaymentAdmin> search(@Param("userName") String userName,
                                @Param("userId") String userId,
                                @Param("bookTitle") String bookTitle,
                                @Param("publisher") String publisher,
