@@ -30,9 +30,11 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	<mybatis-spring:scan base-package="book,payment,shopping_cart,user, book.admin"/>
+
+
+	<mybatis-spring:scan base-package="book,payment,shopping_cart,user, book.admin,  payment.admin"/>
 	
-	<context:component-scan base-package="book,payment,shopping_cart,user, book.admin"/>
+	<context:component-scan base-package="book,payment,shopping_cart,user, book.admin, payment.admin"/>
 	
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="maxUploadSize" value="10485760"></property>
