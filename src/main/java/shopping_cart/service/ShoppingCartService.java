@@ -7,23 +7,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import book.user.dao.BookDao;
+import global.exception.ApiException;
+import lombok.RequiredArgsConstructor;
 import shopping_cart.dto.ShoppingCartDto;
 import shopping_cart.entity.ShoppingCart;
 import shopping_cart.repository.ShoppingCartRepository;
+import user.mapper.UserMapper;
 
 
 @Service
+@RequiredArgsConstructor
 public class ShoppingCartService {
+    private final ShoppingCartRepository shoppingCartRepository;
+    private final BookDao bookDao;
+    private final UserMapper userMapper;
 
-    @Autowired
-    private ShoppingCartRepository shoppingCartRepository;
-    @Autowired
-    private BookDao bookDao;
-
-    public void addToCart(ShoppingCart cart) {
-        if (shoppingCartRepository.countByAccountIdAndBookId(cart.getAccountId(), cart.getBookId()) > 0) {
-            throw new RuntimeException("�씠誘� �옣諛붽뎄�땲�뿉 �떞湲� �긽�뭹�엯�땲�떎.");
+    public void addToCart(ShoppingCart cart,String authName) {
+    	Long accountId = userMapper.getUserId(authName);
+    	System.out.println("autn"+authName+" id"+accountId);
+    	if(bookDao.findById(cart.getBookId())==null) {
+            throw new ApiException("존재 하지 않는 책입니다.");
+    	}
+        if (shoppingCartRepository.countByAccountIdAndBookId(accountId, cart.getBookId()) > 0) {
+            throw new ApiException("이미 추가된 상품입니다.");
         }
+        cart.setAccountId(accountId);
         shoppingCartRepository.addToCart(cart);
     }
 
