@@ -22,4 +22,8 @@ public interface UserMapper {
 	    @Result(property = "createdAt", column = "created_at")
 	})
 	UserEntity findByUserId(String userId);
+	
+	@Select("SELECT id FROM users WHERE user_id=#{userId}")
+	Long getUserId(String userId);
+	
 }
