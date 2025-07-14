@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -21,7 +22,7 @@ public class PaymentController {
     private PaymentService paymentService;
 
 
-    @GetMapping("/buyNow")
+    @PostMapping("/buyNow")
     public void buyNow(@RequestParam("bookId") Long bookId,
                        @RequestParam(value = "accountId", defaultValue = "5") Long accountId, // 임시로 accountId=1 사용
                        HttpServletResponse response) throws IOException {
@@ -37,7 +38,7 @@ public class PaymentController {
     }
 
 
-    @GetMapping("/buyFromCart")
+    @PostMapping("/buyFromCart")
     public void buyFromCart(@RequestParam(value = "accountId", defaultValue = "5") Long accountId, // 임시로 accountId=1 사용
                             HttpServletResponse response) throws IOException {
 
