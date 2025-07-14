@@ -24,7 +24,7 @@
 
 	<div class="row g-4">
 		<div class="col-md-4 text-center">
-			<img src="${book.image}" alt="도서 이미지" class="img-thumbnail book-image">
+			<img src="/img/${book.image}" alt="도서 이미지" class="img-thumbnail book-image">
 		</div>
 
 		<div class="col-md-8">
