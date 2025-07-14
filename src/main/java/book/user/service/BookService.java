@@ -22,48 +22,39 @@ public class BookService {
 		return dao.findById(id);
 	}
 	
-	public PageList getPageList(int requestPage) {
-		try {
-			PageList pageList = PageList.builder().totalCount(dao.count()).pagePerCount(10).build();
+	public PageList getPageList(int requestPage, String field, String keyword) {
+	    try {
+	        boolean isSearch = keyword != null && !keyword.trim().isEmpty();
 
-			int totalPage = 0;
-			if ((pageList.getTotalCount() % pageList.getPagePerCount()) == 0) {
-				totalPage = pageList.getTotalCount() / pageList.getPagePerCount();
-			} else {
-				totalPage = (pageList.getTotalCount() / pageList.getPagePerCount()) + 1;
-			}
-			pageList.setTotalPage(totalPage);
+	        int totalCount = isSearch ? dao.countBySearch(field, keyword) : dao.count();
+	        PageList pageList = PageList.builder().totalCount(totalCount).pagePerCount(10).build();
 
-			pageList.setCurrentPage(requestPage);
-			int startnum = ((requestPage - 1) * pageList.getPagePerCount()) + 1;
-			int endnum = requestPage * pageList.getPagePerCount();
+	        int totalPage = (totalCount % 10 == 0) ? (totalCount / 10) : (totalCount / 10 + 1);
+	        pageList.setTotalPage(totalPage);
+	        pageList.setCurrentPage(requestPage);
 
-			int startPage = ((requestPage - 1) / 5 * 5) + 1;
-			int endPage = startPage + (5 - 1);
-			if (endPage > totalPage)
-				endPage = totalPage;
-			pageList.setStartPage(startPage);
-			pageList.setEndPage(endPage);
+	        int startnum = ((requestPage - 1) * pageList.getPagePerCount()) + 1;
+	        int endnum = requestPage * pageList.getPagePerCount();
 
-			boolean isPre = requestPage > 5 ? true : false;
-			boolean isNext = endPage < totalPage ? true : false;
-			pageList.setPre(isPre);
-			pageList.setNext(isNext);
-			
-			List<Book> list = dao.findAll(startnum, endnum);
+	        int startPage = ((requestPage - 1) / 5 * 5) + 1;
+	        int endPage = Math.min(startPage + 4, totalPage);
 
-			List<Book> booklists = new ArrayList<Book>();
-			for (Book book : list) {
-				Book booklist = new Book(book.getId() ,book.getTitle(), book.getAuthor(), book.getPublisher(),
-						book.getImage(), book.getPrice(), book.getGenre(), book.getPublished_at(), book.getPage(), book.getIntroduction());
-				booklists.add(booklist);
-			}
-			pageList.setList(booklists);
-			return pageList;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+	        pageList.setStartPage(startPage);
+	        pageList.setEndPage(endPage);
+	        pageList.setPre(requestPage > 5);
+	        pageList.setNext(endPage < totalPage);
+
+	        List<Book> list = isSearch
+	            ? dao.searchByField(field, keyword, startnum, endnum)
+	            : dao.findAll(startnum, endnum);
+
+	        pageList.setList(list);
+	        return pageList;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null;
+	    }
 	}
+
 	
 }
