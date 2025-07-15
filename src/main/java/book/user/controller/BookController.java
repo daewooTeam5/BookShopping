@@ -19,12 +19,20 @@ public class BookController {
 	BookService service;
 
 	@RequestMapping("list")
-	public String list(Model model, @RequestParam(defaultValue = "1") int requestPage) {
-	    PageList pageList = service.getPageList(requestPage);
+	public String list(
+	    Model model,
+	    @RequestParam(defaultValue = "1") int requestPage,
+	    @RequestParam(value = "searchField", required = false, defaultValue = "title") String searchField,
+	    @RequestParam(value = "keyword", required = false) String keyword) {
+	    
+	    PageList pageList = service.getPageList(requestPage, searchField, keyword);
 	    model.addAttribute("books", pageList.getList());
-	    model.addAttribute("pageList", pageList);        
+	    model.addAttribute("pageList", pageList);
+	    model.addAttribute("searchField", searchField);
+	    model.addAttribute("keyword", keyword);
 	    return "book/user/list";
 	}
+
 	
 	@RequestMapping("view")
 	public String detail(@RequestParam("id") Long id, Model model) {

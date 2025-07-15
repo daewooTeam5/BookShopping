@@ -15,7 +15,8 @@
 		<intercept-url pattern="/book/list" access="permitAll" />
 		<intercept-url pattern="/book/view" access="permitAll" />
 		<intercept-url pattern="/login" access="permitAll" />
-		<intercept-url pattern="/user/my-page" access="isAuthenticated()"/>
+		<intercept-url pattern="/user/my-page"
+			access="isAuthenticated()" />
 		<intercept-url pattern="/cart/**"
 			access="isAuthenticated()" />
 		<intercept-url pattern="/cart"
@@ -24,10 +25,12 @@
 			access="isAuthenticated()" />
 		<intercept-url pattern="/book/admin/**"
 			access="hasRole('ROLE_ADMIN') " />
+		<intercept-url pattern="/payment/admin/**"
+			access="hasRole('ROLE_ADMIN') " />
 		<form-login login-page="/user/login"
-			default-target-url="/book/list"
-			authentication-failure-url="/user/login?error=true" />
-		<logout logout-url="/logout" logout-success-url="/book/list"
+			authentication-failure-url="/user/login?error=true"
+			authentication-success-handler-ref="customAuthenticationSuccessHandler" />
+		<logout logout-url="/logout" logout-success-url="/"
 			invalidate-session="true" delete-cookies="JSESSIONID" />
 	</http>
 
@@ -36,5 +39,6 @@
 			user-service-ref="loginServiceWithSecurity">
 		</authentication-provider>
 	</authentication-manager>
-
+	<beans:bean id="customAuthenticationSuccessHandler" class="global.security.CustomAuthenticationSuccessHandler"/>
+	
 </beans:beans>
