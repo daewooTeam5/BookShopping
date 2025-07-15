@@ -1,5 +1,7 @@
 package user.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -7,24 +9,40 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import lombok.RequiredArgsConstructor;
+import payment.dto.PaymentDetailDto;
+import payment.service.PaymentService;
+import shopping_cart.dto.ShoppingCartUserDto;
+import shopping_cart.service.ShoppingCartService;
 import user.dto.UserRegisterForm;
 import user.entity.UserEntity;
 import user.service.UserService;
 
 @Controller
+@RequiredArgsConstructor
 public class UserController {
+    private final UserService userService;
+    private final ShoppingCartService shoppingCartService;
+    private final PaymentService paymentSerivce;
 
-    @Autowired
-    private UserService userService;
     @GetMapping("user/login")
     public String loginRedirect() {
         return "redirect:/login"; 
     }
+
     @GetMapping("/user/my-page")
     public String myPage(Authentication authentication, Model model) {
     	String userId = authentication.getName();
     	UserEntity user = userService.findByUserId(userId);
+    	List<ShoppingCartUserDto> shoppingCart = shoppingCartService.getAllShoppCartJoinByUserId(userId);
+    	List<PaymentDetailDto> paymentList = paymentSerivce.getPaymentDetailsByAccountId(user.getId());
+    	System.out.println(shoppingCart);
     	model.addAttribute("user", user);
+    	model.addAttribute("shoppingCart", shoppingCart);
+    	model.addAttribute("myPaymentList",paymentList);
+    	Integer totalPaymentAmount = paymentSerivce.getTotalPaymentAmountByAccountId(user.getId());
+    	model.addAttribute("totalPaymentAmount", totalPaymentAmount);
+    	System.out.println(paymentList);
     	return "user/mypage";
     }
 
