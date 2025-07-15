@@ -12,10 +12,10 @@ import user.entity.UserEntity;
 @Mapper
 public interface UserMapper {
 
-	@Insert("INSERT INTO users (user_id, name, password, user_role) VALUES (#{userId},#{name}, #{password}, #{userRole})")
+	@Insert("INSERT INTO account (user_id, name, password, user_role) VALUES (#{userId},#{name}, #{password}, #{userRole})")
 	Integer save(UserRegisterForm user);
 	
-	@Select("SELECT * from users where user_id=#{userId}")
+	@Select("SELECT * from account where user_id=#{userId}")
 	@Results({
 	    @Result(property = "userId", column = "user_id"),
 	    @Result(property = "userRole", column = "user_role"),
@@ -23,7 +23,7 @@ public interface UserMapper {
 	})
 	UserEntity findByUserId(String userId);
 	
-	@Select("SELECT id FROM users WHERE user_id=#{userId}")
+	@Select("SELECT id FROM account WHERE user_id=#{userId}")
 	Long getUserId(String userId);
 	
 }
