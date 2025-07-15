@@ -27,7 +27,7 @@
 		<form-login login-page="/user/login"
 			default-target-url="/book/list"
 			authentication-failure-url="/user/login?error=true" />
-		<logout logout-url="/logout" logout-success-url="/"
+		<logout logout-url="/logout" logout-success-url="/book/list"
 			invalidate-session="true" delete-cookies="JSESSIONID" />
 	</http>
 
