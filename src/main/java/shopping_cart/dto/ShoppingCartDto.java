@@ -1,6 +1,7 @@
 package shopping_cart.dto;
 
-import book.dto.Book;
+
+import book.user.dto.Book;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
