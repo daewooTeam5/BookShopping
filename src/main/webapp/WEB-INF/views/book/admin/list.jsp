@@ -1,90 +1,140 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>도서 목록</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #ccc;
-            text-align: left;
-        }
-        th {
-            background-color: #f3f3f3;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>도서 목록</title>
+<!-- Bootstrap 5 CDN -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<style>
+body {
+	background: #f8fafc;
+}
+
+.table th, .table td {
+	vertical-align: middle;
+}
+
+.book-img {
+	width: 60px;
+	height: auto;
+	border-radius: 6px;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+}
+
+.search-form .form-select, .search-form .form-control {
+	border-radius: 0.7rem;
+}
+
+.search-form .btn {
+	border-radius: 0.7rem;
+}
+
+.dashboard-header {
+	font-weight: 700;
+	letter-spacing: -0.5px;
+}
+
+.btn-action {
+	min-width: 60px;
+}
+</style>
 </head>
 <body>
-
-<h2>📚 도서 목록</h2>
-<form method="get" action="${pageContext.request.contextPath}/book/admin/list" style="margin-bottom: 20px;">
-    <select name="searchField">
-        <option value="title" ${searchField == 'title' ? 'selected' : ''}>제목</option>
-        <option value="author" ${searchField == 'author' ? 'selected' : ''}>저자</option>
-        <option value="publisher" ${searchField == 'publisher' ? 'selected' : ''}>출판사</option>
-    </select>
-    <input type="text" name="keyword" placeholder="검색어 입력" value="${keyword}" />
-    <button type="submit">검색</button>
-</form>
-<a href="${pageContext.request.contextPath}/book/admin/writeform">
-    <button type="button" style="margin-bottom: 20px;">➕ 새로운 책 등록</button>
-</a>
-<c:if test="${not empty keyword}">
-    <button onclick="history.back()" style="margin-top: 20px;">🔙 뒤로가기</button>
-</c:if>
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>제목</th>
-            <th>저자</th>
-            <th>출판사</th>
-            <th>가격</th>
-            <th>출간일</th>
-            <th>장르</th>
-            <th>페이지 수</th>
-            <th>이미지</th>
-            <th>관리</th>
-        </tr>
-    </thead>
-    <tbody>
-        <c:forEach var="book" items="${list}">
-            <tr>
-                <td>${book.id}</td>
-                <td>${book.title}</td>
-                <td>${book.author}</td>
-                <td>${book.publisher}</td>
-                <td>${book.price}</td>
-                <td><fmt:formatDate value="${book.publishedAt}" pattern="yyyy-MM-dd" /></td>
-                <td>${book.genre}</td>
-                <td>${book.page}</td>
-                <td>
-                    <img src="${pageContext.request.contextPath}/img/${book.image}" alt="표지" style="width: 60px; height: auto;" />
-                </td>
-                <td>
-                <a href="${pageContext.request.contextPath}/book/admin/updateform?id=${book.id}">
-                    <button type="button">수정</button>
-                </a>
-                
-                <form method="post" action="${pageContext.request.contextPath}/book/admin/delete" style="display:inline;" 
-                      onsubmit="return confirm('정말 삭제하시겠습니까?');">
-                    <input type="hidden" name="id" value="${book.id}" />
-                    <button type="submit">삭제</button>
-                </form>
-            	</td>
-            </tr>
-        </c:forEach>
-    </tbody>
-</table>
-
+	<div class="container py-4">
+		<!-- 상단 제목과 등록 버튼 -->
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h2 class="dashboard-header fs-3 mb-0">📚 도서 목록</h2>
+			<a href="${pageContext.request.contextPath}/payment/admin/list"
+				class="btn btn-outline-dark btn-lg px-4 shadow-sm"> 💳 결제 내역 </a> <a
+				href="${pageContext.request.contextPath}/book/admin/writeform"
+				class="btn btn-success btn-lg px-4 shadow-sm"> ➕ 새로운 책 등록 </a>
+		</div>
+		<!-- 검색 폼 -->
+		<form method="get"
+			action="${pageContext.request.contextPath}/book/admin/list"
+			class="row search-form g-2 mb-3">
+			<div class="col-md-2 col-sm-4">
+				<select name="searchField" class="form-select">
+					<option value="title" ${searchField == 'title' ? 'selected' : ''}>제목</option>
+					<option value="author" ${searchField == 'author' ? 'selected' : ''}>저자</option>
+					<option value="publisher"
+						${searchField == 'publisher' ? 'selected' : ''}>출판사</option>
+				</select>
+			</div>
+			<div class="col-md-6 col-sm-5">
+				<input type="text" name="keyword" placeholder="검색어 입력"
+					value="${keyword}" class="form-control" autocomplete="off" />
+			</div>
+			<div class="col-auto">
+				<button type="submit" class="btn btn-primary px-4">검색</button>
+			</div>
+			<c:if test="${not empty keyword}">
+				<div class="col-auto">
+					<button type="button" class="btn btn-outline-secondary"
+						onclick="history.back();">🔙 뒤로가기</button>
+				</div>
+			</c:if>
+		</form>
+		<!-- 도서 테이블 -->
+		<div class="table-responsive shadow-sm rounded-4 bg-white">
+			<table class="table table-hover align-middle mb-0">
+				<thead class="table-light">
+					<tr>
+						<th>ID</th>
+						<th>제목</th>
+						<th>저자</th>
+						<th>출판사</th>
+						<th>가격</th>
+						<th>출간일</th>
+						<th>장르</th>
+						<th>페이지 수</th>
+						<th>이미지</th>
+						<th class="text-center">관리</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach var="book" items="${list}">
+						<tr>
+							<td>${book.id}</td>
+							<td>${book.title}</td>
+							<td>${book.author}</td>
+							<td>${book.publisher}</td>
+							<td><fmt:formatNumber value="${book.price}" type="number"
+									groupingUsed="true" /> 원</td>
+							<td><fmt:formatDate value="${book.publishedAt}"
+									pattern="yyyy-MM-dd" /></td>
+							<td>${book.genre}</td>
+							<td>${book.page}</td>
+							<td><img
+								src="${pageContext.request.contextPath}/img/${book.image}"
+								alt="표지" class="book-img" /></td>
+							<td class="text-center"><a
+								href="${pageContext.request.contextPath}/book/admin/updateform?id=${book.id}"
+								class="btn btn-sm btn-outline-primary btn-action mb-1">수정</a>
+								<form method="post"
+									action="${pageContext.request.contextPath}/book/admin/delete"
+									style="display: inline;"
+									onsubmit="return confirm('정말 삭제하시겠습니까?');">
+									<input type="hidden" name="id" value="${book.id}" />
+									<button type="submit"
+										class="btn btn-sm btn-outline-danger btn-action mb-1">삭제</button>
+								</form></td>
+						</tr>
+					</c:forEach>
+					<c:if test="${empty list}">
+						<tr>
+							<td colspan="10" class="text-center text-secondary py-4">등록된
+								도서가 없습니다.</td>
+						</tr>
+					</c:if>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </body>
 </html>
