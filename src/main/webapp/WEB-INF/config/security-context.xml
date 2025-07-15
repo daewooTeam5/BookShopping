@@ -25,6 +25,7 @@
 		<intercept-url pattern="/book/admin/**"
 			access="hasRole('ROLE_ADMIN') " />
 		<form-login login-page="/user/login"
+		login-processing-url="/login"
 			default-target-url="/book/list"
 			authentication-failure-url="/user/login?error=true" />
 		<logout logout-url="/logout" logout-success-url="/"
