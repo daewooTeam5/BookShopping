@@ -5,12 +5,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import payment.service.PaymentService;
+import user.mapper.UserMapper;
 
 
 @Controller
@@ -20,12 +22,20 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
+    @Autowired
+    private UserMapper userMapper; // 사용자 ID를 가져오기 위해 UserMapper를 주입합니다.
 
-    @GetMapping("/buyNow")
+
+    @PostMapping("/buyNow")
     public void buyNow(@RequestParam("bookId") Long bookId,
-                       @RequestParam(value = "accountId", defaultValue = "1") Long accountId, // 임시로 accountId=1 사용
+                       Authentication authentication, // SecurityContext에서 현재 사용자 정보를 가져옵니다.
                        HttpServletResponse response) throws IOException {
+
+        // 1. 현재 로그인한 사용자의 ID(accountId)를 조회합니다.
+        String currentUserId = authentication.getName();
+        Long accountId = userMapper.getUserId(currentUserId);
         
+        // 2. 조회한 accountId를 사용하여 구매를 처리합니다.
         boolean success = paymentService.processSinglePurchase(accountId, bookId);
         
         response.setContentType("text/html; charset=UTF-8");
@@ -37,10 +47,16 @@ public class PaymentController {
     }
 
 
-    @GetMapping("/buyFromCart")
-    public void buyFromCart(@RequestParam(value = "accountId", defaultValue = "1") Long accountId, // 임시로 accountId=1 사용
-                            HttpServletResponse response) throws IOException {
 
+    @PostMapping("/buyFromCart")
+    public void buyFromCart(Authentication authentication, // SecurityContext에서 현재 사용자 정보를 가져옵니다.
+                            HttpServletResponse response) throws IOException {
+        
+        // 1. 현재 로그인한 사용자의 ID(accountId)를 조회합니다.
+        String currentUserId = authentication.getName();
+        Long accountId = userMapper.getUserId(currentUserId);
+
+        // 2. 조회한 accountId를 사용하여 장바구니 구매를 처리합니다.
         boolean success = paymentService.processCartPurchase(accountId);
         
         response.setContentType("text/html; charset=UTF-8");

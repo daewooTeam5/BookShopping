@@ -20,6 +20,7 @@
 	</bean>
 	
 	<context:component-scan base-package="book.user.controller, book.admin, user.controller, payment.controller, shopping_cart.controller, payment" />
-	
+
 	<bean id="filterMultipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"/>
 </beans>
+
