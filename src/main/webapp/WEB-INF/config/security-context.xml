@@ -10,12 +10,14 @@
 
 	<!-- Security Configuration -->
 	<http auto-config="true" use-expressions="true">
+		<csrf disabled="true" />
 		<intercept-url pattern="/" access="permitAll" />
 		<intercept-url pattern="/register" access="permitAll" />
 		<intercept-url pattern="/book/list" access="permitAll" />
 		<intercept-url pattern="/book/view" access="permitAll" />
 		<intercept-url pattern="/login" access="permitAll" />
-		<intercept-url pattern="/user/my-page" access="isAuthenticated()"/>
+		<intercept-url pattern="/user/my-page"
+			access="isAuthenticated()" />
 		<intercept-url pattern="/cart/**"
 			access="isAuthenticated()" />
 		<intercept-url pattern="/cart"
@@ -27,7 +29,7 @@
 		<form-login login-page="/user/login"
 			default-target-url="/book/list"
 			authentication-failure-url="/user/login?error=true" />
-		<logout logout-url="/logout" logout-success-url="/"
+		<logout logout-url="/logout" logout-success-url="/book/list"
 			invalidate-session="true" delete-cookies="JSESSIONID" />
 	</http>
 
@@ -36,5 +38,6 @@
 			user-service-ref="loginServiceWithSecurity">
 		</authentication-provider>
 	</authentication-manager>
+
 
 </beans:beans>
