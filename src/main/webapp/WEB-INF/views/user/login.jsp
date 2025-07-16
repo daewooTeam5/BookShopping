@@ -75,7 +75,7 @@ button:hover {
 	<div class="login-container">
 		<h1>로그인</h1>
 		<form action="${pageContext.request.contextPath}/login" method="post">
-		<form action="/login" method="post">
+		
 
 			<sec:csrfInput />
 			<label>아이디</label> <input type="text" name="username"
