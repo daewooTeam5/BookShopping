@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
 <html>
@@ -51,7 +52,10 @@
 
 <div class="form-card">
     <h2 class="text-center mb-4">📘 도서 정보 수정</h2>
-    <form method="post" action="${pageContext.request.contextPath}/book/admin/update" enctype="multipart/form-data">
+    <form method="post"
+      action="${pageContext.request.contextPath}/book/admin/update"
+      enctype="multipart/form-data">
+    	<sec:csrfInput />
         <input type="hidden" name="id" value="${book.id}" />
 
         <div class="mb-3">

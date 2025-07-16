@@ -20,11 +20,7 @@
 	</bean>
 	
 	<context:component-scan base-package="book.user.controller, book.admin, user.controller, payment.controller, shopping_cart.controller, payment" />
-	
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="maxUploadSize" value="10485760"></property>
-		<property name="maxInMemorySize" value="4096"></property>
-	</bean>
-	<mvc:resources mapping="/img/**" location="/img/" />
-	<mvc:annotation-driven/>
+
+	<bean id="filterMultipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"/>
 </beans>
+

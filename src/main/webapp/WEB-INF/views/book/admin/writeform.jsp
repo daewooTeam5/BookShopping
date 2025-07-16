@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,6 +44,7 @@
 <div class="form-card">
     <h2 class="text-center mb-4">📖 새로운 책 등록</h2>
     <form method="post" action="${pageContext.request.contextPath}/book/admin/write" enctype="multipart/form-data">
+    	<sec:csrfInput />
         <div class="mb-3">
             <label for="title" class="form-label">제목</label>
             <input type="text" class="form-control" id="title" name="title" required />
