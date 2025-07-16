@@ -10,6 +10,7 @@ import book.user.dao.BookDao;
 import global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 import shopping_cart.dto.ShoppingCartDto;
+import shopping_cart.dto.ShoppingCartUserDto;
 import shopping_cart.entity.ShoppingCart;
 import shopping_cart.repository.ShoppingCartRepository;
 import user.mapper.UserMapper;
@@ -38,9 +39,12 @@ public class ShoppingCartService {
     public void removeFromCart(Long id) {
         shoppingCartRepository.removeFromCart(id);
     }
+    public List<ShoppingCartUserDto> getAllShoppCartJoinByUserId(String userId){
+    	return shoppingCartRepository.findAllByShoppingCartJoinUser(userId);
+    }
 
     public List<ShoppingCartDto> getAllShoppingCartbyUserId(Long userId) {
-    	// TODO �쑀�� �젙蹂� 寃�利� 
+    	// TODO 유저 정보 검증 
     	// User user = userRepository.findById(userId).orElseThrow();
     	List<ShoppingCartDto> dto = new ArrayList<>();
         shoppingCartRepository.findByAccountId(userId).forEach(shoppingCart->{
@@ -56,5 +60,9 @@ public class ShoppingCartService {
 
     public int countByBookId(Long bookId) {
         return shoppingCartRepository.countByBookId(bookId);
+    }
+
+    public void updateQuantity(Long id, int quantity) {
+        shoppingCartRepository.updateQuantity(id, quantity);
     }
 }

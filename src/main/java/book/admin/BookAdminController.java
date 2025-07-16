@@ -6,8 +6,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,7 +48,7 @@ public class BookAdminController {
 	    return "book/admin/writeform";
 	}
 
-	@RequestMapping("write")
+	@PostMapping("write")
 	public void write(Book book, @RequestParam("imageFile") MultipartFile imageFile, HttpServletRequest request,HttpServletResponse response) throws IOException {
 	    boolean success = service.save(book, imageFile, request);
 	   
@@ -68,7 +70,7 @@ public class BookAdminController {
 		return mv;
 	}
 	
-	@RequestMapping("update")
+	@PostMapping("update")
 	public void update(
 	        Book book,
 	        @RequestParam("imageFile") MultipartFile imageFile,
@@ -97,9 +99,13 @@ public class BookAdminController {
 	    }
 	}
 	
-	@RequestMapping("delete")
+	@PostMapping("delete")
 	public void delete(@RequestParam("id") int id, HttpServletResponse response) {
 		boolean success = service.delete(id);
+		
+	    response.setContentType("text/html; charset=UTF-8");
+	    response.setCharacterEncoding("UTF-8");
+	    
 	    try {
 	        if (success) {
 	            response.getOutputStream().write("<script>alert('Delete Success!'); location.href='/book/admin/list';</script>".getBytes());

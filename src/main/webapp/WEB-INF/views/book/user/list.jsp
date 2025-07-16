@@ -2,6 +2,7 @@
 	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -103,14 +104,13 @@
 						</div>
 						<div class="ms-2 button-area">
 							<a href="/payment/buyNow?bookId=${book.id}&accountId=5"> <%-- 임시 유저 ID --%>
-								<button class="btn btn-primary btn-sm w-60 fs-8">구매하기</button></a>
-							<form action="/cart" method="post"
-								onsubmit="return confirm('장바구니에 추가하시겠습니까?');">
-								<input type="hidden" name="bookId" value="${book.id}"> <input
-									type="hidden" name="accountId" value="1"> <input
-									type="hidden" name="quantity" value="1">
-								<button type="submit"
-									class="btn btn-secondary btn-sm mb-1 w-60 fs-8">장바구니</button>
+							<button class="btn btn-primary btn-sm w-60 fs-8">구매하기</button></a>
+							<form action="/cart" method="post" onsubmit="return confirm('장바구니에 추가하시겠습니까?');">
+								<sec:csrfInput/>
+								<input type="hidden" name="bookId" value="${book.id}">
+								<input type="hidden" name="accountId" value="1">
+								<input type="hidden" name="quantity" value="1">
+								<button type="submit" class="btn btn-secondary btn-sm mb-1 w-60 fs-8">장바구니</button>
 							</form>
 						</div>
 					</div>
