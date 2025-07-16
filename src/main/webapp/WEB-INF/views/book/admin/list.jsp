@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -120,6 +121,7 @@ body {
 									action="${pageContext.request.contextPath}/book/admin/delete"
 									style="display: inline;"
 									onsubmit="return confirm('정말 삭제하시겠습니까?');">
+									<sec:csrfInput />
 									<input type="hidden" name="id" value="${book.id}" />
 									<button type="submit"
 										class="btn btn-sm btn-outline-danger btn-action mb-1">삭제</button>
