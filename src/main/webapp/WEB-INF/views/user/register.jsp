@@ -103,7 +103,7 @@ button:hover {
 			<button type="submit">회원가입 완료</button>
 		</form>
 
-		<form action="#" method="get">
+		<form action="/login">
 			<button type="submit" class="back-button">뒤로가기</button>
 		</form>
 	</div>

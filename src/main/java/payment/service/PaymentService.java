@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import payment.dto.Payment;
+import payment.dto.PaymentDetailDto;
 import payment.mapper.PaymentMapper;
 import shopping_cart.entity.ShoppingCart;
 import shopping_cart.repository.ShoppingCartRepository;
@@ -55,5 +56,13 @@ public class PaymentService {
         }
 
         return true;
+    }
+
+    public List<PaymentDetailDto> getPaymentDetailsByAccountId(Long accountId) {
+        return paymentMapper.findPaymentDetailsByAccountId(accountId);
+    }
+
+    public Integer getTotalPaymentAmountByAccountId(Long accountId) {
+        return paymentMapper.getTotalPaymentAmountByAccountId(accountId);
     }
 }
