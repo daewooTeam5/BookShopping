@@ -26,7 +26,7 @@ public class PaymentController {
     public void buyNow(@RequestParam("bookId") Long bookId,
                        @RequestParam(value = "accountId", defaultValue = "1") Long accountId, // 임시로 accountId=1 사용
                        HttpServletResponse response) throws IOException {
-        
+        System.out.println("데스크톱 테스트");
         boolean success = paymentService.processSinglePurchase(accountId, bookId);
         
         response.setContentType("text/html; charset=UTF-8");
