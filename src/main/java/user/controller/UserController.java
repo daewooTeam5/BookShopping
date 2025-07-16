@@ -29,11 +29,8 @@ public class UserController {
         return "redirect:/login"; 
     }
 
-<<<<<<< HEAD
-    @GetMapping("/user/mypage")
-=======
+
     @GetMapping("/user/my-page")
->>>>>>> 23d26af16b7eba81e91f766c103dd8bb0ca606fd
     public String myPage(Authentication authentication, Model model) {
     	String userId = authentication.getName();
     	UserEntity user = userService.findByUserId(userId);
