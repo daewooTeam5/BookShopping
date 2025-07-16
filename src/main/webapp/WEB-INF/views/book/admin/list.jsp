@@ -48,13 +48,19 @@ body {
 <body>
 	<div class="container py-4">
 		<!-- 상단 제목과 등록 버튼 -->
-		<div class="d-flex justify-content-between align-items-center mb-4">
-			<h2 class="dashboard-header fs-3 mb-0">📚 도서 목록</h2>
-			<a href="${pageContext.request.contextPath}/payment/admin/list"
-				class="btn btn-outline-dark btn-lg px-4 shadow-sm"> 💳 결제 내역 </a> <a
-				href="${pageContext.request.contextPath}/book/admin/writeform"
-				class="btn btn-success btn-lg px-4 shadow-sm"> ➕ 새로운 책 등록 </a>
-		</div>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="dashboard-header fs-3 mb-0">📚 도서 목록</h2>
+    <div class="d-flex gap-3"> <!-- gap을 사용하여 버튼 간 간격을 자연스럽게 조정 -->
+        <a href="${pageContext.request.contextPath}/payment/admin/list"
+           class="btn btn-outline-dark btn-lg px-4 shadow-sm">💳 결제 내역</a>
+        <a href="${pageContext.request.contextPath}/book/admin/writeform"
+           class="btn btn-success btn-lg px-4 shadow-sm">➕ 새로운 책 등록</a>
+        <!-- 로그아웃 버튼 -->
+        <sec:authorize access="isAuthenticated()">
+            <a href="${pageContext.request.contextPath}/logout" class="btn btn-outline-danger btn-lg px-4 shadow-sm">🚪 로그아웃</a>
+        </sec:authorize>
+    </div>
+</div>
 		<!-- 검색 폼 -->
 		<form method="get"
 			action="${pageContext.request.contextPath}/book/admin/list"
@@ -81,6 +87,7 @@ body {
 				</div>
 			</c:if>
 		</form>
+		
 		<!-- 도서 테이블 -->
 		<div class="table-responsive shadow-sm rounded-4 bg-white">
 			<table class="table table-hover align-middle mb-0">
