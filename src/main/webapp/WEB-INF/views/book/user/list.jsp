@@ -2,6 +2,8 @@
 	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %> <%-- CSRF 토큰 사용을 위해 태그 라이브러리 추가 --%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +11,7 @@
 <title>도서 목록</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
+/* ... (스타일은 이전과 동일) ... */
 .narrow-container {
 	max-width: 800px;
 }
@@ -32,6 +35,7 @@
 		<h2 class="mb-4 text-center">OLDDEMERONA</h2>
 
 		<form action="/book/list" method="get" class="d-flex mb-4 justify-content-center">
+			
 			<select name="searchField" class="form-select w-auto me-2">
 				<option value="title" ${searchField == 'title' ? 'selected' : ''}>제목</option>
 				<option value="author" ${searchField == 'author' ? 'selected' : ''}>저자</option>
@@ -60,18 +64,18 @@
 							<p class="mb-0">${book.introduction}</p>
 						</div>
 						<div class="ms-2 button-area">
-							
 							<form action="/payment/buyNow" method="POST" class="mb-1">
 								<input type="hidden" name="bookId" value="${book.id}">
+								<sec:csrfInput /> 
 								<button type="submit" class="btn btn-primary btn-sm w-100 fs-8">구매하기</button>
 							</form>
 							
 							<form action="/cart" method="POST" onsubmit="return confirm('장바구니에 추가하시겠습니까?');">
 								<input type="hidden" name="bookId" value="${book.id}">
 								<input type="hidden" name="quantity" value="1">
+								<sec:csrfInput /> 
 								<button type="submit" class="btn btn-secondary btn-sm w-100 fs-8">장바구니</button>
 							</form>
-							
 						</div>
 					</div>
 				</div>
