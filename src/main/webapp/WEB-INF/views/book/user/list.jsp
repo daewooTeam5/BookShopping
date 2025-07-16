@@ -46,7 +46,7 @@
 			class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4 position-relative">
 			<!-- 중앙 제목 -->
 			<div class="flex-grow-1 text-center">
-				<h2 class="mb-0">OLDDEMERONA</h2>
+				<a href="/book/list"> <img src="/img/book.png" height="65px"/></a>
 			</div>
 
 			<c:choose>
