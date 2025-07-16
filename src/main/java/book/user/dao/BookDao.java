@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import book.user.dto.Book;
+import book.user.dto.GenreCount;
 
 @Mapper
 public interface BookDao {
@@ -64,6 +65,17 @@ public interface BookDao {
 	    @Param("field") String field,
 	    @Param("keyword") String keyword
 	);
+	
+	@Select("SELECT genre, COUNT(*) AS count FROM book GROUP BY genre ORDER BY genre")
+	List<GenreCount> findGenreCounts();
+	
+	@Select("SELECT * FROM (SELECT ROWNUM AS rid, t.* FROM (SELECT * FROM book WHERE genre = #{genre} ORDER BY id DESC) t WHERE ROWNUM <= #{endnum}) WHERE rid >= #{startnum}")
+	List<Book> findByGenre(@Param("genre") String genre, @Param("startnum") int startnum, @Param("endnum") int endnum);
+
+	@Select("SELECT COUNT(*) FROM book WHERE genre = #{genre}")
+	int countByGenre(@Param("genre") String genre);
+
+
 
 }
 
