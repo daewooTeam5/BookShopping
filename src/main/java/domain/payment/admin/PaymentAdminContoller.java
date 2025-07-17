@@ -26,7 +26,6 @@ public class PaymentAdminContoller {
 			@RequestParam(value = "minPrice", required = false) Integer minPrice,
 			@RequestParam(value = "maxPrice", required = false) Integer maxPrice, ModelAndView mv) {
 		
-		System.out.println(userName+"=======================");
 		mv.addObject("paymentList",
 				service.search(userName, userId, bookTitle, publisher, fromDate, toDate, minPrice, maxPrice));
 	    mv.addObject("totalCount", service.getTotalCount());
