@@ -6,9 +6,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import domain.user.entity.UserEntity;
+import domain.user.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
-import user.entity.UserEntity;
-import user.mapper.UserMapper;
 
 @Service("loginServiceWithSecurity")
 @RequiredArgsConstructor

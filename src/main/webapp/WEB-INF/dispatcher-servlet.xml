@@ -19,7 +19,7 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 	
-	<context:component-scan base-package="book.user.controller, book.admin, user.controller, payment.controller, shopping_cart.controller, payment" />
+	<context:component-scan base-package="domain" />
 
 	<bean id="filterMultipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"/>
 </beans>

@@ -54,8 +54,12 @@
 					<!-- 로그인 상태 -->
 					<div class="position-absolute end-0 me-3">
 						<a href="/user/my-page"
-							class="btn btn-outline-success btn-sm me-2">내 정보</a> <a
-							href="/logout" class="btn btn-secondary btn-sm">로그아웃</a>
+							class="btn btn-outline-success btn-sm me-2">내 정보</a> 
+							<form action="/logout" method="post" style="display:inline-block">
+							<sec:csrfInput/>
+							<button type='submit' 
+							 class="btn btn-secondary btn-sm">로그아웃</button>
+							</form>
 					</div>
 				</c:when>
 				<c:otherwise>
