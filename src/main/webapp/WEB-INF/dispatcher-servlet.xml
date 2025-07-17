@@ -23,4 +23,3 @@
 
 	<bean id="filterMultipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"/>
 </beans>
-
