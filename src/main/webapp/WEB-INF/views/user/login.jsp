@@ -22,7 +22,7 @@ body {
 	padding: 40px;
 	border-radius: 12px;
 	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-	width: 300px;
+	width: 360px;
 }
 
 h1 {
@@ -39,7 +39,7 @@ label {
 }
 
 input[type="text"], input[type="password"] {
-	width: 100%;
+	width: 95%;
 	padding: 10px;
 	border: 1px solid #ddd;
 	border-radius: 6px;
@@ -66,7 +66,7 @@ button {
 }
 
 button:hover {
-	background-color: #0056b3;
+	background-color: #1ee7f5;
 }
 </style>
 </head>
