@@ -56,9 +56,12 @@ body {
         <a href="${pageContext.request.contextPath}/book/admin/writeform"
            class="btn btn-success btn-lg px-4 shadow-sm">➕ 새로운 책 등록</a>
         <!-- 로그아웃 버튼 -->
+        <form method="post" action="/logout">
+        <sec:csrfInput />
         <sec:authorize access="isAuthenticated()">
-            <a href="${pageContext.request.contextPath}/logout" class="btn btn-outline-danger btn-lg px-4 shadow-sm">🚪 로그아웃</a>
+            <input type="submit" value="🚪 로그아웃" class="btn btn-outline-danger btn-lg px-4 shadow-sm">
         </sec:authorize>
+        </form>
     </div>
 </div>
 		<!-- 검색 폼 -->
