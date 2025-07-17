@@ -23,13 +23,17 @@ public class BookController {
 	    Model model,
 	    @RequestParam(defaultValue = "1") int requestPage,
 	    @RequestParam(value = "searchField", required = false, defaultValue = "title") String searchField,
-	    @RequestParam(value = "keyword", required = false) String keyword) {
-	    
-	    PageList pageList = service.getPageList(requestPage, searchField, keyword);
+	    @RequestParam(value = "keyword", required = false) String keyword,
+	    @RequestParam(value = "genre", required = false) String genre) {
+
+	    PageList pageList = service.getPageList(requestPage, searchField, keyword, genre);
 	    model.addAttribute("books", pageList.getList());
 	    model.addAttribute("pageList", pageList);
 	    model.addAttribute("searchField", searchField);
 	    model.addAttribute("keyword", keyword);
+	    model.addAttribute("genre", genre);
+
+	    model.addAttribute("genreList", service.getGenreCounts());
 	    return "book/user/list";
 	}
 
