@@ -1,53 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="4.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+<web-app version="4.0"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
 http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
-<servlet>
-  <servlet-name>dispatcher</servlet-name>
-  <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-	<!-- 폼에서 컨트롤러로 파라메다 전송시 한글깨짐 처리 --> 
-  <init-param>
-  	<param-name>encoding</param-name>
-  	<param-value>UTF-8</param-value>
-  </init-param>
-  </servlet>
-  <servlet-mapping>
-  <servlet-name>dispatcher</servlet-name>
-  <url-pattern>/</url-pattern>
-  </servlet-mapping>
-  
-  <filter>
-    <filter-name>characterEncodingFilter</filter-name>
-    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-    <init-param>
-        <param-name>encoding</param-name>
-        <param-value>UTF-8</param-value>
-    </init-param>
-    <init-param>
-        <param-name>forceEncoding</param-name>
-        <param-value>true</param-value>
-    </init-param>
-</filter>
 
-<filter-mapping>
-<filter-name>characterEncodingFilter</filter-name>
-<url-pattern>/*</url-pattern>
-</filter-mapping>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			/WEB-INF/config/root-context.xml
+			/WEB-INF/config/security-context.xml
+			/WEB-INF/config/db-config.xml
+		</param-value>
+	</context-param>
 
-<!-- mvc:resource를 사용할 경우 해당 내용 주석 -->
-<!-- 
-<servlet-mapping>
-<servlet-name>default</servlet-name>
-<url-pattern>*.png</url-pattern>
-<url-pattern>*.ico</url-pattern>
-<url-pattern>*.gif</url-pattern>
-</servlet-mapping>  
--->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!-- 폼에서 컨트롤러로 파라메다 전송시 한글깨짐 처리 -->
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	<multipart-config>
+		<location>C:/temp</location>
+		<max-file-size>10485760</max-file-size> <!-- 10MB -->
+		<max-request-size>20971520</max-request-size> <!-- 20MB -->
+		<file-size-threshold>0</file-size-threshold>
+	</multipart-config>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	<filter>
+		<filter-name>characterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>characterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<filter>
+		<filter-name>multipartFilter</filter-name>
+		<filter-class>org.springframework.web.multipart.support.MultipartFilter</filter-class>
+	</filter>
+	<filter-mapping>
+    <filter-name>multipartFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- Spring Security -->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<error-page>
+		<exception-type>global.exception.ApiException</exception-type>
+		<location>/error/general.jsp</location>
+	</error-page>
+
+	<error-page>
+		<error-code>404</error-code>
+		<location>/error/404.jsp</location>
+	</error-page>
 
 </web-app>
-
-
-
-
-

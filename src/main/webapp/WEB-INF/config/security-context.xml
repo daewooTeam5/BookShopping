@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+	xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/security
+        https://www.springframework.org/schema/security/spring-security.xsd">
+
+	<!-- Security Configuration -->
+	<http auto-config="true" use-expressions="true">
+		<access-denied-handler
+			ref="customAccessDeniedHandler" />
+		<!-- 비회원도 접근 가능한 경로 -->
+		<intercept-url pattern="/" access="permitAll" />
+		<intercept-url pattern="/register" access="permitAll" />
+		<intercept-url pattern="/book/list" access="permitAll" />
+		<intercept-url pattern="/book/view" access="permitAll" />
+		<intercept-url pattern="/login" access="permitAll" />
+
+		<!-- 관리자만 접근 가능한 경로: admin 아래부터 먼저 처리 -->
+		<intercept-url pattern="/payment/admin/**"
+			access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/book/admin/**"
+			access="hasRole('ROLE_ADMIN')" />
+
+		<!-- 로그인한 사용자만 접근 가능한 경로 -->
+		<intercept-url pattern="/user/my-page"
+			access="isAuthenticated()" />
+		<intercept-url pattern="/cart/**"
+			access="isAuthenticated()" />
+		<intercept-url pattern="/cart"
+			access="isAuthenticated()" />
+		<intercept-url pattern="/payment/**"
+			access="isAuthenticated()" />
+
+		<!-- 로그인 및 로그아웃 처리 -->
+		<form-login login-page="/user/login"
+			authentication-failure-url="/user/login?error=true"
+			authentication-success-handler-ref="customAuthenticationSuccessHandler" />
+		<logout logout-url="/logout" logout-success-url="/book/list"
+			invalidate-session="true" delete-cookies="JSESSIONID" />
+	</http>
+
+	<authentication-manager>
+		<authentication-provider
+			user-service-ref="loginServiceWithSecurity">
+		</authentication-provider>
+	</authentication-manager>
+	<beans:bean id="customAuthenticationSuccessHandler"
+		class="global.security.CustomAuthenticationSuccessHandler" />
+	<beans:bean id="customAccessDeniedHandler"
+		class="global.security.CustomAccessDeniedHandler" />
+</beans:beans>
