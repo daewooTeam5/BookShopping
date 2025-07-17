@@ -37,7 +37,7 @@ input[type="text"], input[type="password"] {
 	padding: 10px;
 	margin-top: 8px;
 	margin-bottom: 16px;
-	border: 1px solid #ccc;
+	border: 1px solid #757575;
 	border-radius: 6px;
 	font-size: 14px;
 }
@@ -68,7 +68,7 @@ button {
 }
 
 button:hover {
-	background-color: #0056b3;
+	background-color: #1ee7f5;
 }
 
 .back-button {
@@ -77,7 +77,7 @@ button:hover {
 }
 
 .back-button:hover {
-	background-color: #5a6268;
+	background-color: #4d4e4e;
 }
 </style>
 </head>
@@ -100,7 +100,7 @@ button:hover {
 				<label for="user">일반 사용자</label>
 			</div>
 
-			<button type="submit">회원가입 완료</button>
+			<button type="submit" onclick="회원가입을 축하합니다.">회원가입 완료</button>
 		</form>
 
 		<form action="/login">
