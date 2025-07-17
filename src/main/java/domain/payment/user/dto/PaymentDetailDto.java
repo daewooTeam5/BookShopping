@@ -21,4 +21,5 @@ public class PaymentDetailDto {
     private Integer page;
     private Integer price;
     private String publisher;
+    private int quantity;		 // 수량
 }

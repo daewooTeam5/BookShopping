@@ -59,6 +59,15 @@ body {
 </style>
 </head>
 <body>
+	<header class=" narrow-container  border-bottom mt-4"
+		style="height: 80px;">
+		<div
+			class="d-flex justify-content-center align-items-center h-80 mb-2">
+			<a href="/book/list"> <img src="/img/book.png" height="65px"
+				alt="로고" />
+			</a>
+		</div>
+	</header>
 	<div class="container">
 		<div class="row">
 			<!-- User Info -->
@@ -95,6 +104,7 @@ body {
 							<strong>가입일:</strong>
 							<fmt:formatDate value="${user.createdAt}" pattern="yyyy-MM-dd" />
 						</p>
+						<a href="/book/admin/list" class="btn btn-outline-danger btn-block">관리자 페이지</a>
 						<form action="/logout" method="post" class="mt-3">
 							<input type="hidden" name="${_csrf.parameterName}"
 								id="csrf_token" value="${_csrf.token}" />
@@ -147,6 +157,7 @@ body {
 							</c:when>
 							<c:otherwise>
 								<p class="text-center">장바구니에 담긴 상품이 없습니다.</p>
+
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -167,31 +178,32 @@ body {
 									<thead>
 										<tr>
 											<th>결제 ID</th>
-											<th>상품명</th>
+											<th>결제 시간</th>
+											<th>책 제목</th>
 											<th>이미지</th>
 											<th>장르</th>
-											<th>저자</th>
-											<th>페이지</th>
-											<th>가격</th>
 											<th>출판사</th>
-											<th>결제일</th>
+											<th>가격</th>
+											<th>수량</th>
 										</tr>
 									</thead>
 									<tbody>
+										<c:set var="totalQuantity" value="0" />
 										<c:forEach var="payment" items="${myPaymentList}">
 											<tr>
 												<td>${payment.id}</td>
+												<td>${payment.createdAt}</td>
 												<td>${payment.title}</td>
 												<td><img src="/img/${payment.image}"
 													alt="${payment.title}" class="cart-item-img"></td>
 												<td>${payment.genre}</td>
-												<td>${payment.author}</td>
-												<td>${payment.page}</td>
+												<td>${payment.publisher}</td>
 												<td><fmt:formatNumber value="${payment.price}"
 														type="currency" currencySymbol="" />원</td>
-												<td>${payment.publisher}</td>
-												<td>${payment.createdAt}</td>
+												<td>${payment.quantity}</td>
 											</tr>
+											<c:set var="totalQuantity"
+												value="${totalQuantity + payment.quantity}" />
 										</c:forEach>
 									</tbody>
 								</table>
@@ -201,6 +213,7 @@ body {
 							</c:otherwise>
 						</c:choose>
 						<div class="mt-3 text-right">
+							<h4>총 수량: ${totalQuantity}개</h4>
 							<h4>
 								총 결제 금액:
 								<fmt:formatNumber value="${totalPaymentAmount}" type="currency"
@@ -231,6 +244,50 @@ body {
 
     document.querySelectorAll('.item-checkbox').forEach(checkbox => {
       checkbox.addEventListener('change', updateTotalPrice);
+    });
+
+    document.getElementById('order-button').addEventListener('click', function() {
+      const selectedCartIds = [];
+      document.querySelectorAll('.item-row').forEach(itemRow => {
+        const checkbox = itemRow.querySelector('.item-checkbox');
+        if (checkbox && checkbox.checked) {
+          const cartIdInput = itemRow.querySelector('.quantity-controls input[name="id"]');
+          if (cartIdInput) {
+            selectedCartIds.push(cartIdInput.value);
+          }
+        }
+      });
+
+      let url = '/payment/buyFromCart';
+      const params = new URLSearchParams();
+      params.append('_csrf', csrfToken);
+
+      if (selectedCartIds.length > 0) {
+        selectedCartIds.forEach(id => params.append('cartIds', id));
+      }
+      // selectedCartIds가 비어있으면 전체 구매로 처리되므로, 별도로 파라미터를 추가할 필요 없음
+
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'X-CSRF-TOKEN': csrfToken,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: params
+      })
+      .then(response => {
+        if (response.ok) {
+        	location.href="/user/my-page";
+        	alert("결제 성공")
+          
+        } else {
+          alert('결제 요청에 실패했습니다.');
+        }
+      })
+      .catch(error => {
+        console.error('결제 요청 중 에러:', error);
+        alert('결제 요청 중 오류가 발생했습니다.');
+      });
     });
   });
 

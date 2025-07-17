@@ -23,6 +23,11 @@ public class UserController {
     private final UserService userService;
     private final ShoppingCartService shoppingCartService;
     private final PaymentService paymentSerivce;
+    
+    @GetMapping("/")
+    public String mainPage() {
+    	return "redirect:/book/list";
+    }
 
     @GetMapping("user/login")
     public String loginRedirect() {

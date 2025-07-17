@@ -23,4 +23,5 @@ public class PaymentAdmin {
     private String bookAuthor;   // 저자
     private String bookPublisher;// 출판사
     private int bookPrice;       // 가격
+    private int quantity;		 // 수량
 }

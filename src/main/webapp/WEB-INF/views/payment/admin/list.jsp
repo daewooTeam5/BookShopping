@@ -210,6 +210,8 @@ body {
 						<th>저자</th>
 						<th>출판사</th>
 						<th>가격</th>
+						<th>수량</th>
+						<th>총액</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -224,6 +226,9 @@ body {
 							<td>${payment.bookAuthor}</td>
 							<td>${payment.bookPublisher}</td>
 							<td><fmt:formatNumber value="${payment.bookPrice}"
+									type="number" groupingUsed="true" />원</td>
+							<td>${payment.quantity}</td>
+							<td><fmt:formatNumber value="${payment.bookPrice * payment.quantity}"
 									type="number" groupingUsed="true" />원</td>
 						</tr>
 					</c:forEach>

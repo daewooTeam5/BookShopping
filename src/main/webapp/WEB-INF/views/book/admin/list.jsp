@@ -49,7 +49,9 @@ body {
 	<div class="container py-4">
 		<!-- 상단 제목과 등록 버튼 -->
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="dashboard-header fs-3 mb-0">📚 도서 목록</h2>
+    <h2 class="dashboard-header fs-3 mb-0"><a href="/book/list"> <img src="/img/book.png" height="65px"
+				alt="로고" />
+			</a></h2>
     <div class="d-flex gap-3"> <!-- gap을 사용하여 버튼 간 간격을 자연스럽게 조정 -->
         <a href="${pageContext.request.contextPath}/payment/admin/list"
            class="btn btn-outline-dark btn-lg px-4 shadow-sm">💳 결제 내역</a>

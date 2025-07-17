@@ -1,6 +1,7 @@
 package domain.payment.user.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -36,7 +37,7 @@ public class PaymentController {
         Long accountId = userMapper.getUserId(currentUserId);
         
         // 2. 조회한 accountId를 사용하여 구매를 처리합니다.
-        boolean success = paymentService.processSinglePurchase(accountId, bookId);
+        boolean success = paymentService.processSinglePurchase(accountId, bookId, 1);
         
         response.setContentType("text/html; charset=UTF-8");
         if (success) {
@@ -49,21 +50,28 @@ public class PaymentController {
 
 
     @PostMapping("/buyFromCart")
-    public void buyFromCart(Authentication authentication, // SecurityContext에서 현재 사용자 정보를 가져옵니다.
+    public void buyFromCart(@RequestParam(value = "cartIds", required = false) List<Long> cartIds,
+                            Authentication authentication,
                             HttpServletResponse response) throws IOException {
-        
-        // 1. 현재 로그인한 사용자의 ID(accountId)를 조회합니다.
+
+    	System.out.println(cartIds);
         String currentUserId = authentication.getName();
         Long accountId = userMapper.getUserId(currentUserId);
 
-        // 2. 조회한 accountId를 사용하여 장바구니 구매를 처리합니다.
-        boolean success = paymentService.processCartPurchase(accountId);
-        
+        boolean success;
+        if (cartIds != null && !cartIds.isEmpty()) {
+            // 선택된 상품만 구매
+            success = paymentService.processSelectedCartPurchase(accountId, cartIds);
+        } else {
+            // 장바구니 전체 구매
+            success = paymentService.processCartPurchase(accountId);
+        }
+
         response.setContentType("text/html; charset=UTF-8");
         if (success) {
-            response.getWriter().println("<script>alert('장바구니의 모든 상품을 구매했습니다.'); location.href='/book/list';</script>"); // 성공 시 이동할 페이지
+            response.getWriter().println("<script>alert('구매가 완료되었습니다.'); location.href='/user/my-page';</script>");
         } else {
-            response.getWriter().println("<script>alert('구매에 실패했습니다. 장바구니가 비어있을 수 있습니다.'); history.back();</script>");
+            response.getWriter().println("<script>alert('구매에 실패했습니다.'); history.back();</script>");
         }
     }
 }

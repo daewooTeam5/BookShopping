@@ -13,7 +13,8 @@
 		b.title AS bookTitle,
 		b.author AS bookAuthor,
 		b.publisher AS bookPublisher,
-		b.price AS bookPrice
+		b.price AS bookPrice,
+		p.quantity
 		FROM payment p
 		JOIN
 		account a ON p.account_id = a.id
@@ -52,8 +53,8 @@
 		SELECT * FROM (
 		SELECT
 		b.title AS name,
-		COUNT(*) AS count,
-		SUM(b.price) AS totalPrice
+		sum(p.quantity) AS count,
+		SUM(b.price * p.quantity) AS totalPrice
 		FROM payment p
 		JOIN book b ON p.book_id = b.id
 		GROUP BY b.title
@@ -67,8 +68,8 @@
 		SELECT * FROM (
 		SELECT
 		a.name AS name,
-		COUNT(*) AS count,
-		SUM(b.price) AS totalPrice
+		sum(p.quantity) AS count,
+		SUM(b.price * p.quantity) AS totalPrice
 		FROM payment p
 		JOIN account a ON p.account_id = a.id
 		JOIN book b ON p.book_id = b.id
