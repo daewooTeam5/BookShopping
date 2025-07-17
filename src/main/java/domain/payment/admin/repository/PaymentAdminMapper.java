@@ -41,11 +41,11 @@ public interface PaymentAdminMapper {
                                @Param("maxPrice") Integer maxPrice);
     
     // 전체 결제 건수
-    @Select("SELECT COUNT(*) FROM payment")
+    @Select("SELECT sum(quantity) as count FROM payment")
     int countAll();
 
     // 전체 결제 금액
-    @Select("SELECT COALESCE(SUM(b.price), 0) FROM payment p JOIN book b ON p.book_id = b.id")
+    @Select("SELECT COALESCE(SUM(b.price*p.quantity), 0) FROM payment p JOIN book b ON p.book_id = b.id")
     int sumAll();
 
     // 도서별 결제 TOP 5
