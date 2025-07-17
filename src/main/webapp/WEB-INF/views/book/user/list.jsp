@@ -142,7 +142,7 @@
 										<sec:csrfInput />
 										<button type="submit"
 											class="btn btn-primary btn-sm w-100 fs-8">
-											<i class="fa-solid fa-credit-card me-2"></i>구매하기
+											<i class="fa-solid fa-credit-card me-1"></i>구매하기
 										</button>
 									</form>
 									<form action="/cart" method="POST"
@@ -152,7 +152,7 @@
 										<sec:csrfInput />
 										<button type="submit"
 											class="btn btn-secondary btn-sm w-100 fs-8">
-											<i class="fa-solid fa-cart-shopping me-2"></i>장바구니
+											<i class="fa-solid fa-cart-shopping me-1"></i>장바구니
 										</button>
 									</form>
 								</div>
