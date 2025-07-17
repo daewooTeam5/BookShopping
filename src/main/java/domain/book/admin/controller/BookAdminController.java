@@ -1,4 +1,4 @@
-package domain.book.admin;
+package domain.book.admin.controller;
 
 import java.io.IOException;
 
@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import domain.book.admin.entity.Book;
+import domain.book.admin.service.BookAdminService;
 
 @Controller
 @RequestMapping("/book/admin")

@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import domain.book.user.dao.BookDao;
+import domain.book.user.repository.BookRepository;
 import domain.payment.user.dto.Payment;
 import domain.payment.user.dto.PaymentDetailDto;
-import domain.payment.user.mapper.PaymentMapper;
+import domain.payment.user.repository.PaymentRepository;
 import domain.shopping_cart.entity.ShoppingCart;
 import domain.shopping_cart.repository.ShoppingCartRepository;
 import global.exception.ApiException;
@@ -19,13 +19,13 @@ import global.exception.ApiException;
 public class PaymentService {
 
     @Autowired
-    private PaymentMapper paymentMapper;
+    private PaymentRepository paymentMapper;
 
     @Autowired
     private ShoppingCartRepository shoppingCartRepository;
 
     @Autowired
-    private BookDao bookDao; // 책 정보를 조회하기 위해 BookDao를 주입합니다.
+    private BookRepository bookDao; // 책 정보를 조회하기 위해 BookDao를 주입합니다.
 
     
     public boolean processSinglePurchase(Long accountId, Long bookId, int quantity) {

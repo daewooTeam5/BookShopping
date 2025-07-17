@@ -1,4 +1,4 @@
-package domain.payment.admin;
+package domain.payment.admin.dto;
 
 import lombok.Data;
 

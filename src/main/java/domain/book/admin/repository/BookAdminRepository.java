@@ -1,4 +1,4 @@
-package domain.book.admin;
+package domain.book.admin.repository;
 
 import java.util.List;
 
@@ -9,8 +9,10 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import domain.book.admin.entity.Book;
+
 @Mapper
-public interface BookAdminMapper {
+public interface BookAdminRepository {
 	@Select("SELECT id, title, author, publisher, image, price, published_at AS publishedAt, genre, page, introduction FROM book")
 	List<Book> findAll();
 	

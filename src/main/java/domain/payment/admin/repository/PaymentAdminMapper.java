@@ -1,4 +1,4 @@
-package domain.payment.admin;
+package domain.payment.admin.repository;
 
 import java.util.List;
 import java.util.Map;
@@ -7,6 +7,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
+
+import domain.payment.admin.dto.PaymentRank;
+import domain.payment.admin.entity.PaymentAdmin;
 
 @Mapper
 public interface PaymentAdminMapper {

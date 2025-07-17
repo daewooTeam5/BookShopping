@@ -6,12 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import domain.book.user.dao.BookDao;
+import domain.book.user.repository.BookRepository;
 import domain.shopping_cart.dto.ShoppingCartDto;
 import domain.shopping_cart.dto.ShoppingCartUserDto;
 import domain.shopping_cart.entity.ShoppingCart;
 import domain.shopping_cart.repository.ShoppingCartRepository;
-import domain.user.mapper.UserMapper;
+import domain.user.repository.UserRepository;
 import global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 
@@ -20,8 +20,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ShoppingCartService {
     private final ShoppingCartRepository shoppingCartRepository;
-    private final BookDao bookDao;
-    private final UserMapper userMapper;
+    private final BookRepository bookDao;
+    private final UserRepository userMapper;
 
     public void addToCart(ShoppingCart cart,String authName) {
     	Long accountId = userMapper.getUserId(authName);

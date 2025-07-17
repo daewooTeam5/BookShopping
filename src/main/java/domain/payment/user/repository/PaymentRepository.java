@@ -1,5 +1,5 @@
 // src/main/java/payment/mapper/PaymentMapper.java
-package domain.payment.user.mapper;
+package domain.payment.user.repository;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import domain.payment.user.dto.PaymentDetailDto;
 
 
 @Mapper
-public interface PaymentMapper {
+public interface PaymentRepository {
 
    
     @Insert("INSERT INTO payment (id, created_at, account_id, book_id, quantity) " +

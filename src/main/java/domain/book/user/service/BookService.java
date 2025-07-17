@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import domain.book.user.dao.BookDao;
 import domain.book.user.dto.Book;
 import domain.book.user.dto.PageList;
+import domain.book.user.repository.BookRepository;
 import domain.book.user.dto.GenreCount;
 
 
@@ -17,7 +17,7 @@ import domain.book.user.dto.GenreCount;
 public class BookService {
 
 	@Autowired
-	BookDao dao;
+	BookRepository dao;
 	
 	public Book detail(Long id) {
 		return dao.findById(id);

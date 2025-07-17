@@ -1,10 +1,14 @@
-package domain.payment.admin;
+package domain.payment.admin.service;
 
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import domain.payment.admin.dto.PaymentRank;
+import domain.payment.admin.entity.PaymentAdmin;
+import domain.payment.admin.repository.PaymentAdminMapper;
 
 @Service("paymentAdminService")
 public class PaymentAdminService {

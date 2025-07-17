@@ -7,13 +7,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import domain.user.entity.UserEntity;
-import domain.user.mapper.UserMapper;
+import domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service("loginServiceWithSecurity")
 @RequiredArgsConstructor
 public class LoginServiceWithSecurity implements UserDetailsService {
-	private final UserMapper mapper;
+	private final UserRepository mapper;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

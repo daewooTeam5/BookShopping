@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="domain.payment.admin.PaymentAdminMapper">
+<mapper namespace="domain.payment.admin.repository.PaymentAdminMapper">
 
-	<select id="search" resultType="domain.payment.admin.PaymentAdmin">
+	<select id="search" resultType="domain.payment.admin.entity.PaymentAdmin">
 		SELECT
 		p.id,
 		p.created_at AS createdAt,
@@ -49,7 +49,7 @@
 	</select>
 
 	<!-- 도서별 결제 TOP 5 -->
-	<select id="topBooks" resultType="domain.payment.admin.PaymentRank">
+	<select id="topBooks" resultType="domain.payment.admin.dto.PaymentRank">
 		SELECT * FROM (
 		SELECT
 		b.title AS name,
@@ -64,7 +64,7 @@
 	</select>
 
 	<!-- 회원별 결제 TOP 5 -->
-	<select id="topUsers" resultType="domain.payment.admin.PaymentRank">
+	<select id="topUsers" resultType="domain.payment.admin.dto.PaymentRank">
 		SELECT * FROM (
 		SELECT
 		a.name AS name,

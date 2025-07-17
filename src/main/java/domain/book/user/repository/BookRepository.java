@@ -1,4 +1,4 @@
-package domain.book.user.dao;
+package domain.book.user.repository;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import domain.book.user.dto.Book;
 import domain.book.user.dto.GenreCount;
 
 @Mapper
-public interface BookDao {
+public interface BookRepository {
 	
 	@Select("SELECT * FROM ( " +
 	        "SELECT ROWNUM AS rid, t1.* FROM ( " +

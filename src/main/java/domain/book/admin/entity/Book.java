@@ -1,4 +1,4 @@
-package domain.book.admin;
+package domain.book.admin.entity;
 
 import java.util.Date;
 

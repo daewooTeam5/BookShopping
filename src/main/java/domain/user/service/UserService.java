@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import domain.user.dto.UserRegisterForm;
 import domain.user.entity.UserEntity;
-import domain.user.mapper.UserMapper;
+import domain.user.repository.UserRepository;
 import global.module.EncryptModule;
 import lombok.RequiredArgsConstructor;
 
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
 	private final  EncryptModule encryptModule;
-	private final UserMapper userMapper;
+	private final UserRepository userMapper;
 
 	public void registerUser(UserRegisterForm user) {
 		String encryptPassword = encryptModule.encryptPassword(user.getPassword());

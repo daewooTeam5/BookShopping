@@ -1,4 +1,4 @@
-package domain.book.admin;
+package domain.book.admin.service;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,10 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import domain.book.admin.entity.Book;
+import domain.book.admin.repository.BookAdminRepository;
+
 @Service("bookAdminService")
 public class BookAdminService {
 	@Autowired
-	BookAdminMapper mapper;
+	BookAdminRepository mapper;
 
 	public BookAdminService() {
 	}

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import domain.payment.user.service.PaymentService;
-import domain.user.mapper.UserMapper;
+import domain.user.repository.UserRepository;
 
 
 @Controller
@@ -24,7 +24,7 @@ public class PaymentController {
     private PaymentService paymentService;
 
     @Autowired
-    private UserMapper userMapper; // 사용자 ID를 가져오기 위해 UserMapper를 주입합니다.
+    private UserRepository userMapper; // 사용자 ID를 가져오기 위해 UserMapper를 주입합니다.
 
 
     @PostMapping("/buyNow")

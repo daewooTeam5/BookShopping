@@ -104,7 +104,10 @@ body {
 							<strong>가입일:</strong>
 							<fmt:formatDate value="${user.createdAt}" pattern="yyyy-MM-dd" />
 						</p>
-						<a href="/book/admin/list" class="btn btn-outline-danger btn-block">관리자 페이지</a>
+						<sec:authorize access="hasRole('ROLE_ADMIN')">
+							<a href="/book/admin/list"
+								class="btn btn-outline-danger btn-block">관리자 페이지</a>
+						</sec:authorize>
 						<form action="/logout" method="post" class="mt-3">
 							<input type="hidden" name="${_csrf.parameterName}"
 								id="csrf_token" value="${_csrf.token}" />
