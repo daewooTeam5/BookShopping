@@ -9,6 +9,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="https://kit.fontawesome.com/6cbdf73c90.js"
+	crossorigin="anonymous"></script>
 <meta charset="utf-8">
 <title>도서 목록</title>
 
@@ -143,7 +145,9 @@
 										<input type="hidden" name="bookId" value="${book.id}">
 										<sec:csrfInput />
 										<button type="submit"
-											class="btn btn-primary btn-sm w-100 fs-8">구매하기</button>
+											class="btn btn-primary btn-sm w-100 fs-8">
+											<i class="fa-solid fa-credit-card me-1"></i>구매하기
+										</button>
 									</form>
 									<form action="/cart" method="POST"
 										onsubmit="return confirm('장바구니에 추가하시겠습니까?');">
@@ -151,7 +155,9 @@
 										<input type="hidden" name="quantity" value="1">
 										<sec:csrfInput />
 										<button type="submit"
-											class="btn btn-secondary btn-sm w-100 fs-8">장바구니</button>
+											class="btn btn-secondary btn-sm w-100 fs-8">
+											<i class="fa-solid fa-cart-shopping me-1"></i>장바구니
+										</button>
 									</form>
 								</div>
 							</div>
