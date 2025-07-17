@@ -223,15 +223,17 @@ body {
 								<p class="text-center">결제 내역이 없습니다.</p>
 							</c:otherwise>
 						</c:choose>
-						<div class="mt-3 text-right">
-							<h4>총 수량: ${totalQuantity}개</h4>
-							<h4>
-								총 결제 금액:
-								<fmt:formatNumber value="${totalPaymentAmount}" type="currency"
-									currencySymbol="" />
-								원
-							</h4>
-						</div>
+						<c:if test="${not empty myPaymentList}">
+							<div class="mt-3 text-right">
+								<h4>총 수량: ${totalQuantity}개</h4>
+								<h4>
+									총 결제 금액:
+									<fmt:formatNumber value="${totalPaymentAmount}" type="currency"
+										currencySymbol="" />
+									원
+								</h4>
+							</div>
+						</c:if>
 					</div>
 				</div>
 			</div>
