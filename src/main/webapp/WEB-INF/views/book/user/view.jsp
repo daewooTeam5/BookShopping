@@ -100,13 +100,7 @@
 				<p class="mt-4">${book.introduction}</p>
 
 				<div class="ms-2 button-area">
-					<form action="/payment/buyNow" method="POST" class="mb-2">
-						<input type="hidden" name="bookId" value="${book.id}">
-						<sec:csrfInput />
-						<button type="submit" class="btn btn-primary btn-sm w-100 fs-8 mb-1">
-							<i class="fa-solid fa-credit-card me-1"></i>구매하기
-						</button>
-					</form>
+					<form action="/payment/buyNow" method="POST" class="mb-2"                    onsubmit="return confirm(                        '${book.title} - ' +                        '<fmt:formatNumber value="${book.price}" type="number" groupingUsed="true" />' +                        '원\n결제하시겠습니까?'                    );"                >                    <input type="hidden" name="bookId" value="${book.id}">                    <sec:csrfInput />                    <button type="submit" class="btn btn-primary btn-sm w-100 fs-8 mb-1">                        <i class="fa-solid fa-credit-card me-1"></i>구매하기                    </button>                </form>
 					<form action="/cart" method="POST"
 						onsubmit="return confirm('장바구니에 추가하시겠습니까?');">
 						<input type="hidden" name="bookId" value="${book.id}"> <input

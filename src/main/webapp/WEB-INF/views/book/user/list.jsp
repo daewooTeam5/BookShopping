@@ -148,7 +148,7 @@
 									<p class="mb-0">${book.introduction}</p>
 								</div>
 								<div class="ms-2 button-area">
-									<form action="/payment/buyNow" method="POST" class="mb-1">
+									<form action="/payment/buyNow" method="POST" class="mb-1" onsubmit="return confirm('${book.title} - <fmt:formatNumber value="${book.price}" type="number" groupingUsed="true" />원\n결제하시겠습니까?');">
 										<input type="hidden" name="bookId" value="${book.id}">
 										<sec:csrfInput />
 										<button type="submit"

@@ -31,8 +31,17 @@ public class ShoppingCartController {
 	}
 
 	@PostMapping("delete/{id}")
-	public void removeFromCart(@PathVariable Long id) {
-		shoppingCartService.removeFromCart(id);
+	@ResponseBody
+	public java.util.Map<String, Object> removeFromCart(@PathVariable Long id) {
+		java.util.Map<String, Object> response = new java.util.HashMap<>();
+		try {
+			shoppingCartService.removeFromCart(id);
+			response.put("success", true);
+		} catch (Exception e) {
+			response.put("success", false);
+			response.put("message", e.getMessage());
+		}
+		return response;
 	}
 
 	@GetMapping(value = "my/{id}", produces = "text/plain;charset=UTF-8")

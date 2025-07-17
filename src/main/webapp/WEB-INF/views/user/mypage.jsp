@@ -9,6 +9,8 @@
 <title>My Page</title>
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 <style>
 body {
 	background-color: #f8f9fa;
@@ -142,8 +144,9 @@ body {
 												</div>
 											</div>
 											<form class="quantity-controls mx-4 d-flex">
-												<input type="hidden" name="id" value="${item.id}"> <input
-													type="hidden" name="quantity" value="${item.quantity}">
+												<input type="hidden" id="shop-item-id" name="id"
+													value="${item.id}"> <input type="hidden"
+													name="quantity" value="${item.quantity}">
 												<button type="button"
 													class="btn btn-secondary btn-sm quantity-minus">-</button>
 												<input type="text"
@@ -151,6 +154,10 @@ body {
 													value="${item.quantity}" readonly>
 												<button type="button"
 													class="btn btn-secondary btn-sm quantity-plus">+</button>
+												<button type="button"
+													class="btn btn-danger btn-sm delete-item-btn ml-2">
+													<i class="fas fa-trash"></i>
+												</button>
 											</form>
 										</div>
 									</c:forEach>
@@ -160,6 +167,7 @@ body {
 							</c:when>
 							<c:otherwise>
 								<p class="text-center">장바구니에 담긴 상품이 없습니다.</p>
+								<a href="/book/list" class="btn btn-block btn-info">쇼핑하러가기</a>
 
 							</c:otherwise>
 						</c:choose>
@@ -249,11 +257,19 @@ body {
       checkbox.addEventListener('change', updateTotalPrice);
     });
 
+    document.querySelectorAll('.delete-item-btn').forEach((btn,idx) => {
+      btn.addEventListener('click', () => deleteItem(btn,idx));
+    });
+
     document.getElementById('order-button').addEventListener('click', function() {
+      let total = 0;
       const selectedCartIds = [];
       document.querySelectorAll('.item-row').forEach(itemRow => {
         const checkbox = itemRow.querySelector('.item-checkbox');
         if (checkbox && checkbox.checked) {
+          const price = parseFloat(itemRow.dataset.price);
+          const quantity = parseInt(itemRow.querySelector('input[name="quantity"]').value);
+          total += price * quantity;
           const cartIdInput = itemRow.querySelector('.quantity-controls input[name="id"]');
           if (cartIdInput) {
             selectedCartIds.push(cartIdInput.value);
@@ -261,36 +277,40 @@ body {
         }
       });
 
-      let url = '/payment/buyFromCart';
-      const params = new URLSearchParams();
-      params.append('_csrf', csrfToken);
-
-      if (selectedCartIds.length > 0) {
-        selectedCartIds.forEach(id => params.append('cartIds', id));
+      if (selectedCartIds.length === 0) {
+        alert('결제할 상품을 선택해주세요.');
+        return;
       }
-      // selectedCartIds가 비어있으면 전체 구매로 처리되므로, 별도로 파라미터를 추가할 필요 없음
 
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'X-CSRF-TOKEN': csrfToken,
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: params
-      })
-      .then(response => {
-        if (response.ok) {
-        	location.href="/user/my-page";
-        	alert("결제 성공")
-          
-        } else {
-          alert('결제 요청에 실패했습니다.');
-        }
-      })
-      .catch(error => {
-        console.error('결제 요청 중 에러:', error);
-        alert('결제 요청 중 오류가 발생했습니다.');
-      });
+      const formattedTotal = new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(total);
+
+      if (confirm('총 결제 금액: ' + formattedTotal + '\n결제하시겠습니까?')) {
+        let url = '/payment/buyFromCart';
+        const params = new URLSearchParams();
+        params.append('_csrf', csrfToken);
+        selectedCartIds.forEach(id => params.append('cartIds', id));
+
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            'X-CSRF-TOKEN': csrfToken,
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: params
+        })
+        .then(response => {
+          if (response.ok) {
+            location.href="/user/my-page";
+            alert("결제 성공");
+          } else {
+            alert('결제 요청에 실패했습니다.');
+          }
+        })
+        .catch(error => {
+          console.error('결제 요청 중 에러:', error);
+          alert('결제 요청 중 오류가 발생했습니다.');
+        });
+      }
     });
   });
 
@@ -353,6 +373,38 @@ body {
     // 한글 KRW 통화 포맷 적용
     document.getElementById('total-price').innerText =
       '총계: ' + new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(total);
+  }
+  
+  function deleteItem(button,idx) {
+	  const id = document.querySelectorAll("#shop-item-id")[idx].value;
+    const itemRow = button.closest('.item-row');
+    const csrfToken = document.getElementById('csrf_token').value;
+
+    if (!confirm('정말로 삭제하시겠습니까?')) {
+      return;
+    }
+
+    fetch("/cart/delete/"+id, {
+    	
+      method: 'POST',
+      headers: {
+        'X-CSRF-TOKEN': csrfToken
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        itemRow.remove();
+        updateTotalPrice();
+        location.href = "/user/my-page";
+      } else {
+        alert('삭제 실패: ' + data.message);
+      }
+    })
+    .catch(error => {
+      console.error('삭제 중 에러:', error);
+      alert('삭제 중 오류가 발생했습니다.');
+    });
   }
 </script>
 </body>
