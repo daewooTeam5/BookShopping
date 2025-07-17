@@ -2,6 +2,9 @@
 	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,18 +29,26 @@
 </style>
 </head>
 <body>
-	<header class="container narrow-container mt-3">
+	<header class="container narrow-container mt-3 border-bottom">
 		<div
-			class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4 position-relative">
-			<!-- 중앙 제목 -->
-			<div class="flex-grow-1 text-center">
-				<a href="/book/list"> <img src="/img/book.png" height="65px" /></a>
+			class="d-flex justify-content-between align-items-center  mb-4 position-relative" style="line-height:65px">
+
+			<!-- 가운데 이미지 정중앙 고정 -->
+			<div class="position-absolute top-0 start-50 translate-middle-x">
+				<a href="/book/list"> <img src="/img/book.png" height="65px" />
+				</a>
 			</div>
 
 			<c:choose>
 				<c:when test="${not empty pageContext.request.userPrincipal}">
-					<!-- 로그인 상태 -->
-					<div class="position-absolute end-0 me-3">
+					<sec:authorize access="hasRole('ROLE_ADMIN')">
+						<a href="/book/admin/list"
+							class="btn btn-outline-danger btn-sm me-3">관리자 페이지</a>
+					</sec:authorize>
+					<sec:authorize access="hasRole('ROLE_USER')">
+					<div></div>
+					</sec:authorize>
+					<div class="me-3">
 						<a href="/user/my-page"
 							class="btn btn-outline-success btn-sm me-2">내 정보</a>
 						<form action="/logout" method="post" style="display: inline-block">
@@ -47,8 +58,8 @@
 					</div>
 				</c:when>
 				<c:otherwise>
-					<!-- 비로그인 상태 -->
-					<div class="position-absolute end-0 me-3">
+				<div></div>
+					<div class="  me-3">
 						<a href="/login" class="btn btn-outline-primary btn-sm me-2">로그인</a>
 						<a href="/register" class="btn btn-primary btn-sm">회원가입</a>
 					</div>

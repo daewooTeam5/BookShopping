@@ -28,7 +28,7 @@ public class PaymentService {
     private BookDao bookDao; // 책 정보를 조회하기 위해 BookDao를 주입합니다.
 
     
-    public boolean processSinglePurchase(Long accountId, Long bookId) {
+    public boolean processSinglePurchase(Long accountId, Long bookId, int quantity) {
         // 1. DB에서 bookId로 책이 존재하는지 확인합니다.
         if (bookDao.findById(bookId) == null) {
             // 존재하지 않는 책일 경우, 예외를 발생시키거나 false를 반환합니다.
@@ -40,6 +40,7 @@ public class PaymentService {
         Payment payment = Payment.builder()
                 .accountId(accountId)
                 .bookId(bookId)
+                .quantity(quantity)
                 .build();
         
         return paymentMapper.insertPayment(payment) > 0;
@@ -48,17 +49,29 @@ public class PaymentService {
    
     @Transactional
     public boolean processCartPurchase(Long accountId) {
-        // 1. 해당 유저의 장바구니 목록을 가져옵니다.
         List<ShoppingCart> cartItems = shoppingCartRepository.findByAccountId(accountId);
+        return processPurchase(accountId, cartItems);
+    }
 
+    @Transactional
+    public boolean processSelectedCartPurchase(Long accountId, List<Long> cartIds) {
+        List<ShoppingCart> cartItems = shoppingCartRepository.findByIds(cartIds);
+        System.out.println(cartItems);
+        // 선택된 장바구니 항목들이 해당 accountId에 속하는지 확인 (보안 강화)
+        boolean allBelongToUser = cartItems.stream()
+                                            .allMatch(item -> item.getAccountId().equals(accountId));
+        if (!allBelongToUser) {
+            throw new ApiException("선택된 장바구니 항목 중 사용자에게 속하지 않는 항목이 있습니다.");
+        }
+        return processPurchase(accountId, cartItems);
+    }
+
+    private boolean processPurchase(Long accountId, List<ShoppingCart> cartItems) {
         if (cartItems.isEmpty()) {
-            // 장바구니가 비어있으면 처리하지 않음
             return false;
         }
 
-        // 2. 장바구니의 각 상품에 대해 결제 내역을 생성합니다.
         for (ShoppingCart item : cartItems) {
-            // (선택) 여기서도 각 bookId의 유효성을 한번 더 확인할 수 있습니다.
             if (bookDao.findById(item.getBookId()) == null) {
                  throw new ApiException("장바구니에 존재하지 않는 책이 포함되어 있습니다. bookId: " + item.getBookId());
             }
@@ -66,13 +79,12 @@ public class PaymentService {
             Payment payment = Payment.builder()
                     .accountId(accountId)
                     .bookId(item.getBookId())
+                    .quantity(item.getQuantity())
                     .build();
             paymentMapper.insertPayment(payment);
 
-            // 3. 결제가 완료된 상품을 장바구니에서 삭제합니다.
             shoppingCartRepository.removeFromCart(item.getId());
         }
-
         return true;
     }
 

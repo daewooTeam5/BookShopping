@@ -17,4 +17,5 @@ public class Payment {
     private Date createdAt;  // 결제일
     private Long accountId;  // 구매자 ID
     private Long bookId;     // 구매한 책 ID
+    private int quantity;		 // 수량
 }
