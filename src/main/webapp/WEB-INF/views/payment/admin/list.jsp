@@ -97,6 +97,10 @@ body {
 				<span class="dashboard-header fs-2">📊 관리자 결제내역 대시보드</span>
 			</div>
 			<!-- <img src="로고.png" height="32" alt="로고"/> -->
+			<div class="mb-3">
+				<button class="btn btn-outline-secondary" onclick="history.back()">←
+					뒤로 가기</button>
+			</div>
 		</div>
 
 		<!-- 통계 요약 카드 -->
