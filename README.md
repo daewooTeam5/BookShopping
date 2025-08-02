@@ -1,10 +1,8 @@
-
- # BookAdmin (/book/admin)
-
- ## Git Branch 전략 가이드 
- #### 브랜치 전략 : Git Flow
- [참고:우아한 형제들 기술 블로그](https://techblog.woowahan.com/2553/) 
- <img width="905" height="380" alt="image" src="https://github.com/user-attachments/assets/7992cb7d-87c2-427f-ac99-9e3596900621" />
+# BookShopping Project
+# Git Branch 전략 가이드 
+#### 브랜치 전략 : Git Flow
+[참고:우아한 형제들 기술 블로그](https://techblog.woowahan.com/2553/) 
+<img width="905" height="380" alt="image" src="https://github.com/user-attachments/assets/7992cb7d-87c2-427f-ac99-9e3596900621" />
 
  1. 원격 데브 브랜치 pull
     - 로컬 저장소에 dev 브랜치가 있을시  
@@ -29,6 +27,8 @@
    - 해당 기능에 추가 작업 필요시 브랜치명 뒤에 숫자를 올려서 1. 부터 작업
   
 # API 명세서 
+
+ # BookAdmin (/book/admin)
    * GET /list: 도서 목록 조회 (검색 기능 포함)
    * GET /writeform: 도서 등록 폼으로 이동
    * POST /write: 도서 등록
