@@ -15,11 +15,11 @@ import domain.payment.user.dto.PaymentDetailDto;
 public interface PaymentRepository {
 
    
-    @Insert("INSERT INTO payment (id, created_at, account_id, book_id, quantity) " +
-            "VALUES (seq_payment_id.nextval, SYSDATE, #{accountId}, #{bookId}, #{quantity})")
+    @Insert("INSERT INTO payment (created_at, account_id, book_id, quantity, receipt_id) " +
+            "VALUES (SYSDATE, #{accountId}, #{bookId}, #{quantity},#{receiptId})")
     int insertPayment(Payment payment);
 
-    @Select("SELECT p.id, p.CREATED_AT as createdAt, b.title, b.IMAGE, b.GENRE, b.AUTHOR, b.PAGE, b.PRICE, b.PUBLISHER, p.quantity " +
+    @Select("SELECT p.id,p.receipt_id, p.CREATED_AT as createdAt, b.title, b.IMAGE, b.GENRE, b.AUTHOR, b.PAGE, b.PRICE, b.PUBLISHER, p.quantity " +
             "FROM payment p JOIN BOOK b ON b.ID = p.BOOK_ID WHERE p.ACCOUNT_ID = #{accountId} order by p.created_at desc")
     List<PaymentDetailDto> findPaymentDetailsByAccountId(Long accountId);
 
