@@ -18,5 +18,4 @@ public class Payment {
     private Long accountId;  // 구매자 ID
     private Long bookId;     // 구매한 책 ID
     private int quantity;		 // 수량
-    private String receiptId; // 영수증 번호
 }

@@ -50,6 +50,15 @@
 .book-title-link:hover {
 	text-decoration: underline;
 }
+
+.ti{
+font-size:18px;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+color:#444;
+border:none;
+
+}
+
 </style>
 </head>
 <body>
@@ -70,8 +79,7 @@
 							class="btn btn-outline-danger btn-sm me-3">관리자 페이지</a>
 					</sec:authorize>
 					<sec:authorize access="hasRole('ROLE_USER')">
-					<div></div>
-					</sec:authorize>
+					<div class="ti">USER</div>
 					<div class="me-3">
 						<a href="/user/my-page"
 							class="btn btn-outline-success btn-sm me-2">내 정보</a>
@@ -80,6 +88,20 @@
 							<button type='submit' class="btn btn-secondary btn-sm">로그아웃</button>
 						</form>
 					</div>
+					</sec:authorize>
+					
+					<sec:authorize access="hasRole('ROLE_GUEST')">
+					<div class="ti">GUEST</div>
+					<div class="me-3">
+						<a href="/user/my-page"
+							class="btn btn-outline-success btn-sm me-2">장바구니</a>
+						<form action="/logout" method="post" style="display: inline-block">
+							<sec:csrfInput />
+							<button type='submit' class="btn btn-secondary btn-sm">로그아웃</button>
+						</form>
+					</div>
+					</sec:authorize>
+					
 				</c:when>
 				<c:otherwise>
 				<div></div>
@@ -87,6 +109,8 @@
 						<a href="/login" class="btn btn-outline-primary btn-sm me-2">로그인</a>
 						<a href="/register" class="btn btn-primary btn-sm">회원가입</a>
 					</div>
+				
+					
 				</c:otherwise>
 			</c:choose>
 		</div>
@@ -198,6 +222,9 @@
 			</ul>
 		</nav>
 	</div>
+
+
+
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
