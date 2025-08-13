@@ -126,7 +126,6 @@ body {
                                     <c:forEach var="addr" items="${addressList}">
                                         <li class="list-group-item">
                                             (${addr.zipcode}) ${addr.province} ${addr.city} ${addr.street}
-                                            <%-- 삭제/수정 버튼은 필요 시 여기에 추가 --%>
                                         </li>
                                     </c:forEach>
                                 </ul>
@@ -143,19 +142,19 @@ body {
                             <h5 class="mt-3">새 배송지 입력</h5>
                             <div class="form-group">
                                 <label>광역/도</label>
-                                <input type="text" name="province" class="form-control" placeholder="예: 서울특별시" required>
+                                <input type="text" name="province" class="form-control" placeholder="예: 서울특별시" required maxlength="100">
                             </div>
                             <div class="form-group">
                                 <label>시/군/구</label>
-                                <input type="text" name="city" class="form-control" placeholder="예: 강남구" required>
+                                <input type="text" name="city" class="form-control" placeholder="예: 강남구" required maxlength="100">
                             </div>
                             <div class="form-group">
                                 <label>상세주소</label>
-                                <input type="text" name="street" class="form-control" placeholder="예: 테헤란로 123" required>
+                                <input type="text" name="street" class="form-control" placeholder="예: 테헤란로 123" required maxlength="100">
                             </div>
                             <div class="form-group">
                                 <label>우편번호</label>
-                                <input type="text" name="zipcode" class="form-control" placeholder="5자리 숫자" required>
+                                <input type="text" name="zipcode" class="form-control" placeholder="5자리 숫자" required maxlength="6">
                             </div>
                             <button type="submit" class="btn btn-info btn-block">추가하기</button>
                         </form>
@@ -294,44 +293,27 @@ body {
 	</div>
 
 	<script>
-    // [NEW] '새 배송지 추가' 버튼 클릭 시 입력 폼을 보여주는 스크립트
     document.getElementById('add-address-btn').addEventListener('click', function() {
         var form = document.getElementById('add-address-form');
         if (form.style.display === 'none') {
             form.style.display = 'block';
-            this.textContent = '추가 취소'; // 버튼 텍스트 변경
+            this.textContent = '추가 취소';
         } else {
             form.style.display = 'none';
-            this.textContent = '새 배송지 추가'; // 버튼 텍스트 복원
+            this.textContent = '새 배송지 추가';
         }
     });
 
-    // 기존 장바구니 관련 스크립트
     const csrfToken = '${_csrf.token}';
     document.addEventListener('DOMContentLoaded', function () {
-        // 장바구니가 있을 때만 총액 계산 함수 호출
         if (document.getElementById('order-form')) {
             updateTotalPrice();
-
-            document.querySelectorAll('.quantity-plus').forEach(btn => {
-                btn.addEventListener('click', () => updateQuantity(btn, 1));
-            });
-
-            document.querySelectorAll('.quantity-minus').forEach(btn => {
-                btn.addEventListener('click', () => updateQuantity(btn, -1));
-            });
-
-            document.querySelectorAll('.item-checkbox').forEach(checkbox => {
-                checkbox.addEventListener('change', updateTotalPrice);
-            });
-
-            document.querySelectorAll('.delete-item-btn').forEach((btn,idx) => {
-                btn.addEventListener('click', () => deleteItem(btn,idx));
-            });
-
+            document.querySelectorAll('.quantity-plus').forEach(btn => btn.addEventListener('click', () => updateQuantity(btn, 1)));
+            document.querySelectorAll('.quantity-minus').forEach(btn => btn.addEventListener('click', () => updateQuantity(btn, -1)));
+            document.querySelectorAll('.item-checkbox').forEach(checkbox => checkbox.addEventListener('change', updateTotalPrice));
+            document.querySelectorAll('.delete-item-btn').forEach((btn,idx) => btn.addEventListener('click', () => deleteItem(btn,idx)));
             document.getElementById('order-form').addEventListener('submit', function(e) {
-                let selectedCount = document.querySelectorAll('.item-checkbox:checked').length;
-                if (selectedCount === 0) {
+                if (document.querySelectorAll('.item-checkbox:checked').length === 0) {
                     alert('결제할 상품을 선택해주세요.');
                     e.preventDefault();
                     return;
@@ -357,19 +339,15 @@ body {
         const controls = button.closest('.quantity-controls');
         const quantityInput = controls.querySelector('input[name="quantity"]');
         const id = controls.querySelector('input[name="id"]').value;
-        let currentQuantity = parseInt(quantityInput.value);
-        let newQuantity = currentQuantity + change;
+        let newQuantity = parseInt(quantityInput.value) + change;
         if (newQuantity < 1) newQuantity = 1;
 
         const params = new URLSearchParams();
         params.append('id', id);
         params.append('quantity', newQuantity);
         
-        fetch('/cart/update-quantity', {
-            method: 'POST',
-            headers: {'X-CSRF-TOKEN': csrfToken},
-            body: params
-        }).then(response => response.json())
+        fetch('/cart/update-quantity', { method: 'POST', headers: {'X-CSRF-TOKEN': csrfToken}, body: params })
+        .then(response => response.json())
         .then(data => {
             if (data.success) {
                 quantityInput.value = data.newQuantity;
@@ -382,8 +360,7 @@ body {
     function updateTotalPrice() {
         let total = 0;
         document.querySelectorAll('.item-row').forEach(row => {
-            const checkbox = row.querySelector('.item-checkbox');
-            if (checkbox.checked) {
+            if (row.querySelector('.item-checkbox').checked) {
                 const price = parseFloat(row.dataset.price);
                 const quantity = parseInt(row.querySelector('input[name="quantity"]').value);
                 total += price * quantity;
@@ -397,16 +374,14 @@ body {
         const itemRow = button.closest('.item-row');
         if (!confirm('정말로 삭제하시겠습니까?')) return;
 
-        fetch("/cart/delete/"+id, {
-            method: 'POST',
-            headers: {'X-CSRF-TOKEN': csrfToken}
-        }).then(response => response.json())
+        fetch("/cart/delete/"+id, { method: 'POST', headers: {'X-CSRF-TOKEN': csrfToken} })
+        .then(response => response.json())
         .then(data => {
             if (data.success) {
                 itemRow.remove();
                 updateTotalPrice();
                 if(document.querySelectorAll('.item-row').length === 0){
-                    location.reload(); // 장바구니가 비면 페이지 새로고침
+                    location.reload();
                 }
             } else {
                 alert('삭제 실패: ' + data.message);

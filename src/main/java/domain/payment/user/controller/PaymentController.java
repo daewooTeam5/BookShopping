@@ -2,7 +2,11 @@ package domain.payment.user.controller;
 
 import domain.address.entity.Address;
 import domain.address.service.AddressService;
+import domain.book.user.repository.BookRepository;
+import domain.payment.user.dto.PaymentDetailDto;
 import domain.payment.user.service.PaymentService;
+import domain.shopping_cart.entity.ShoppingCart;
+import domain.shopping_cart.repository.ShoppingCartRepository;
 import domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -15,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -27,6 +32,10 @@ public class PaymentController {
     private UserRepository userMapper;
     @Autowired
     private AddressService addressService;
+    @Autowired
+    private BookRepository bookRepository; // 의존성 주입 추가
+    @Autowired
+    private ShoppingCartRepository shoppingCartRepository; // 의존성 주입 추가
 
     @PostMapping("/addressForm")
     public ModelAndView addressFormForBuyNow(@RequestParam("bookId") Long bookId,
@@ -35,11 +44,28 @@ public class PaymentController {
         Long accountId = userMapper.getUserId(authentication.getName());
         List<Address> addresses = addressService.getAddressesByAccountId(accountId);
 
+        // [수정] 구매 상품 정보와 총액 계산
+        List<PaymentDetailDto> purchaseItems = new ArrayList<>();
+        domain.book.user.dto.Book book = bookRepository.findById(bookId);
+        long totalPrice = 0;
+        if (book != null) {
+            PaymentDetailDto item = PaymentDetailDto.builder()
+                    .title(book.getTitle())
+                    .image(book.getImage())
+                    .price(book.getPrice())
+                    .quantity(quantity)
+                    .build();
+            purchaseItems.add(item);
+            totalPrice = (long) book.getPrice() * quantity;
+        }
+
         ModelAndView mav = new ModelAndView("user/addressForm");
         mav.addObject("addresses", addresses);
         mav.addObject("bookId", bookId);
         mav.addObject("quantity", quantity);
         mav.addObject("purchaseType", "buyNow");
+        mav.addObject("purchaseItems", purchaseItems); // 모델에 추가
+        mav.addObject("totalPrice", totalPrice);       // 모델에 추가
         return mav;
     }
 
@@ -48,11 +74,33 @@ public class PaymentController {
                                            Authentication authentication) {
         Long accountId = userMapper.getUserId(authentication.getName());
         List<Address> addresses = addressService.getAddressesByAccountId(accountId);
+        
+        // [수정] 구매 상품 정보와 총액 계산
+        List<PaymentDetailDto> purchaseItems = new ArrayList<>();
+        long totalPrice = 0;
+        if (cartIds != null && !cartIds.isEmpty()) {
+            List<ShoppingCart> cartItems = shoppingCartRepository.findByIds(cartIds);
+            for (ShoppingCart cartItem : cartItems) {
+                domain.book.user.dto.Book book = bookRepository.findById(cartItem.getBookId());
+                if (book != null) {
+                    PaymentDetailDto item = PaymentDetailDto.builder()
+                            .title(book.getTitle())
+                            .image(book.getImage())
+                            .price(book.getPrice())
+                            .quantity(cartItem.getQuantity())
+                            .build();
+                    purchaseItems.add(item);
+                    totalPrice += (long) book.getPrice() * cartItem.getQuantity();
+                }
+            }
+        }
 
         ModelAndView mav = new ModelAndView("user/addressForm");
         mav.addObject("addresses", addresses);
         mav.addObject("cartIds", cartIds);
         mav.addObject("purchaseType", "buyFromCart");
+        mav.addObject("purchaseItems", purchaseItems); // 모델에 추가
+        mav.addObject("totalPrice", totalPrice);       // 모델에 추가
         return mav;
     }
 
@@ -86,17 +134,13 @@ public class PaymentController {
         }
     }
     
-    /**
-     * [NEW] 새 주소를 입력받아 저장하고 즉시 결제를 진행하는 메소드
-     */
     @PostMapping("/processPaymentWithNewAddress")
-    @Transactional // 주소 저장과 결제가 모두 성공해야 하므로 트랜잭션 처리
+    @Transactional
     public void processPaymentWithNewAddress(
             @RequestParam("purchaseType") String purchaseType,
             @RequestParam(value = "bookId", required = false) Long bookId,
             @RequestParam(value = "quantity", required = false) Integer quantity,
             @RequestParam(value = "cartIds", required = false) List<Long> cartIds,
-            // addressId 대신 새 주소 정보를 직접 받음
             @RequestParam("province") String province,
             @RequestParam("city") String city,
             @RequestParam("street") String street,
@@ -104,17 +148,14 @@ public class PaymentController {
             Authentication authentication,
             HttpServletResponse response) throws IOException {
 
-        // 1. 현재 사용자 ID 가져오기
         Long accountId = userMapper.getUserId(authentication.getName());
 
-        // 2. 새로운 주소 객체를 만들어 DB에 저장
         Address newAddress = Address.builder()
                 .accountId(accountId).province(province).city(city)
                 .street(street).zipcode(zipcode)
                 .build();
-        addressService.addAddress(newAddress); // MyBatis의 @Options 덕분에 이 객체에 새로 생성된 ID가 담김
+        addressService.addAddress(newAddress); 
 
-        // 3. 새로 저장된 주소의 ID를 가져오기
         Long newAddressId = newAddress.getId();
         if (newAddressId == null) {
             response.setContentType("text/html; charset=UTF-8");
@@ -122,7 +163,6 @@ public class PaymentController {
             return;
         }
 
-        // 4. 기존 결제 로직을 재사용하여 결제 진행
         boolean success = false;
         if ("buyNow".equals(purchaseType) && bookId != null && quantity != null) {
             success = paymentService.processSinglePurchase(accountId, bookId, quantity, newAddressId);
@@ -134,7 +174,6 @@ public class PaymentController {
             }
         }
         
-        // 5. 결과 알림
         response.setContentType("text/html; charset=UTF-8");
         if (success) {
             response.getWriter().println("<script>alert('구매가 완료되었습니다.'); location.href='/user/my-page';</script>");
