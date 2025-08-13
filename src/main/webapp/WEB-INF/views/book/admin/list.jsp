@@ -55,6 +55,10 @@ body {
     <div class="d-flex gap-3"> <!-- gap을 사용하여 버튼 간 간격을 자연스럽게 조정 -->
         <a href="${pageContext.request.contextPath}/payment/admin/list"
            class="btn btn-outline-dark btn-lg px-4 shadow-sm">💳 결제 내역</a>
+         <!-- ✅ 리뷰 관리 버튼 추가 -->
+        <a href="${pageContext.request.contextPath}/review/admin/list"
+           class="btn btn-outline-primary btn-lg px-4 shadow-sm">📝 리뷰 관리</a>
+           
         <a href="${pageContext.request.contextPath}/book/admin/writeform"
            class="btn btn-success btn-lg px-4 shadow-sm">➕ 새로운 책 등록</a>
         <!-- 로그아웃 버튼 -->
