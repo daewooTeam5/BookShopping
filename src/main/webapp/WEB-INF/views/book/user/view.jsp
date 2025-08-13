@@ -10,7 +10,6 @@
 <head>
 <meta charset="utf-8">
 <title>도서 상세 보기</title>
-<!-- Bootstrap CDN -->
 <script src="https://kit.fontawesome.com/6cbdf73c90.js"
 	crossorigin="anonymous"></script>
 <link
@@ -34,7 +33,6 @@
 			class="d-flex justify-content-between align-items-center  mb-4 position-relative"
 			style="line-height: 65px">
 
-			<!-- 가운데 이미지 정중앙 고정 -->
 			<div class="position-absolute top-0 start-50 translate-middle-x">
 				<a href="/book/list"> <img src="/img/book.png" height="65px" />
 				</a>
@@ -105,9 +103,9 @@
 				<p class="mt-4">${book.introduction}</p>
 
 				<div class="ms-2 button-area">
-					<form action="/payment/buyNow" method="POST" class="mb-2"
-						onsubmit="return confirm(                        '${book.title} - ' +                        '<fmt:formatNumber value="${book.price}" type="number" groupingUsed="true" />' +                        '원\n결제하시겠습니까?'                    );">
-						<input type="hidden" name="bookId" value="${book.id}">
+                    <form action="/payment/addressForm" method="POST" class="mb-2">
+                        <input type="hidden" name="bookId" value="${book.id}">
+                        <input type="hidden" name="quantity" value="1">
 						<sec:csrfInput />
 						<button type="submit"
 							class="btn btn-primary btn-sm w-100 fs-8 mb-1">
@@ -225,7 +223,8 @@
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
-								| 작성일: <fmt:formatDate
+								|
+작성일: <fmt:formatDate
 									value="${review.createdAt}" pattern="yyyy-MM-dd" /></small>
 						</p>
 					</div>
