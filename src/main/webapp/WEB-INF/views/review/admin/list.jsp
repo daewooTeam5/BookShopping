@@ -101,8 +101,8 @@
             <td>${review.bookTitle}</td>
             <td>${review.rating}</td>
             <td class="text-break content-cell">
-              <span title="${fn:escapeXml(review.content)}">
-                ${review.content}
+              <span title="${fn:escapeXml(review.contents)}">
+                ${review.contents}
               </span>
             </td>
             <td class="text-center">

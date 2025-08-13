@@ -1,8 +1,13 @@
 package domain.user.controller;
 
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,10 +19,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-
 import domain.address.entity.Address;
 import domain.address.service.AddressService;
-
 import domain.payment.user.dto.PaymentDetailDto;
 import domain.payment.user.service.PaymentService;
 import domain.shopping_cart.dto.ShoppingCartUserDto;
@@ -26,16 +29,6 @@ import domain.user.dto.UserRegisterForm;
 import domain.user.entity.UserEntity;
 import domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -83,6 +76,7 @@ public class UserController {
     	System.out.println(user);
         userService.registerUser(user);
         return "redirect:/login"; 
+    }
 
     private final PaymentService paymentService;
     private final AddressService addressService; // AddressService 주입
@@ -108,9 +102,19 @@ public class UserController {
         List<Address> addressList = addressService.getAddressesByAccountId(user.getId());
         model.addAttribute("addressList", addressList); // 모델에 주소 목록 추가
 
-        Map<String, List<PaymentDetailDto>> groupedPayments = paymentList.stream().collect(
-                Collectors.groupingBy(PaymentDetailDto::getReceiptId, LinkedHashMap::new, Collectors.toList()));
-        
+        Map<String, List<PaymentDetailDto>> groupedPayments = new LinkedHashMap<>();
+
+        for (PaymentDetailDto payment : paymentList) {
+            String receiptId = payment.getRecepitId();
+            
+            // 맵에 키가 없으면 새 리스트 생성
+            if (!groupedPayments.containsKey(receiptId)) {
+                groupedPayments.put(receiptId, new ArrayList<>());
+            }
+            
+            // 해당 리스트에 현재 payment 추가
+            groupedPayments.get(receiptId).add(payment);
+        }
         model.addAttribute("groupedPayments", groupedPayments);
         model.addAttribute("user", user);
         model.addAttribute("shoppingCart", shoppingCart);
@@ -130,10 +134,4 @@ public class UserController {
         return "user/register";
     }
 
-    @PostMapping("/register")
-    public String register(UserRegisterForm user) {
-        userService.registerUser(user);
-        return "redirect:/login";
-
-    }
 }

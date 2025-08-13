@@ -76,7 +76,7 @@ border:none;
 						<a href="/book/admin/list"
 							class="btn btn-outline-danger btn-sm me-3">관리자 페이지</a>
 					</sec:authorize>
-					<sec:authorize access="hasRole('ROLE_USER')">
+					<sec:authorize access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">
 					<div class="ti">USER</div>
 					<div class="me-3">
 						<a href="/user/my-page"
