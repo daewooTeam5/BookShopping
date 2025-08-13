@@ -15,7 +15,7 @@ public interface PaymentRepository {
             "VALUES (SYSDATE, #{accountId}, #{bookId}, #{quantity}, #{receiptId}, #{addressId})")
     int insertPayment(Payment payment);
 
-    @Select("SELECT p.id,p.receipt_id, p.CREATED_AT as createdAt, b.title, b.IMAGE, b.GENRE, b.AUTHOR, b.PAGE, b.PRICE, b.PUBLISHER, p.quantity " +
+    @Select("SELECT p.id, p.CREATED_AT as createdAt, b.title, b.IMAGE, b.GENRE, b.AUTHOR, b.PAGE, b.PRICE, b.PUBLISHER, p.quantity " +
             "FROM payment p JOIN BOOK b ON b.ID = p.BOOK_ID WHERE p.ACCOUNT_ID = #{accountId} order by p.created_at desc")
     List<PaymentDetailDto> findPaymentDetailsByAccountId(Long accountId);
 

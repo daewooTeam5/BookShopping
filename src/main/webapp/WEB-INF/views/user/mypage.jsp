@@ -2,7 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
 <html>
 <head>
 <title>My Page</title>
@@ -92,6 +94,11 @@ body {
 							<c:when test="${user.userRole == 'ROLE_USER'}">
 								<p>
 									<strong>권한:</strong> 회원
+								</p>
+							</c:when>
+							<c:when test="${user.userRole == 'ROLE_GUEST'}">
+								<p>
+									<strong>권한:</strong> 비회원
 								</p>
 							</c:when>
 							<c:otherwise>
@@ -229,10 +236,10 @@ body {
 					<div class="card-body">
 						<c:choose>
 							<c:when test="${not empty myPaymentList}">
-								<table class="table ">
+								<table class="table table-striped">
 									<thead>
 										<tr>
-											<th>주문 ID</th>
+											<th>결제 ID</th>
 											<th>결제 시간</th>
 											<th>책 제목</th>
 											<th>이미지</th>
@@ -244,29 +251,21 @@ body {
 									</thead>
 									<tbody>
 										<c:set var="totalQuantity" value="0" />
-										<c:forEach var="entry" items="${groupedPayments}">
-											<c:set var="receiptId" value="${entry.key}" />
-											<c:set var="payments" value="${entry.value}" />
-											<c:forEach var="payment" items="${payments}" varStatus="loop">
-												<tr>
-													<c:if test="${loop.first}">
-														<td rowspan="${fn:length(payments)}">
-															P-${fn:split(receiptId, '-')[0]}-${fn:split(receiptId, '-')[1]}
-														</td>
-														<td rowspan="${fn:length(payments)}"><fmt:formatDate
-																value="${payment.createdAt}" pattern="yy-MM-dd HH:mm" />
-														</td>
-													</c:if>
-													<td>${payment.title}</td>
-													<td><img src="/img/${payment.image}"
-														class="cart-item-img" /></td>
-													<td>${payment.genre}</td>
-													<td>${payment.publisher}</td>
-													<td><fmt:formatNumber value="${payment.price}"
-															type="currency" currencySymbol="" />원</td>
-													<td>${payment.quantity}</td>
-												</tr>
-											</c:forEach>
+										<c:forEach var="payment" items="${myPaymentList}">
+											<tr>
+												<td>${payment.id}</td>
+												<td>${payment.createdAt}</td>
+												<td>${payment.title}</td>
+												<td><img src="/img/${payment.image}"
+													alt="${payment.title}" class="cart-item-img"></td>
+												<td>${payment.genre}</td>
+												<td>${payment.publisher}</td>
+												<td><fmt:formatNumber value="${payment.price}"
+														type="currency" currencySymbol="" />원</td>
+												<td>${payment.quantity}</td>
+											</tr>
+											<c:set var="totalQuantity"
+												value="${totalQuantity + payment.quantity}" />
 										</c:forEach>
 									</tbody>
 								</table>

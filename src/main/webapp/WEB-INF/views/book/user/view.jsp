@@ -30,14 +30,13 @@
 <body>
 	<header class="container narrow-container mt-3 border-bottom">
 		<div
-			class="d-flex justify-content-between align-items-center  mb-4 position-relative"
-			style="line-height: 65px">
+			class="d-flex justify-content-between align-items-center  mb-4 position-relative" style="line-height:65px">
 
 			<div class="position-absolute top-0 start-50 translate-middle-x">
 				<a href="/book/list"> <img src="/img/book.png" height="65px" />
 				</a>
 			</div>
-
+<!-- 로그인 상태 -->
 			<c:choose>
 				<c:when test="${not empty pageContext.request.userPrincipal}">
 					<sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -45,7 +44,7 @@
 							class="btn btn-outline-danger btn-sm me-3">관리자 페이지</a>
 					</sec:authorize>
 					<sec:authorize access="hasRole('ROLE_USER')">
-						<div></div>
+					<div></div>
 					</sec:authorize>
 					<div class="me-3">
 						<a href="/user/my-page"
@@ -57,8 +56,9 @@
 					</div>
 				</c:when>
 				<c:otherwise>
-					<div></div>
+				<div></div>
 					<div class="  me-3">
+	
 						<a href="/login" class="btn btn-outline-primary btn-sm me-2">로그인</a>
 						<a href="/register" class="btn btn-primary btn-sm">회원가입</a>
 					</div>
@@ -82,10 +82,6 @@
 						groupingUsed="true" />
 					원
 				</p>
-				<div class="mb-3">
-					<span class="badge bg-light text-dark">평균 <fmt:formatNumber value="${reviewStatistic.ratingAvg}" maxFractionDigits="1" /></span>
-					<span class="badge bg-light text-dark">(${reviewStatistic.totalRatings}명 평가)</span>
-				</div>
 				<table class="table table-bordered mt-3">
 					<tr>
 						<th class="bg-light">장르</th>
@@ -103,6 +99,7 @@
 				<p class="mt-4">${book.introduction}</p>
 
 				<div class="ms-2 button-area">
+
                     <form action="/payment/addressForm" method="POST" class="mb-2">
                         <input type="hidden" name="bookId" value="${book.id}">
                         <input type="hidden" name="quantity" value="1">
@@ -112,6 +109,7 @@
 							<i class="fa-solid fa-credit-card me-1"></i>구매하기
 						</button>
 					</form>
+
 					<form action="/cart" method="POST"
 						onsubmit="return confirm('장바구니에 추가하시겠습니까?');">
 						<input type="hidden" name="bookId" value="${book.id}"> <input
@@ -129,6 +127,7 @@
 			<a href="/book/list" class="btn btn-outline-secondary btn-sm">←
 				목록으로</a>
 		</div>
+
 
 
 		<div class="mt-5">
@@ -231,6 +230,7 @@
 				</div>
 			</c:forEach>
 		</div>
+
 	</div>
 
 	<script

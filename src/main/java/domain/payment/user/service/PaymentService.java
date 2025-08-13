@@ -19,6 +19,7 @@ public class PaymentService {
 
     @Autowired
     private PaymentRepository paymentMapper;
+
     @Autowired
     private ShoppingCartRepository shoppingCartRepository;
     @Autowired
@@ -66,11 +67,12 @@ public class PaymentService {
                     .receiptId(receiptId).addressId(addressId)
                     .build();
             paymentMapper.insertPayment(payment);
+
             shoppingCartRepository.removeFromCart(item.getId());
         }
         return true;
     }
-    
+
     public List<PaymentDetailDto> getPaymentDetailsByAccountId(Long accountId) {
         return paymentMapper.findPaymentDetailsByAccountId(accountId);
     }
@@ -78,4 +80,5 @@ public class PaymentService {
     public Integer getTotalPaymentAmountByAccountId(Long accountId) {
         return paymentMapper.getTotalPaymentAmountByAccountId(accountId);
     }
+
 }

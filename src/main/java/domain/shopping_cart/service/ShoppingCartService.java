@@ -24,7 +24,7 @@ public class ShoppingCartService {
     private final UserRepository userMapper;
 
     public void addToCart(ShoppingCart cart,String authName) {
-    	Long accountId = userMapper.getUserId(authName);
+    	Long accountId = (authName != null) ? userMapper.getUserId(authName) : null;
     	System.out.println("autn"+authName+" id"+accountId);
     	if(bookDao.findById(cart.getBookId())==null) {
             throw new ApiException("존재 하지 않는 책입니다.");

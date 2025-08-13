@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import domain.book.user.dto.Book;
 import domain.book.user.dto.PageList;
 import domain.book.user.service.BookService;
-import domain.review.repository.ReviewRepository;
 
 
 @Controller
@@ -18,8 +17,6 @@ public class BookController {
 
 	@Autowired
 	BookService service;
-	@Autowired
-	ReviewRepository reviewRepository;
 
 	@RequestMapping("list")
 	public String list(
@@ -45,8 +42,6 @@ public class BookController {
 	public String detail(@RequestParam("id") Long id, Model model) {
 	    Book book = service.detail(id);
 	    model.addAttribute("book", book);
-	    model.addAttribute("reviews", reviewRepository.findAllUserJoinWriter(id));
-	    model.addAttribute("reviewStatistic", reviewRepository.getBookReviewStatistic(id));
 	    return "book/user/view";
 	}
 }

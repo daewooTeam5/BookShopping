@@ -1,6 +1,6 @@
 package domain.payment.user.dto;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,8 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PaymentDetailDto {
     private Long id;
-    private String receiptId;
-    private Date createdAt;
+    private LocalDateTime createdAt;
     private String title;
     private String image;
     private String genre;

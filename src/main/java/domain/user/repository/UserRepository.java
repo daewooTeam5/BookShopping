@@ -16,6 +16,11 @@ public interface UserRepository {
 	Integer save(UserRegisterForm user);
 	
 	@Select("SELECT * from account where user_id=#{userId}")
+	@Results({
+	    @Result(property = "userId", column = "user_id"),
+	    @Result(property = "userRole", column = "user_role"),
+	    @Result(property = "createdAt", column = "created_at")
+	})
 	UserEntity findByUserId(String userId);
 	
 	@Select("SELECT id FROM account WHERE user_id=#{userId}")

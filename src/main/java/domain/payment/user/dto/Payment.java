@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Payment {
+
     private Long id;            // 결제 ID (PK)
     private Date createdAt;     // 결제일
     private Long accountId;     // 구매자 ID (FK)
@@ -24,3 +25,4 @@ public class Payment {
     private String receiptId;   // 영수증 번호 (거래 식별용)
     private Long addressId;     // 배송지 주소 ID (FK, address 테이블 참조)
 }
+

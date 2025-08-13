@@ -1,7 +1,23 @@
 package domain.user.controller;
 
+
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+
 import domain.address.entity.Address;
 import domain.address.service.AddressService;
+
 import domain.payment.user.dto.PaymentDetailDto;
 import domain.payment.user.service.PaymentService;
 import domain.shopping_cart.dto.ShoppingCartUserDto;
@@ -26,6 +42,48 @@ import java.util.stream.Collectors;
 public class UserController {
     private final UserService userService;
     private final ShoppingCartService shoppingCartService;
+
+    @GetMapping("/guest")
+    public String guestLogin(HttpServletRequest request) {
+        // 1. 난수 아이디 생성
+        String randomId = "user" + (int)(Math.random() * 100000);
+
+        // 2. 비회원 정보 생성
+        UserRegisterForm guestForm = new UserRegisterForm();
+        guestForm.setUserId(randomId);
+        guestForm.setPassword("{noop}1234"); // 비회원 패스워드 {noop} 처리+1234부여
+        guestForm.setName("guest");
+        guestForm.setUserRole("ROLE_GUEST");
+        
+        // 3. DB 저장
+        userService.registerUser(guestForm); // 저장 후 ID 부여 3개
+
+        // 4. UserDetails 생성 (ROLE_USER 권한)
+        UserDetails guestUser = User.builder()
+                .username(randomId)
+                .password("{noop}1234")  //1234로 부여
+                .roles("GUEST")  //임시 유저 권한부여
+                .build();
+
+        // 5. 인증 객체 생성 및 세션 저장
+        Authentication auth = new UsernamePasswordAuthenticationToken(
+                guestUser, null, guestUser.getAuthorities()
+        );
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        request.getSession().setAttribute(
+                HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+                SecurityContextHolder.getContext()
+        );
+
+        return "redirect:/book/list";
+    }
+    
+    @PostMapping("/register")
+    public String register(UserRegisterForm user) {
+    	System.out.println(user);
+        userService.registerUser(user);
+        return "redirect:/login"; 
+
     private final PaymentService paymentService;
     private final AddressService addressService; // AddressService 주입
 
@@ -76,5 +134,6 @@ public class UserController {
     public String register(UserRegisterForm user) {
         userService.registerUser(user);
         return "redirect:/login";
+
     }
 }
