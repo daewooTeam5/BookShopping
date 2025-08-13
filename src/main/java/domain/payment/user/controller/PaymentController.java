@@ -1,20 +1,26 @@
 package domain.payment.user.controller;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-
+import domain.address.entity.Address;
+import domain.address.service.AddressService;
+import domain.book.user.repository.BookRepository;
+import domain.payment.user.dto.PaymentDetailDto;
+import domain.payment.user.service.PaymentService;
+import domain.shopping_cart.entity.ShoppingCart;
+import domain.shopping_cart.repository.ShoppingCartRepository;
+import domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
-import domain.payment.user.service.PaymentService;
-import domain.user.repository.UserRepository;
-
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/payment")
@@ -22,51 +28,152 @@ public class PaymentController {
 
     @Autowired
     private PaymentService paymentService;
-
     @Autowired
-    private UserRepository userMapper; // 사용자 ID를 가져오기 위해 UserMapper를 주입합니다.
+    private UserRepository userMapper;
+    @Autowired
+    private AddressService addressService;
+    @Autowired
+    private BookRepository bookRepository; // 의존성 주입 추가
+    @Autowired
+    private ShoppingCartRepository shoppingCartRepository; // 의존성 주입 추가
 
+    @PostMapping("/addressForm")
+    public ModelAndView addressFormForBuyNow(@RequestParam("bookId") Long bookId,
+                                            @RequestParam(value = "quantity", defaultValue = "1") int quantity,
+                                            Authentication authentication) {
+        Long accountId = userMapper.getUserId(authentication.getName());
+        List<Address> addresses = addressService.getAddressesByAccountId(accountId);
 
-    @PostMapping("/buyNow")
-    public void buyNow(@RequestParam("bookId") Long bookId,
-                       Authentication authentication, // SecurityContext에서 현재 사용자 정보를 가져옵니다.
-                       HttpServletResponse response) throws IOException {
+        // [수정] 구매 상품 정보와 총액 계산
+        List<PaymentDetailDto> purchaseItems = new ArrayList<>();
+        domain.book.user.dto.Book book = bookRepository.findById(bookId);
+        long totalPrice = 0;
+        if (book != null) {
+            PaymentDetailDto item = PaymentDetailDto.builder()
+                    .title(book.getTitle())
+                    .image(book.getImage())
+                    .price(book.getPrice())
+                    .quantity(quantity)
+                    .build();
+            purchaseItems.add(item);
+            totalPrice = (long) book.getPrice() * quantity;
+        }
 
-        // 1. 현재 로그인한 사용자의 ID(accountId)를 조회합니다.
-        String currentUserId = authentication.getName();
-        Long accountId = userMapper.getUserId(currentUserId);
+        ModelAndView mav = new ModelAndView("user/addressForm");
+        mav.addObject("addresses", addresses);
+        mav.addObject("bookId", bookId);
+        mav.addObject("quantity", quantity);
+        mav.addObject("purchaseType", "buyNow");
+        mav.addObject("purchaseItems", purchaseItems); // 모델에 추가
+        mav.addObject("totalPrice", totalPrice);       // 모델에 추가
+        return mav;
+    }
+
+    @PostMapping("/addressFormFromCart")
+    public ModelAndView addressFormForCart(@RequestParam(value = "cartIds", required = false) List<Long> cartIds,
+                                           Authentication authentication) {
+        Long accountId = userMapper.getUserId(authentication.getName());
+        List<Address> addresses = addressService.getAddressesByAccountId(accountId);
         
-        // 2. 조회한 accountId를 사용하여 구매를 처리합니다.
-        boolean success = paymentService.processSinglePurchase(accountId, bookId, 1);
-        
+        // [수정] 구매 상품 정보와 총액 계산
+        List<PaymentDetailDto> purchaseItems = new ArrayList<>();
+        long totalPrice = 0;
+        if (cartIds != null && !cartIds.isEmpty()) {
+            List<ShoppingCart> cartItems = shoppingCartRepository.findByIds(cartIds);
+            for (ShoppingCart cartItem : cartItems) {
+                domain.book.user.dto.Book book = bookRepository.findById(cartItem.getBookId());
+                if (book != null) {
+                    PaymentDetailDto item = PaymentDetailDto.builder()
+                            .title(book.getTitle())
+                            .image(book.getImage())
+                            .price(book.getPrice())
+                            .quantity(cartItem.getQuantity())
+                            .build();
+                    purchaseItems.add(item);
+                    totalPrice += (long) book.getPrice() * cartItem.getQuantity();
+                }
+            }
+        }
+
+        ModelAndView mav = new ModelAndView("user/addressForm");
+        mav.addObject("addresses", addresses);
+        mav.addObject("cartIds", cartIds);
+        mav.addObject("purchaseType", "buyFromCart");
+        mav.addObject("purchaseItems", purchaseItems); // 모델에 추가
+        mav.addObject("totalPrice", totalPrice);       // 모델에 추가
+        return mav;
+    }
+
+    @PostMapping("/processPayment")
+    public void processPayment(@RequestParam("purchaseType") String purchaseType,
+                               @RequestParam(value = "bookId", required = false) Long bookId,
+                               @RequestParam(value = "quantity", required = false) Integer quantity,
+                               @RequestParam(value = "cartIds", required = false) List<Long> cartIds,
+                               @RequestParam("addressId") Long addressId, // 주소 ID를 받음
+                               Authentication authentication,
+                               HttpServletResponse response) throws IOException {
+
+        Long accountId = userMapper.getUserId(authentication.getName());
+        boolean success = false;
+
+        if ("buyNow".equals(purchaseType) && bookId != null && quantity != null) {
+            success = paymentService.processSinglePurchase(accountId, bookId, quantity, addressId);
+        } else if ("buyFromCart".equals(purchaseType)) {
+            if (cartIds != null && !cartIds.isEmpty()) {
+                success = paymentService.processSelectedCartPurchase(accountId, cartIds, addressId);
+            } else {
+                success = paymentService.processCartPurchase(accountId, addressId);
+            }
+        }
+
         response.setContentType("text/html; charset=UTF-8");
         if (success) {
-            response.getWriter().println("<script>alert('구매가 완료되었습니다.'); location.href='/book/list';</script>");
+            response.getWriter().println("<script>alert('구매가 완료되었습니다.'); location.href='/user/my-page';</script>");
         } else {
             response.getWriter().println("<script>alert('구매에 실패했습니다.'); history.back();</script>");
         }
     }
+    
+    @PostMapping("/processPaymentWithNewAddress")
+    @Transactional
+    public void processPaymentWithNewAddress(
+            @RequestParam("purchaseType") String purchaseType,
+            @RequestParam(value = "bookId", required = false) Long bookId,
+            @RequestParam(value = "quantity", required = false) Integer quantity,
+            @RequestParam(value = "cartIds", required = false) List<Long> cartIds,
+            @RequestParam("province") String province,
+            @RequestParam("city") String city,
+            @RequestParam("street") String street,
+            @RequestParam("zipcode") String zipcode,
+            Authentication authentication,
+            HttpServletResponse response) throws IOException {
 
+        Long accountId = userMapper.getUserId(authentication.getName());
 
+        Address newAddress = Address.builder()
+                .accountId(accountId).province(province).city(city)
+                .street(street).zipcode(zipcode)
+                .build();
+        addressService.addAddress(newAddress); 
 
-    @PostMapping("/buyFromCart")
-    public void buyFromCart(@RequestParam(value = "cartIds", required = false) List<Long> cartIds,
-                            Authentication authentication,
-                            HttpServletResponse response) throws IOException {
-
-    	System.out.println(cartIds);
-        String currentUserId = authentication.getName();
-        Long accountId = userMapper.getUserId(currentUserId);
-
-        boolean success;
-        if (cartIds != null && !cartIds.isEmpty()) {
-            // 선택된 상품만 구매
-            success = paymentService.processSelectedCartPurchase(accountId, cartIds);
-        } else {
-            // 장바구니 전체 구매
-            success = paymentService.processCartPurchase(accountId);
+        Long newAddressId = newAddress.getId();
+        if (newAddressId == null) {
+            response.setContentType("text/html; charset=UTF-8");
+            response.getWriter().println("<script>alert('주소 저장에 실패했습니다. 다시 시도해주세요.'); history.back();</script>");
+            return;
         }
 
+        boolean success = false;
+        if ("buyNow".equals(purchaseType) && bookId != null && quantity != null) {
+            success = paymentService.processSinglePurchase(accountId, bookId, quantity, newAddressId);
+        } else if ("buyFromCart".equals(purchaseType)) {
+            if (cartIds != null && !cartIds.isEmpty()) {
+                success = paymentService.processSelectedCartPurchase(accountId, cartIds, newAddressId);
+            } else {
+                success = paymentService.processCartPurchase(accountId, newAddressId);
+            }
+        }
+        
         response.setContentType("text/html; charset=UTF-8");
         if (success) {
             response.getWriter().println("<script>alert('구매가 완료되었습니다.'); location.href='/user/my-page';</script>");

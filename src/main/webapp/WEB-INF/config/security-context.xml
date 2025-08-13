@@ -29,6 +29,8 @@
 			access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/book/admin/**"
 			access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/review/admin/**"
+			access="hasRole('ROLE_ADMIN')" />
 
 		<!-- 로그인한 사용자만 접근 가능한 경로 -->
 		

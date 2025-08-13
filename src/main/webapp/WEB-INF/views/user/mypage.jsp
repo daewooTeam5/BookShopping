@@ -1,8 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <html>
 <head>
@@ -72,9 +73,8 @@ body {
 	</header>
 	<div class="container">
 		<div class="row">
-			<!-- User Info -->
-			<div class="col-md-4">
-				<div class="card mb-4">
+            <div class="col-md-4">
+                <div class="card mb-4">
 					<div class="card-header">
 						<h3>내 정보</h3>
 					</div>
@@ -122,10 +122,54 @@ body {
 						</form>
 					</div>
 				</div>
+
+                <div class="card">
+                    <div class="card-header"><h3>배송지 관리</h3></div>
+                    <div class="card-body">
+                        <h5 class="mb-3">나의 배송지 목록</h5>
+                        <c:choose>
+                            <c:when test="${not empty addressList}">
+                                <ul class="list-group mb-3">
+                                    <c:forEach var="addr" items="${addressList}">
+                                        <li class="list-group-item">
+                                            (${addr.zipcode}) ${addr.province} ${addr.city} ${addr.street}
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </c:when>
+                            <c:otherwise>
+                                <p class="text-muted">저장된 배송지가 없습니다.</p>
+                            </c:otherwise>
+                        </c:choose>
+                        
+                        <button type="button" id="add-address-btn" class="btn btn-outline-info btn-block mb-3">새 배송지 추가</button>
+
+                        <form id="add-address-form" action="${pageContext.request.contextPath}/address/add" method="post" style="display:none;">
+                            <sec:csrfInput/>
+                            <h5 class="mt-3">새 배송지 입력</h5>
+                            <div class="form-group">
+                                <label>광역/도</label>
+                                <input type="text" name="province" class="form-control" placeholder="예: 서울특별시" required maxlength="100">
+                            </div>
+                            <div class="form-group">
+                                <label>시/군/구</label>
+                                <input type="text" name="city" class="form-control" placeholder="예: 강남구" required maxlength="100">
+                            </div>
+                            <div class="form-group">
+                                <label>상세주소</label>
+                                <input type="text" name="street" class="form-control" placeholder="예: 테헤란로 123" required maxlength="100">
+                            </div>
+                            <div class="form-group">
+                                <label>우편번호</label>
+                                <input type="text" name="zipcode" class="form-control" placeholder="5자리 숫자" required maxlength="6">
+                            </div>
+                            <button type="submit" class="btn btn-info btn-block">추가하기</button>
+                        </form>
+                    </div>
+                </div>
 			</div>
 
-			<!-- Shopping Cart -->
-			<div class="col-md-8">
+            <div class="col-md-8">
 				<div class="card">
 					<div
 						class="card-header d-flex justify-content-between align-items-center">
@@ -135,40 +179,42 @@ body {
 					<div class="card-body">
 						<c:choose>
 							<c:when test="${not empty shoppingCart}">
-								<div id="cart-items">
-									<c:forEach var="item" items="${shoppingCart}">
-										<div class="item-row" data-price="${item.price}">
-											<input type="checkbox" class="item-checkbox" checked>
-											<div class="item-details">
-												<img src="/img/${item.image}" alt="${item.title}"
-													class="cart-item-img ml-3">
-												<div class="item-info">
-													<h5>${item.title}</h5>
-													<span><fmt:formatNumber value="${item.price}"
-															type="currency" currencySymbol="" />원</span>
-												</div>
-											</div>
-											<form class="quantity-controls mx-4 d-flex">
-												<input type="hidden" id="shop-item-id" name="id"
-													value="${item.id}"> <input type="hidden"
-													name="quantity" value="${item.quantity}">
-												<button type="button"
-													class="btn btn-secondary btn-sm quantity-minus">-</button>
-												<input type="text"
-													class="quantity-input form-control d-inline-block"
-													value="${item.quantity}" readonly>
-												<button type="button"
-													class="btn btn-secondary btn-sm quantity-plus">+</button>
-												<button type="button"
-													class="btn btn-danger btn-sm delete-item-btn ml-2">
-													<i class="fas fa-trash"></i>
-												</button>
-											</form>
-										</div>
-									</c:forEach>
-								</div>
-								<button type="button" id="order-button"
-									class="btn btn-primary btn-block mt-3">주문하기</button>
+                                <form id="order-form" action="${pageContext.request.contextPath}/payment/addressFormFromCart" method="post">
+                                    <sec:csrfInput/>
+                                    <div id="cart-items">
+                                        <c:forEach var="item" items="${shoppingCart}">
+                                            <div class="item-row" data-price="${item.price}">
+                                                <input type="checkbox" name="cartIds" value="${item.id}" class="item-checkbox" checked>
+                                                <div class="item-details">
+                                                    <img src="/img/${item.image}" alt="${item.title}"
+                                                        class="cart-item-img ml-3">
+                                                    <div class="item-info">
+                                                        <h5>${item.title}</h5>
+                                                        <span><fmt:formatNumber value="${item.price}"
+                                                                type="currency" currencySymbol="" />원</span>
+                                                    </div>
+                                                </div>
+                                                <div class="quantity-controls mx-4 d-flex">
+                                                    <input type="hidden" id="shop-item-id" name="id"
+                                                        value="${item.id}"> <input type="hidden"
+                                                        name="quantity" value="${item.quantity}">
+                                                    <button type="button"
+                                                        class="btn btn-secondary btn-sm quantity-minus">-</button>
+                                                    <input type="text"
+                                                        class="quantity-input form-control d-inline-block"
+                                                        value="${item.quantity}" readonly>
+                                                    <button type="button"
+                                                        class="btn btn-secondary btn-sm quantity-plus">+</button>
+                                                    <button type="button"
+                                                        class="btn btn-danger btn-sm delete-item-btn ml-2">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </c:forEach>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block mt-3">주문하기</button>
+                                </form>
 							</c:when>
 							<c:otherwise>
 								<p class="text-center">장바구니에 담긴 상품이 없습니다.</p>
@@ -181,7 +227,7 @@ body {
 			</div>
 		</div>
 
-		<div class="row mt-4">
+        <div class="row mt-4">
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header">
@@ -246,173 +292,101 @@ body {
 	</div>
 
 	<script>
-  // JSP 서버에서 CSRF 토큰 JS 변수에 넣기
-  const csrfToken = '${_csrf.token}';
-
-  document.addEventListener('DOMContentLoaded', function () {
-    updateTotalPrice();
-
-    document.querySelectorAll('.quantity-plus').forEach(btn => {
-      btn.addEventListener('click', () => updateQuantity(btn, 1));
-    });
-
-    document.querySelectorAll('.quantity-minus').forEach(btn => {
-      btn.addEventListener('click', () => updateQuantity(btn, -1));
-    });
-
-    document.querySelectorAll('.item-checkbox').forEach(checkbox => {
-      checkbox.addEventListener('change', updateTotalPrice);
-    });
-
-    document.querySelectorAll('.delete-item-btn').forEach((btn,idx) => {
-      btn.addEventListener('click', () => deleteItem(btn,idx));
-    });
-
-    document.getElementById('order-button').addEventListener('click', function() {
-      let total = 0;
-      const selectedCartIds = [];
-      document.querySelectorAll('.item-row').forEach(itemRow => {
-        const checkbox = itemRow.querySelector('.item-checkbox');
-        if (checkbox && checkbox.checked) {
-          const price = parseFloat(itemRow.dataset.price);
-          const quantity = parseInt(itemRow.querySelector('input[name="quantity"]').value);
-          total += price * quantity;
-          const cartIdInput = itemRow.querySelector('.quantity-controls input[name="id"]');
-          if (cartIdInput) {
-            selectedCartIds.push(cartIdInput.value);
-          }
+    document.getElementById('add-address-btn').addEventListener('click', function() {
+        var form = document.getElementById('add-address-form');
+        if (form.style.display === 'none') {
+            form.style.display = 'block';
+            this.textContent = '추가 취소';
+        } else {
+            form.style.display = 'none';
+            this.textContent = '새 배송지 추가';
         }
-      });
+    });
 
-      if (selectedCartIds.length === 0) {
-        alert('결제할 상품을 선택해주세요.');
-        return;
-      }
+    const csrfToken = '${_csrf.token}';
+    document.addEventListener('DOMContentLoaded', function () {
+        if (document.getElementById('order-form')) {
+            updateTotalPrice();
+            document.querySelectorAll('.quantity-plus').forEach(btn => btn.addEventListener('click', () => updateQuantity(btn, 1)));
+            document.querySelectorAll('.quantity-minus').forEach(btn => btn.addEventListener('click', () => updateQuantity(btn, -1)));
+            document.querySelectorAll('.item-checkbox').forEach(checkbox => checkbox.addEventListener('change', updateTotalPrice));
+            document.querySelectorAll('.delete-item-btn').forEach((btn,idx) => btn.addEventListener('click', () => deleteItem(btn,idx)));
+            document.getElementById('order-form').addEventListener('submit', function(e) {
+                if (document.querySelectorAll('.item-checkbox:checked').length === 0) {
+                    alert('결제할 상품을 선택해주세요.');
+                    e.preventDefault();
+                    return;
+                }
+                let total = 0;
+                document.querySelectorAll('.item-row').forEach(itemRow => {
+                    const checkbox = itemRow.querySelector('.item-checkbox');
+                    if (checkbox && checkbox.checked) {
+                        const price = parseFloat(itemRow.dataset.price);
+                        const quantity = parseInt(itemRow.querySelector('input[name="quantity"]').value);
+                        total += price * quantity;
+                    }
+                });
+                const formattedTotal = new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(total);
+                if (!confirm('총 결제 금액: ' + formattedTotal + '\n결제하시겠습니까?')) {
+                    e.preventDefault();
+                }
+            });
+        }
+    });
 
-      const formattedTotal = new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(total);
+    function updateQuantity(button, change) {
+        const controls = button.closest('.quantity-controls');
+        const quantityInput = controls.querySelector('input[name="quantity"]');
+        const id = controls.querySelector('input[name="id"]').value;
+        let newQuantity = parseInt(quantityInput.value) + change;
+        if (newQuantity < 1) newQuantity = 1;
 
-      if (confirm('총 결제 금액: ' + formattedTotal + '\n결제하시겠습니까?')) {
-        let url = '/payment/buyFromCart';
         const params = new URLSearchParams();
-        params.append('_csrf', csrfToken);
-        selectedCartIds.forEach(id => params.append('cartIds', id));
-
-        fetch(url, {
-          method: 'POST',
-          headers: {
-            'X-CSRF-TOKEN': csrfToken,
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          body: params
-        })
-        .then(response => {
-          if (response.ok) {
-            location.href="/user/my-page";
-            alert("결제 성공");
-          } else {
-            alert('결제 요청에 실패했습니다.');
-          }
-        })
-        .catch(error => {
-          console.error('결제 요청 중 에러:', error);
-          alert('결제 요청 중 오류가 발생했습니다.');
-        });
-      }
-    });
-  });
-
-  function updateQuantity(button, change) {
-    const form = button.closest('form');
-    const quantityInput = form.querySelector('input[name="quantity"]');
-    const id = form.querySelector('input[name="id"]').value;
-
-    let currentQuantity = parseInt(quantityInput.value);
-    let newQuantity = currentQuantity + change;
-    if (newQuantity < 1) newQuantity = 1;
-
-    const params = new URLSearchParams();
-    params.append('id', id);
-    params.append('quantity', newQuantity);
-    params.append('_csrf', csrfToken); // CSRF 토큰 파라미터로도 보내기
-
-    fetch('/cart/update-quantity', {
-      method: 'POST',
-      headers: {
-        'X-CSRF-TOKEN': csrfToken
-      },
-      body: params
-    })
-    .then(response => {
-      if (!response.ok) throw new Error('서버 응답 에러');
-      return response.json();
-    })
-    .then(data => {
-      if (data.success) {
-        // 서버에서 업데이트 된 수량으로 UI 동기화
-        quantityInput.value = data.newQuantity;
-
-        // 화면에 보여지는 수량 input (readonly) 업데이트
-        const displayInput = button.closest('.quantity-controls').querySelector('.quantity-input');
-        displayInput.value = data.newQuantity;
-
-        updateTotalPrice();
-      } else {
-        alert('수량 업데이트 실패');
-      }
-    })
-    .catch(error => {
-      console.error('업데이트 중 에러:', error);
-      alert('수량 업데이트 중 오류가 발생했습니다.');
-    });
-  }
-
-  function updateTotalPrice() {
-    let total = 0;
-    document.querySelectorAll('.item-row').forEach(row => {
-      const checkbox = row.querySelector('.item-checkbox');
-      if (checkbox.checked) {
-        const price = parseFloat(row.dataset.price);
-        const quantity = parseInt(row.querySelector('input[name="quantity"]').value);
-        total += price * quantity;
-      }
-    });
-
-    // 한글 KRW 통화 포맷 적용
-    document.getElementById('total-price').innerText =
-      '총계: ' + new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(total);
-  }
-  
-  function deleteItem(button,idx) {
-	  const id = document.querySelectorAll("#shop-item-id")[idx].value;
-    const itemRow = button.closest('.item-row');
-    const csrfToken = document.getElementById('csrf_token').value;
-
-    if (!confirm('정말로 삭제하시겠습니까?')) {
-      return;
+        params.append('id', id);
+        params.append('quantity', newQuantity);
+        
+        fetch('/cart/update-quantity', { method: 'POST', headers: {'X-CSRF-TOKEN': csrfToken}, body: params })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                quantityInput.value = data.newQuantity;
+                controls.querySelector('.quantity-input').value = data.newQuantity;
+                updateTotalPrice();
+            } else { alert('수량 업데이트 실패'); }
+        }).catch(() => alert('수량 업데이트 중 오류가 발생했습니다.'));
     }
 
-    fetch("/cart/delete/"+id, {
-    	
-      method: 'POST',
-      headers: {
-        'X-CSRF-TOKEN': csrfToken
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        itemRow.remove();
-        updateTotalPrice();
-        location.href = "/user/my-page";
-      } else {
-        alert('삭제 실패: ' + data.message);
-      }
-    })
-    .catch(error => {
-      console.error('삭제 중 에러:', error);
-      alert('삭제 중 오류가 발생했습니다.');
-    });
-  }
-</script>
+    function updateTotalPrice() {
+        let total = 0;
+        document.querySelectorAll('.item-row').forEach(row => {
+            if (row.querySelector('.item-checkbox').checked) {
+                const price = parseFloat(row.dataset.price);
+                const quantity = parseInt(row.querySelector('input[name="quantity"]').value);
+                total += price * quantity;
+            }
+        });
+        document.getElementById('total-price').innerText = '총계: ' + new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(total);
+    }
+    
+    function deleteItem(button,idx) {
+        const id = document.querySelectorAll("#shop-item-id")[idx].value;
+        const itemRow = button.closest('.item-row');
+        if (!confirm('정말로 삭제하시겠습니까?')) return;
+
+        fetch("/cart/delete/"+id, { method: 'POST', headers: {'X-CSRF-TOKEN': csrfToken} })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                itemRow.remove();
+                updateTotalPrice();
+                if(document.querySelectorAll('.item-row').length === 0){
+                    location.reload();
+                }
+            } else {
+                alert('삭제 실패: ' + data.message);
+            }
+        }).catch(() => alert('삭제 중 오류가 발생했습니다.'));
+    }
+	</script>
 </body>
 </html>
