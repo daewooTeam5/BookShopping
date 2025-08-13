@@ -44,4 +44,8 @@ public class ReviewAdminService {
         try { return java.util.Optional.of(Long.parseLong(s)); }
         catch (NumberFormatException e) { return java.util.Optional.empty(); }
     }
+    
+    public boolean delete(long id) {
+        return repo.deleteById(id) > 0;
+    }
 }

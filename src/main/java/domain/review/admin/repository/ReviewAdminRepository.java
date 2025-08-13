@@ -2,6 +2,7 @@ package domain.review.admin.repository;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -65,4 +66,7 @@ public interface ReviewAdminRepository {
     	      ") WHERE ROWNUM <= 5"
     	    )
     List<TopRatedBook> findTop5ByAvgRating();
+    
+    @Delete("DELETE FROM review WHERE id = #{id}")
+    int deleteById(@Param("id") Long id);
 }
