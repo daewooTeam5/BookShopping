@@ -236,10 +236,10 @@ body {
 					<div class="card-body">
 						<c:choose>
 							<c:when test="${not empty myPaymentList}">
-								<table class="table table-striped">
+								<table class="table ">
 									<thead>
 										<tr>
-											<th>결제 ID</th>
+											<th>주문 ID</th>
 											<th>결제 시간</th>
 											<th>책 제목</th>
 											<th>이미지</th>
@@ -250,22 +250,29 @@ body {
 										</tr>
 									</thead>
 									<tbody>
-										<c:set var="totalQuantity" value="0" />
-										<c:forEach var="payment" items="${myPaymentList}">
-											<tr>
-												<td>${payment.id}</td>
-												<td>${payment.createdAt}</td>
-												<td>${payment.title}</td>
-												<td><img src="/img/${payment.image}"
-													alt="${payment.title}" class="cart-item-img"></td>
-												<td>${payment.genre}</td>
-												<td>${payment.publisher}</td>
-												<td><fmt:formatNumber value="${payment.price}"
-														type="currency" currencySymbol="" />원</td>
-												<td>${payment.quantity}</td>
-											</tr>
-											<c:set var="totalQuantity"
-												value="${totalQuantity + payment.quantity}" />
+										<c:forEach var="entry" items="${groupedPayments}">
+											<c:set var="receiptId" value="${entry.key}" />
+											<c:set var="payments" value="${entry.value}" />
+											<c:forEach var="payment" items="${payments}" varStatus="loop">
+												<tr>
+													<c:if test="${loop.first}">
+														<td rowspan="${fn:length(payments)}">
+															P-${fn:split(receiptId, '-')[0]}-${fn:split(receiptId, '-')[1]}
+														</td>
+														<td rowspan="${fn:length(payments)}">
+																${payment.createdAt}
+														</td>
+													</c:if>
+													<td>${payment.title}</td>
+													<td><img src="/img/${payment.image}"
+														class="cart-item-img" /></td>
+													<td>${payment.genre}</td>
+													<td>${payment.publisher}</td>
+													<td><fmt:formatNumber value="${payment.price}"
+															type="currency" currencySymbol="" />원</td>
+													<td>${payment.quantity}</td>
+												</tr>
+											</c:forEach>
 										</c:forEach>
 									</tbody>
 								</table>

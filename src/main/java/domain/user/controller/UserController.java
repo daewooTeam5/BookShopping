@@ -105,7 +105,8 @@ public class UserController {
         Map<String, List<PaymentDetailDto>> groupedPayments = new LinkedHashMap<>();
 
         for (PaymentDetailDto payment : paymentList) {
-            String receiptId = payment.getRecepitId();
+        	System.out.println(payment);
+            String receiptId = payment.getReceiptId();
             
             // 맵에 키가 없으면 새 리스트 생성
             if (!groupedPayments.containsKey(receiptId)) {
@@ -115,12 +116,16 @@ public class UserController {
             // 해당 리스트에 현재 payment 추가
             groupedPayments.get(receiptId).add(payment);
         }
+        System.out.println("groupdafdas"+groupedPayments);
         model.addAttribute("groupedPayments", groupedPayments);
         model.addAttribute("user", user);
         model.addAttribute("shoppingCart", shoppingCart);
         model.addAttribute("myPaymentList", paymentList);
         Integer totalPaymentAmount = paymentService.getTotalPaymentAmountByAccountId(user.getId());
+        Integer totalQuantity = paymentService.getTotalQuantityByAccountId(user.getId());
+        System.out.println(totalQuantity);
         model.addAttribute("totalPaymentAmount", totalPaymentAmount);
+        model.addAttribute("totalQuantity", totalQuantity);
         return "user/mypage";
     }
 

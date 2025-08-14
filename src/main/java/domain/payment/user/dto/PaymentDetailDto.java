@@ -22,5 +22,5 @@ public class PaymentDetailDto {
     private Integer price;
     private String publisher;
     private int quantity;		 // 수량
-    private String recepitId;
+    private String receiptId;
 }

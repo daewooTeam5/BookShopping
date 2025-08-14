@@ -80,5 +80,10 @@ public class PaymentService {
     public Integer getTotalPaymentAmountByAccountId(Long accountId) {
         return paymentMapper.getTotalPaymentAmountByAccountId(accountId);
     }
+    
+    public Integer getTotalQuantityByAccountId(Long accountId) {
+        return paymentMapper.getTotalQuantityByAccountId(accountId);
+    	
+    }
 
 }
