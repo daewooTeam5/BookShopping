@@ -68,6 +68,15 @@ button {
 button:hover {
 	background-color: #0056b3;
 }
+
+.back-button {
+	margin-top: 12px;
+	background-color: #6c757d;
+}
+
+.back-button:hover {
+	background-color: #5a6268;
+}
 </style>
 </head>
 <body>
@@ -84,6 +93,7 @@ button:hover {
 			<button type="submit">로그인</button>
 		</form>
 	 <button onclick="location.href='/register'">회원가입</button>
+	 <button onclick="location.href='/guest'" class="back-button">비회원 로그인</button>
 	</div>
 
 </body>

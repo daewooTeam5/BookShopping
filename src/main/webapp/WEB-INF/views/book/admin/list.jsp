@@ -55,6 +55,10 @@ body {
     <div class="d-flex gap-3"> <!-- gap을 사용하여 버튼 간 간격을 자연스럽게 조정 -->
         <a href="${pageContext.request.contextPath}/payment/admin/list"
            class="btn btn-outline-dark btn-lg px-4 shadow-sm">💳 결제 내역</a>
+         <!-- ✅ 리뷰 관리 버튼 추가 -->
+        <a href="${pageContext.request.contextPath}/review/admin/list"
+           class="btn btn-outline-primary btn-lg px-4 shadow-sm">📝 리뷰 관리</a>
+           
         <a href="${pageContext.request.contextPath}/book/admin/writeform"
            class="btn btn-success btn-lg px-4 shadow-sm">➕ 새로운 책 등록</a>
         <!-- 로그아웃 버튼 -->
@@ -66,33 +70,38 @@ body {
         </form>
     </div>
 </div>
-		<!-- 검색 폼 -->
-		<form method="get"
-			action="${pageContext.request.contextPath}/book/admin/list"
-			class="row search-form g-2 mb-3">
-			<div class="col-md-2 col-sm-4">
-				<select name="searchField" class="form-select">
-					<option value="title" ${searchField == 'title' ? 'selected' : ''}>제목</option>
-					<option value="author" ${searchField == 'author' ? 'selected' : ''}>저자</option>
-					<option value="publisher"
-						${searchField == 'publisher' ? 'selected' : ''}>출판사</option>
-				</select>
-			</div>
-			<div class="col-md-6 col-sm-5">
-				<input type="text" name="keyword" placeholder="검색어 입력"
-					value="${keyword}" class="form-control" autocomplete="off" />
-			</div>
-			<div class="col-auto">
-				<button type="submit" class="btn btn-primary px-4">검색</button>
-			</div>
-			<c:if test="${not empty keyword}">
-				<div class="col-auto">
-					<button type="button" class="btn btn-outline-secondary"
-						onclick="history.back();">🔙 뒤로가기</button>
-				</div>
-			</c:if>
-		</form>
-		
+<form method="get"
+    action="${pageContext.request.contextPath}/book/admin/list"
+    class="row search-form g-2 mb-3">
+    <div class="col-md-2 col-sm-4">
+        <select name="searchField" class="form-select">
+            <option value="title" ${searchField == 'title' ? 'selected' : ''}>제목</option>
+            <option value="author" ${searchField == 'author' ? 'selected' : ''}>저자</option>
+            <option value="publisher" ${searchField == 'publisher' ? 'selected' : ''}>출판사</option>
+        </select>
+    </div>
+    <div class="col-md-6 col-sm-5">
+        <input type="text" name="keyword" placeholder="검색어 입력"
+            value="${keyword}" class="form-control" autocomplete="off" />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary px-4">검색</button>
+    </div>
+    <div class="col-auto d-flex align-items-center">
+        <input type="checkbox" id="showDeleted" name="showDeleted"
+            value="Y"
+            <c:if test="${showDeleted == 'Y'}">checked</c:if>
+            onchange="this.form.submit();"
+        />
+        <label for="showDeleted" class="ms-1">삭제된 책 보기</label>
+    </div>
+    <c:if test="${not empty keyword}">
+        <div class="col-auto">
+            <button type="button" class="btn btn-outline-secondary"
+                onclick="history.back();">🔙 뒤로가기</button>
+        </div>
+    </c:if>
+</form>
 		<!-- 도서 테이블 -->
 		<div class="table-responsive shadow-sm rounded-4 bg-white">
 			<table class="table table-hover align-middle mb-0">
@@ -107,6 +116,7 @@ body {
 						<th>장르</th>
 						<th>페이지 수</th>
 						<th>이미지</th>
+						<th>삭제 여부</th>
 						<th class="text-center">관리</th>
 					</tr>
 				</thead>
@@ -126,6 +136,16 @@ body {
 							<td><img
 								src="${pageContext.request.contextPath}/img/${book.image}"
 								alt="표지" class="book-img" /></td>
+							<td>
+							<c:choose>
+								<c:when test="${book.isDeleted == 'Y'}">
+									<span class="text-danger fw-bold">삭제됨</span>
+								</c:when>
+								<c:otherwise>
+									<span class="text-success">정상</span>
+								</c:otherwise>
+							</c:choose>
+							</td>
 							<td class="text-center"><a
 								href="${pageContext.request.contextPath}/book/admin/updateform?id=${book.id}"
 								class="btn btn-sm btn-outline-primary btn-action mb-1">수정</a>
@@ -136,7 +156,7 @@ body {
 									<sec:csrfInput />
 									<input type="hidden" name="id" value="${book.id}" />
 									<button type="submit"
-										class="btn btn-sm btn-outline-danger btn-action mb-1">삭제</button>
+										class="btn btn-sm btn-outline-danger btn-action mb-1" <c:if test="${book.isDeleted == 'Y'}">disabled</c:if>>삭제</button>
 								</form></td>
 						</tr>
 					</c:forEach>

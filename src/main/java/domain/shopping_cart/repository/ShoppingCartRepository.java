@@ -13,15 +13,18 @@ import domain.shopping_cart.dto.ShoppingCartUserDto;
 import domain.shopping_cart.entity.ShoppingCart;
 
 @Mapper
-public interface ShoppingCartRepository {
+public interface ShoppingCartRepository {//비회원 장바구니 account_id를 null처리해도 들어가게끔
+	//db가 다 달라서 진행이 안 되네
 
-	@Insert("INSERT INTO shopping_cart (id, created_at, quantity, book_id, account_id) VALUES (seq_cart_id.nextval, SYSDATE, #{quantity}, #{bookId}, #{accountId})")
-	void addToCart(ShoppingCart cart);
+	
+	//시퀀스, sysdate
+	@Insert("INSERT INTO shopping_cart (id, created_at, quantity, book_id, account_id) VALUES (seq_cart_id.nextval, SYSDATE, #{quantity}, #{bookId , jdbcType=INTEGER}, #{accountId ,jdbcType=BIGINT, jdbcType=BIGINT})")
+	void addToCart(ShoppingCart cart);//null처리
 
 	@Delete("DELETE FROM shopping_cart WHERE id = #{id}")
 	void removeFromCart(Long id);
 
-	@Select("SELECT * FROM shopping_cart WHERE account_id = #{accountId}")
+	@Select("SELECT * FROM shopping_cart WHERE account_id = #{accountId}")//여기 DB가 없어서 그런가
 	List<ShoppingCart> findByAccountId(Long accountId);
 
 	@Select("SELECT sc.id ,b.title,b.author,b.publisher,b.image,b.price,b.genre,b.PUBLISHED_AT as publisedAt,b.page,b.introduction,sc.quantity "
