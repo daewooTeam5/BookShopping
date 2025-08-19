@@ -23,17 +23,21 @@ public class PaymentAdminContoller {
 			@RequestParam(value = "userId", required = false) String userId,
 			@RequestParam(value = "bookTitle", required = false) String bookTitle,
 			@RequestParam(value = "publisher", required = false) String publisher,
+			@RequestParam(value = "genre", required = false) String genre,
 			@RequestParam(value = "fromDate", required = false) String fromDate,
 			@RequestParam(value = "toDate", required = false) String toDate,
 			@RequestParam(value = "minPrice", required = false) Integer minPrice,
 			@RequestParam(value = "maxPrice", required = false) Integer maxPrice, ModelAndView mv) {
 		
 		mv.addObject("paymentList",
-				service.search(userName, userId, bookTitle, publisher, fromDate, toDate, minPrice, maxPrice));
+				service.search(userName, userId, bookTitle, publisher, genre, fromDate, toDate, minPrice, maxPrice));
 	    mv.addObject("totalCount", service.getTotalCount());
 	    mv.addObject("totalAmount", service.getTotalAmount());
 	    mv.addObject("topBooks", service.getTopBooks(5));
 	    mv.addObject("topUsers", service.getTopUsers(5));
+	    
+	    mv.addObject("categorySummary", service.getCategorySummary());
+	    
 		mv.setViewName("/payment/admin/list");
 		return mv;
 	}

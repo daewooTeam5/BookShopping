@@ -13,6 +13,7 @@
 		b.title AS bookTitle,
 		b.author AS bookAuthor,
 		b.publisher AS bookPublisher,
+		b.genre AS bookGenre,
 		b.price AS bookPrice,
 		p.quantity
 		FROM payment p
@@ -32,6 +33,9 @@
 			<if test="publisher != null and publisher != ''">
                 <![CDATA[ AND b.publisher LIKE '%' || #{publisher} || '%' ]]>
 			</if>
+			<if test="genre != null and genre != ''">
+        		<![CDATA[ AND b.genre = #{genre} ]]>
+      		</if>
 			<if test="fromDate != null and fromDate != ''">
     			<![CDATA[ AND p.created_at >= #{fromDate, jdbcType=DATE} ]]>
 			</if>
