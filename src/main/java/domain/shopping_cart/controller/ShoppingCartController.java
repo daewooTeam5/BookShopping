@@ -25,8 +25,9 @@ public class ShoppingCartController {
 
 	@PostMapping
 	public String addToCart(Authentication auth,ShoppingCart cart) {
-		
-		shoppingCartService.addToCart(cart,auth.getName());
+
+	 shoppingCartService.addToCart(cart,auth.getName());
+
 		return "redirect:/book/list";
 	}
 

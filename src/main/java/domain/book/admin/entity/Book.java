@@ -27,4 +27,5 @@ public class Book {
     private String genre;
     private int page;
     private String introduction;
+    private String isDeleted;
 }

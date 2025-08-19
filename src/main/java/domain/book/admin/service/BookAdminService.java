@@ -1,7 +1,6 @@
 package domain.book.admin.service;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,72 +14,74 @@ import domain.book.admin.repository.BookAdminRepository;
 
 @Service("bookAdminService")
 public class BookAdminService {
-	@Autowired
-	BookAdminRepository mapper;
+    @Autowired
+    BookAdminRepository mapper;
 
-	public BookAdminService() {
-	}
+    public BookAdminService() {}
 
-	public List<Book> findAll() {
-		return mapper.findAll();
-	}
+    // 삭제 안 된 책 전체 조회
+    public List<Book> findAll() {
+        return mapper.findAll();
+    }
 
-	public List<Book> searchByField(String field, String keyword) {
-		return mapper.searchByField(field, keyword);
-	}
+    // 삭제 안 된 책 검색
+    public List<Book> searchByField(String field, String keyword) {
+        return mapper.searchByField(field, keyword);
+    }
 
-	public boolean save(Book book, MultipartFile imageFile, HttpServletRequest request) {
-	    // 업로드 폴더 경로 (경로는 운영 환경에 맞게 조정)
-		String realPath = request.getServletContext().getRealPath("/img");
+    // [★] 삭제된 책 포함 전체 조회 (관리자용)
+    public List<Book> findAllWithDeleted() {
+        return mapper.findAllWithDeleted();
+    }
 
-	    // 업로드할 파일명
-	    String originalName = imageFile.getOriginalFilename();
+    // [★] 삭제된 책 포함 검색 (관리자용)
+    public List<Book> searchByFieldWithDeleted(String field, String keyword) {
+        return mapper.searchByFieldWithDeleted(field, keyword);
+    }
 
-	    // 실제 저장될 전체 경로
-	    File saveFile = new File(realPath, originalName);
-	    try {
-	        // 파일이 비어있지 않으면 저장
-	        if (!imageFile.isEmpty()) {
-	            imageFile.transferTo(saveFile);
-	        }
+    // 책 등록
+    public boolean save(Book book, MultipartFile imageFile, HttpServletRequest request) {
+        String realPath = request.getServletContext().getRealPath("/img");
+        String originalName = imageFile.getOriginalFilename();
+        File saveFile = new File(realPath, originalName);
+        try {
+            if (!imageFile.isEmpty()) {
+                imageFile.transferTo(saveFile);
+            }
+            book.setImage(originalName);
+            int result = mapper.save(book);
+            return result > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
-	        // 책 객체에 파일명 저장 (DB에 저장할 용도)
-	        book.setImage(originalName);
+    // 상세조회(삭제X만)
+    public Book findById(int id) {
+        return mapper.findById(id);
+    }
 
-	        // DB 저장
-	        int result = mapper.save(book);
-	        return result > 0;
+    // 수정(삭제X만)
+    public boolean update(Book book, MultipartFile imageFile, HttpServletRequest request) {
+        try {
+            if (imageFile != null && !imageFile.isEmpty()) {
+                String fileName = imageFile.getOriginalFilename();
+                String savePath = request.getServletContext().getRealPath("/img");
+                File file = new File(savePath, fileName);
+                imageFile.transferTo(file);
+                book.setImage(fileName);
+            }
+            return mapper.update(book) > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return false;
-	    }
-	}
-
-	public Book findById(int id) {
-		return mapper.findById(id);
-	}
-
-	public boolean update(Book book, MultipartFile imageFile, HttpServletRequest request) {
-	    try {
-	        // 이미지가 새로 업로드된 경우
-	        if (imageFile != null && !imageFile.isEmpty()) {
-	            String fileName = imageFile.getOriginalFilename();
-	            String savePath = request.getServletContext().getRealPath("/img");
-	            File file = new File(savePath, fileName);
-	            imageFile.transferTo(file); // 저장
-	            book.setImage(fileName);    // Book 객체에 이미지 파일명 설정
-	        }
-
-	        return mapper.update(book) > 0;
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return false;
-	    }
-	}
-
-	public boolean delete(int id) {
-		int result = mapper.delete(id);
-	    return result > 0;
-	}	
+    // 논리적 삭제
+    public boolean delete(int id) {
+        int result = mapper.delete(id);
+        return result > 0;
+    }
 }

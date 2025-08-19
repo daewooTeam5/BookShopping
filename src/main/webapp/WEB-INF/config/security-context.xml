@@ -18,22 +18,30 @@
 		<intercept-url pattern="/book/list" access="permitAll" />
 		<intercept-url pattern="/book/view" access="permitAll" />
 		<intercept-url pattern="/login" access="permitAll" />
+		<intercept-url pattern="/cart/**" access="permitAll" />
+		<intercept-url pattern="/cart" access="permitAll" />
+
+		<intercept-url pattern="/payment/**"
+			access="permitAll" />
 
 		<!-- 관리자만 접근 가능한 경로: admin 아래부터 먼저 처리 -->
 		<intercept-url pattern="/payment/admin/**"
 			access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/book/admin/**"
 			access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/review/admin/**"
+			access="hasRole('ROLE_ADMIN')" />
 
 		<!-- 로그인한 사용자만 접근 가능한 경로 -->
+		
 		<intercept-url pattern="/user/my-page"
 			access="isAuthenticated()" />
-		<intercept-url pattern="/cart/**"
+		<!--  <intercept-url pattern="/cart/**"
 			access="isAuthenticated()" />
 		<intercept-url pattern="/cart"
 			access="isAuthenticated()" />
 		<intercept-url pattern="/payment/**"
-			access="isAuthenticated()" />
+			access="isAuthenticated()" />-->
 
 		<!-- 로그인 및 로그아웃 처리 -->
 		<form-login login-page="/user/login"
@@ -50,6 +58,7 @@
 	</authentication-manager>
 	<beans:bean id="customAuthenticationSuccessHandler"
 		class="global.security.CustomAuthenticationSuccessHandler" />
+		
 	<beans:bean id="customAccessDeniedHandler"
 		class="global.security.CustomAccessDeniedHandler" />
 </beans:beans>
