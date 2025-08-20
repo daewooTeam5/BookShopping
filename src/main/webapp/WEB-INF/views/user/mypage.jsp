@@ -66,7 +66,7 @@ body {
 		style="height: 80px;">
 		<div
 			class="d-flex justify-content-center align-items-center h-80 mb-2">
-			<a href="/book/list"> <img src="/img/book.png" height="65px"
+			<a href="/book/main"> <img src="/img/book.png" height="65px"
 				alt="로고" />
 			</a>
 		</div>

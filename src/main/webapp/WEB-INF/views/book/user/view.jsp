@@ -85,7 +85,7 @@
 <header class="container narrow-container mt-3 border-bottom">
 	<div class="d-flex justify-content-between align-items-center mb-4 position-relative" style="line-height: 65px">
 		<div class="position-absolute top-0 start-50 translate-middle-x">
-			<a href="/book/list"> 
+			<a href="/book/main"> 
 				<img src="/img/book.png" height="65px" />
 			</a>
 		</div>
@@ -111,11 +111,14 @@
 		</c:choose>
 	</div>
 </header>
-
+	
+	<div class="container narrow-container ">
+	<%@ include file="/WEB-INF/views/book/user/navigation.jsp" %>
+	</div>
 <div class="container container-narrow mt-5">
 	<div class="row g-4">
 		<div class="col-md-4 text-center">
-			<img src="/img/${book.image}" alt="도서 이미지" class="img-thumbnail book-image">
+			<img src="${book.image}" alt="도서 이미지" class="img-thumbnail book-image">
 		</div>
 		<div class="col-md-8">
 			<h4 class="mb-2 fw-bold">${book.title}</h4>
@@ -254,7 +257,7 @@
 		<c:forEach var="recBook" items="${recommendedBooks}">
 			<div class="book-card">
 				<a href="/book/view?id=${recBook.id}">
-					<img src="${pageContext.request.contextPath}/img/${recBook.image}" alt="${recBook.title}">
+					<img src="${recBook.image}" alt="${recBook.title}">
 				</a>
 				<div class="title">${recBook.title}</div>
 			</div>

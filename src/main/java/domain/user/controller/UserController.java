@@ -83,7 +83,7 @@ public class UserController {
 
     @GetMapping("/")
     public String mainPage() {
-        return "redirect:/book/list";
+        return "redirect:/book/main";
     }
 
     @GetMapping("user/login")

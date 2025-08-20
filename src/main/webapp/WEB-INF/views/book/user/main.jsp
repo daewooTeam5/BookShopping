@@ -105,6 +105,8 @@
 
 <%@ include file="/WEB-INF/views/book/user/header.jsp" %>
 
+<%@ include file="/WEB-INF/views/book/user/navigation.jsp" %>
+
 <!-- 광고 슬라이더 -->
 <div id="adCarousel" class="carousel slide rounded overflow-hidden" 
      data-bs-ride="carousel" data-bs-interval="500">
@@ -148,7 +150,7 @@
 
             <div class="book-card">
                 <a href="/book/view?id=${book.id}">
-                    <img src="${pageContext.request.contextPath}/img/${book.image}" alt="${book.title}">
+                    <img src="${book.image}" alt="${book.title}">
                 </a>
                 <div class="title">${book.title}</div>
             </div>
@@ -180,7 +182,7 @@
                         ${status.index + 1}
                     </div>
                     <a href="/book/view?id=${book.id}">
-                        <img src="${pageContext.request.contextPath}/img/${book.image}" alt="${book.title}">
+                        <img src="${book.image}" alt="${book.title}">
                     </a>
                     <div class="title">${book.title}</div>
                 </div>

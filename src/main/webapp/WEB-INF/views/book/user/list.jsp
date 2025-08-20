@@ -113,6 +113,10 @@ border:none;
 			</c:choose>
 		</div>
 	</header>
+	
+	<div class="container narrow-container ">
+	<%@ include file="/WEB-INF/views/book/user/navigation.jsp" %>
+	</div>
 
 
 	<div class="container narrow-container mt-5">
