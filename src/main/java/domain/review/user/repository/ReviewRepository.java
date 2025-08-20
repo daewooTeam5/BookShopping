@@ -1,14 +1,16 @@
-package domain.review.repository;
+package domain.review.user.repository;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
-import domain.review.dto.ReviewStatistic;
-import domain.review.entity.Review;
-import domain.review.entity.ReviewUserDto;
+import domain.review.user.dto.ReviewStatistic;
+import domain.review.user.entity.Review;
+import domain.review.user.entity.ReviewUserDto;
 
+@Mapper
 public interface ReviewRepository {
 	@Insert("INSERT INTO review (ratings,contents,account_id,book_id) values(#{ratings},#{contents},#{accountId},#{bookId})")
 	int save(Review review);

@@ -1,10 +1,10 @@
-package domain.review.service;
+package domain.review.user.service;
 
 import org.springframework.stereotype.Service;
 
-import domain.review.dto.CreateReviewDto;
-import domain.review.entity.Review;
-import domain.review.repository.ReviewRepository;
+import domain.review.user.dto.CreateReviewDto;
+import domain.review.user.entity.Review;
+import domain.review.user.repository.ReviewRepository;
 import global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 

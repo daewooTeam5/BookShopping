@@ -37,8 +37,19 @@ public class ReviewAdminController {
         }
 
         mv.addObject("searchField", searchField);
+        mv.addObject("reviewForWeekdays",service.getReviewForWeekday());
+        mv.addObject("ratingCount",service.getAllRatingForCount());
+
         mv.addObject("keyword", keyword);
         mv.addObject("top5", service.getTop5ByAvgRating());
+        System.out.println(service.getTopReviewer());
+        mv.addObject("top5Review",service.getTopReviewer());
+
+        // Add chart data
+        mv.addObject("dailyStats", service.getDailyStats());
+        mv.addObject("monthlyStats", service.getMonthlyStats());
+        mv.addObject("yearlyStats", service.getYearlyStats());
+
         mv.setViewName("review/admin/list");
         return mv;
     }

@@ -1,4 +1,4 @@
-package domain.review.dto;
+package domain.review.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,11 +8,11 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
-@NoArgsConstructor
 @AllArgsConstructor
-public class CreateReviewDto {
-	private Long bookId;
-	private String content;
-	private Byte ratings;
+@NoArgsConstructor
+@ToString
+public class ReviewStatistic {
+	private Double ratingAvg;
+	private Integer totalRatings;
+
 }

@@ -69,7 +69,7 @@
 	<div class="container container-narrow mt-5">
 		<div class="row g-4">
 			<div class="col-md-4 text-center">
-				<img src="/img/${book.image}" alt="도서 이미지"
+				<img src="${book.image}" alt="도서 이미지"
 					class="img-thumbnail book-image">
 			</div>
 

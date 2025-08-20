@@ -1,4 +1,4 @@
-package domain.review.entity;
+package domain.review.user.entity;
 
 
 import lombok.AllArgsConstructor;

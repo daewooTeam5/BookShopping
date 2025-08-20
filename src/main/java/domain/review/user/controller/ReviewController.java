@@ -1,12 +1,12 @@
-package domain.review.controller;
+package domain.review.user.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import domain.review.dto.CreateReviewDto;
-import domain.review.service.ReviewService;
+import domain.review.user.dto.CreateReviewDto;
+import domain.review.user.service.ReviewService;
 import domain.user.entity.UserEntity;
 import domain.user.service.UserService;
 import global.exception.ApiException;

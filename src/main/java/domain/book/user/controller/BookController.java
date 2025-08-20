@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import domain.book.user.dto.Book;
 import domain.book.user.dto.PageList;
 import domain.book.user.service.BookService;
-import domain.review.repository.ReviewRepository;
+import domain.review.user.repository.ReviewRepository;
 
 
 @Controller

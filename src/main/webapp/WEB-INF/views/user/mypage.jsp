@@ -186,7 +186,7 @@ body {
                                             <div class="item-row" data-price="${item.price}">
                                                 <input type="checkbox" name="cartIds" value="${item.id}" class="item-checkbox" checked>
                                                 <div class="item-details">
-                                                    <img src="/img/${item.image}" alt="${item.title}"
+                                                    <img src="${item.image}" alt="${item.title}"
                                                         class="cart-item-img ml-3">
                                                     <div class="item-info">
                                                         <h5>${item.title}</h5>
@@ -264,7 +264,7 @@ body {
 														</td>
 													</c:if>
 													<td>${payment.title}</td>
-													<td><img src="/img/${payment.image}"
+													<td><img src="${payment.image}"
 														class="cart-item-img" /></td>
 													<td>${payment.genre}</td>
 													<td>${payment.publisher}</td>
