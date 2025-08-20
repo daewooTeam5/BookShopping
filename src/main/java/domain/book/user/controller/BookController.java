@@ -10,6 +10,8 @@ import domain.book.user.dto.Book;
 import domain.book.user.dto.PageList;
 import domain.book.user.service.BookService;
 import domain.review.repository.ReviewRepository;
+import org.springframework.web.bind.annotation.RequestMethod;
+
 
 
 @Controller
@@ -47,6 +49,16 @@ public class BookController {
 	    model.addAttribute("book", book);
 	    model.addAttribute("reviews", reviewRepository.findAllUserJoinWriter(id));
 	    model.addAttribute("reviewStatistic", reviewRepository.getBookReviewStatistic(id));
+
+	    model.addAttribute("recommendedBooks", service.getRandomBooks());
+
 	    return "book/user/view";
 	}
+	
+	@RequestMapping("main")
+    public String main(Model model) {
+        model.addAttribute("popularBooks", service.getPopularBooks());
+        model.addAttribute("bestSellers", service.getBestSellers());
+        return "book/user/main";
+    }
 }
