@@ -151,7 +151,7 @@ border:none;
 						<div class="col">
 							<div class="d-flex align-items-start py-3 border-bottom">
 								<a href="/book/view?id=${book.id}"> <img
-									src="/img/${book.image}" class="img-thumbnail border-0"
+									src="${book.image}" class="img-thumbnail border-0"
 									style="width: 120px; height: 160px;">
 								</a>
 								<div class="ms-3 me-100 book-text">

@@ -42,6 +42,7 @@
 	border-radius: 5px;
 }
 
+
 .book-card .title {
 	margin-top: 8px;
 	font-size: 14px;
