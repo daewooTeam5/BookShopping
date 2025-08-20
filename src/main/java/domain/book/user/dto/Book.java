@@ -22,4 +22,9 @@ public class Book {
 	private Date published_at;
 	private Integer page;
 	private String introduction; 
+	
+	private Double avgRating;   // 평균 평점
+    private Integer reviewCount; // 리뷰 개수
+    private Integer salesCount;  // 판매량
+    private Double score;
 }
