@@ -1,12 +1,9 @@
 package domain.payment.admin.repository;
 
 import java.util.List;
-import java.util.Map;
-
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectProvider;
 
 import domain.payment.admin.dto.PaymentRank;
 import domain.payment.admin.entity.PaymentAdmin;
@@ -24,7 +21,8 @@ public interface PaymentAdminMapper {
             "b.author AS bookAuthor, " +
             "b.publisher AS bookPublisher, " +
             "b.genre AS bookGenre, " +
-            "b.price AS bookPrice " +
+            "b.price AS bookPrice, " +
+            "p.quantity " + // quantity 필드 추가
             "FROM payment p " +
             "JOIN account a ON p.account_id = a.id " +
             "JOIN book b ON p.book_id = b.id " +
@@ -42,20 +40,21 @@ public interface PaymentAdminMapper {
                                @Param("minPrice") Integer minPrice,
                                @Param("maxPrice") Integer maxPrice);
     
-    // �쟾泥� 寃곗젣 嫄댁닔
+    // 전체 결제 건수
     @Select("SELECT sum(quantity) as count FROM payment")
     int countAll();
 
-    // �쟾泥� 寃곗젣 湲덉븸
+    // 전체 결제 금액
     @Select("SELECT COALESCE(SUM(b.price*p.quantity), 0) FROM payment p JOIN book b ON p.book_id = b.id")
     int sumAll();
 
-    // �룄�꽌蹂� 寃곗젣 TOP 5
+    // 도서별 결제 TOP 5
     List<PaymentRank> topBooks(@Param("limit") int limit);
 
-    // �쉶�썝蹂� 寃곗젣 TOP 5
+    // 회원별 결제 TOP 5
     List<PaymentRank> topUsers(@Param("limit") int limit);
     
+    // 카테고리별 요약
     @Select("SELECT " +
             "NVL(b.genre, '미지정') AS name, " +
             "SUM(p.quantity)        AS count, " +
@@ -66,5 +65,4 @@ public interface PaymentAdminMapper {
             "ORDER BY count DESC"
     )
     List<PaymentRank> categorySummary();
-
 }

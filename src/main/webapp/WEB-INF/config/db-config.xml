@@ -9,7 +9,7 @@
 
 	<!-- Database & MyBatis Configuration -->
 	<context:property-placeholder
-		location="classpath:bookShopping/db.properties" />
+		location="classpath:db.properties" />
 
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<property name="driverClassName"
