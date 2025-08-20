@@ -23,7 +23,7 @@
 	color: inherit; /* 부모의 글자 색상 상속 */
 	text-decoration: none;
 }
-
+a
 .book-title-link:hover, .genre-link:hover {
 	text-decoration: underline;
 	color: #007bff; /* 원하는 hover 색상 */

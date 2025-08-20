@@ -26,7 +26,18 @@ public class BookService {
 	public List<GenreCount> getGenreCounts() {
 	    return dao.findGenreCounts();
 	}
+	
+	public List<Book> getPopularBooks() {
+        return dao.findPopularBooks();
+    }
 
+    public List<Book> getBestSellers() {
+        return dao.findBestSellerBooks();
+    }
+
+    public List<Book> getRandomBooks() {
+        return dao.findRandomBooks();
+    }
 	
 	public PageList getPageList(int requestPage, String field, String keyword, String genre) {
 	    try {
