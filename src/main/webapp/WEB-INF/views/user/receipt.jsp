@@ -32,7 +32,7 @@
             margin-top: 10px;
         }
 
-        th,td {
+        th, td {
             border: 1px; 
             padding: 15px;
             text-align: left;
