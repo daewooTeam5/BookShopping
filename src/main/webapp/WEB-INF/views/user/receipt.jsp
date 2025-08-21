@@ -109,7 +109,7 @@
             </tr>
             <tr>
                 <th>이미지</th>
-                <td><img src="/img/${image}" alt="${title}" style="max-width:100px;"></td>
+                <td><img src="${image}" class="cart-item-img" /></td>
             </tr>
             <tr>
                 <th>장르</th>
