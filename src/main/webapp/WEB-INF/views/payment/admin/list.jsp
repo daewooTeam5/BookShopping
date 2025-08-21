@@ -100,12 +100,12 @@
                 <h6 class="text-muted mb-1">Top 5 도서</h6>
                 <c:if test="${!empty topBooks}">
                   <c:forEach var="book" items="${topBooks}">
-                    <h5 class="mb-0 text-truncate" title="${book.name}">
+                    <h5 class="mb-0 text-truncate" style="font-size: 0.8rem; font-weight: bold;" title="${book.name}">
                        ${book.name}
                     </h5>
                     <p class="text-muted mb-0" style="font-size: 0.8rem">
                       <fmt:formatNumber value="${book.totalPrice}" type="currency" currencySymbol="₩"/> (${book.count}건)
-                    </p>
+                    </p><br>
                   </c:forEach>
                 </c:if>
               </div>
