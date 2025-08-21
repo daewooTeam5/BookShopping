@@ -54,7 +54,7 @@ public class BookController {
 	    model.addAttribute("reviews", reviewRepository.findAllUserJoinWriter(id));
 	    model.addAttribute("reviewStatistic", reviewRepository.getBookReviewStatistic(id));
 
-	    model.addAttribute("recommendedBooks", service.getRandomBooks());
+	    model.addAttribute("recommendedBooks", service.getRecommandBook(id));
 
 	    return "book/user/view";
 	}
