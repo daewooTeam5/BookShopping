@@ -1,20 +1,23 @@
 package domain.book.user.service;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import domain.book.user.dto.Book;
+import domain.book.user.dto.GenreCount;
 import domain.book.user.dto.PageList;
 import domain.book.user.repository.BookRepository;
-import domain.book.user.dto.GenreCount;
 
 
 
 @Service
 public class BookService {
+	@Autowired
+	RestTemplate restTemplate;
 
 	@Autowired
 	BookRepository dao;
@@ -37,6 +40,16 @@ public class BookService {
 
     public List<Book> getRandomBooks() {
         return dao.findRandomBooks();
+    }
+    public List<Book> getRecommandBook(Long currentId) {
+    	System.out.println("call python api ");
+        String url = "http://127.0.0.1:8848/recommend_by_id?book_id=" + currentId + "&top_n=5";
+
+        // API 호출
+        Book[] recommendedBooks = restTemplate.getForObject(url, Book[].class);
+        System.out.println(recommendedBooks);
+
+        return Arrays.asList(recommendedBooks);
     }
 	
 	public PageList getPageList(int requestPage, String field, String keyword, String genre) {
