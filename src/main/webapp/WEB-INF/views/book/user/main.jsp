@@ -109,6 +109,10 @@ margin-bottom:25px;
 line-height: 15px;
 
 }
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1); /* 흰색 → 검정으로 뒤집기 */
+}
 </style>
 </head>
 <body class="container mt-4">
