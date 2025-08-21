@@ -92,6 +92,7 @@
           </div>
         </div>
       </div>
+      <!-- 
       <div class="col-sm-6 col-lg-3">
         <div class="card summary-card">
           <div class="card-body">
@@ -134,6 +135,7 @@
           </div>
         </div>
       </div>
+      -->
     </div>
 
     <!-- ===== 차트 섹션 (2개 나란히) ===== -->
@@ -143,7 +145,6 @@
           <div class="card-header d-flex flex-wrap gap-2 justify-content-between align-items-center">
             <span>구매현황</span>
             <div class="d-flex align-items-center gap-2">
-              <label class="me-2">주기</label>
               <select id="chartTypeSelect" class="form-select">
                 <option value="daily7">일(최근 7일)</option>
                 <option value="monthlyThisYear">월</option>
@@ -430,7 +431,7 @@
     function aggYearlyCount(){
       const map = new Map();
       norm.forEach(p=>{
-        const y = String(p.getFullYear());
+    	const y = String(p.date.getFullYear());
         map.set(y,(map.get(y)||0)+1);
       });
       const labels = Array.from(map.keys()).sort();
