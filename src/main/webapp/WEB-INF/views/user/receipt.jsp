@@ -101,7 +101,7 @@
            
             <tr>
                 <th>결제일</th>
-                <td>${fn:replace(createdAt, "T", " ")}</td>
+                <td>${fn:replace(createdAt, "T", " ")}</td><!-- T를 제외하고 출력 -->
             </tr>
             <tr>
                 <th>책 제목</th>
@@ -120,7 +120,7 @@
                 <td>${publisher}</td>
             </tr>
             <tr>
-                <th>결제 금액</th>
+                <th>결제 금액</th><!-- 소수점 아래 자리 없애고 *로 수량만큼 곱셈 -->
                 <td><fmt:formatNumber value="${price * quantity}" type="currency" currencySymbol="" maxFractionDigits="0" />원</td>
             </tr>
             <tr>
