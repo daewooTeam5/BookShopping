@@ -203,5 +203,5 @@ line-height: 15px;
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-<div class="allight"> © 2025 Daewoo Team:2 All Rights Reserved.</div>
+<div class="allight"> © 2025 Daewoo Team:5 All Rights Reserved.</div>
 </html>
