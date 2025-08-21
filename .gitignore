@@ -72,6 +72,6 @@ local.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/eclipse
 target/
-src/main/resources/bookShopping/db.properties
+src/main/resources/db.properties
 src/main/resources/application.properties
 
