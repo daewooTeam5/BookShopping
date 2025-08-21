@@ -23,7 +23,7 @@
 	color: inherit; /* 부모의 글자 색상 상속 */
 	text-decoration: none;
 }
-
+a
 .book-title-link:hover, .genre-link:hover {
 	text-decoration: underline;
 	color: #007bff; /* 원하는 hover 색상 */
@@ -119,6 +119,10 @@ border:none;
 			</c:choose>
 		</div>
 	</header>
+	
+	<div class="container narrow-container ">
+	<%@ include file="/WEB-INF/views/book/user/navigation.jsp" %>
+	</div>
 
 
 	<div class="container narrow-container mt-5">
@@ -157,7 +161,7 @@ border:none;
 						<div class="col">
 							<div class="d-flex align-items-start py-3 border-bottom">
 								<a href="/book/view?id=${book.id}"> <img
-									src="/img/${book.image}" class="img-thumbnail border-0"
+									src="${book.image}" class="img-thumbnail border-0"
 									style="width: 120px; height: 160px;">
 								</a>
 								<div class="ms-3 me-100 book-text">

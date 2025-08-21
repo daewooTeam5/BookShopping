@@ -9,7 +9,7 @@ public class Review {
     private Long id;
     private Long accountId; // account_id
     private Long bookId;    // book_id
-    private String rating;
+    private String ratings;
     private String contents;
     private String bookTitle;
 }

@@ -15,11 +15,11 @@ public interface BookAdminRepository {
 
     // 1. 전체 목록 (삭제X만)
     @Select("SELECT id, title, author, publisher, image, price, published_at AS publishedAt, genre, page, introduction, is_deleted AS isDeleted " +
-            "FROM book WHERE is_deleted = 'N'")
+            "FROM book WHERE is_deleted = 'N' and rownum <100")
     List<Book> findAll();
 
     // 2. 전체 목록 (삭제 포함, 관리자)
-    @Select("SELECT id, title, author, publisher, image, price, published_at AS publishedAt, genre, page, introduction, is_deleted AS isDeleted FROM book")
+    @Select("SELECT id, title, author, publisher, image, price, published_at AS publishedAt, genre, page, introduction, is_deleted AS isDeleted FROM book where rownum<200")
     List<Book> findAllWithDeleted();
 
     // 3. 검색(삭제X만)

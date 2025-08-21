@@ -1,4 +1,4 @@
-package domain.review.controller;
+package domain.review.user.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 

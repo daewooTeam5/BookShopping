@@ -24,7 +24,7 @@
                 <c:forEach var="item" items="${purchaseItems}">
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center">
-                            <img src="${pageContext.request.contextPath}/img/${item.image}" alt="${item.title}" class="item-img rounded">
+                            <img src="${item.image}" alt="${item.title}" class="item-img rounded">
                             <div>
                                 <h6 class="my-0">${item.title}</h6>
                                 <small class="text-muted">${item.quantity}개</small>

@@ -134,7 +134,7 @@ body {
 							<td>${book.genre}</td>
 							<td>${book.page}</td>
 							<td><img
-								src="${pageContext.request.contextPath}/img/${book.image}"
+								src="${book.image}"
 								alt="표지" class="book-img" /></td>
 							<td>
 							<c:choose>

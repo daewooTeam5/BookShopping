@@ -1,12 +1,9 @@
 package domain.payment.admin.repository;
 
 import java.util.List;
-import java.util.Map;
-
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectProvider;
 
 import domain.payment.admin.dto.PaymentRank;
 import domain.payment.admin.entity.PaymentAdmin;
@@ -23,7 +20,9 @@ public interface PaymentAdminMapper {
             "b.title AS bookTitle, " +
             "b.author AS bookAuthor, " +
             "b.publisher AS bookPublisher, " +
-            "b.price AS bookPrice " +
+            "b.genre AS bookGenre, " +
+            "b.price AS bookPrice, " +
+            "p.quantity " + // quantity 필드 추가
             "FROM payment p " +
             "JOIN account a ON p.account_id = a.id " +
             "JOIN book b ON p.book_id = b.id " +
@@ -35,6 +34,7 @@ public interface PaymentAdminMapper {
                                @Param("userId") String userId,
                                @Param("bookTitle") String bookTitle,
                                @Param("publisher") String publisher,
+                               @Param("genre") String genre,
                                @Param("fromDate") String fromDate,
                                @Param("toDate") String toDate,
                                @Param("minPrice") Integer minPrice,
@@ -53,4 +53,16 @@ public interface PaymentAdminMapper {
 
     // 회원별 결제 TOP 5
     List<PaymentRank> topUsers(@Param("limit") int limit);
+    
+    // 카테고리별 요약
+    @Select("SELECT " +
+            "NVL(b.genre, '미지정') AS name, " +
+            "SUM(p.quantity)        AS count, " +
+            "SUM(b.price * p.quantity) AS totalPrice " +
+            "FROM payment p " +
+            "JOIN book b ON p.book_id = b.id " +
+            "GROUP BY b.genre " +
+            "ORDER BY count DESC"
+    )
+    List<PaymentRank> categorySummary();
 }

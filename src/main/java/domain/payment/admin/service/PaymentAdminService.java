@@ -1,8 +1,6 @@
 package domain.payment.admin.service;
 
 import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +18,9 @@ public class PaymentAdminService {
 		return mapper.findAll();
 	}
 
-	public List<PaymentAdmin> search(String userName, String userId, String bookTitle, String publisher,
+	public List<PaymentAdmin> search(String userName, String userId, String bookTitle, String publisher, String genre,
 			String fromDate, String toDate, Integer minPrice, Integer maxPrice) {
-		return mapper.search(userName, userId, bookTitle, publisher, fromDate, toDate, minPrice, maxPrice);
+		return mapper.search(userName, userId, bookTitle, publisher, genre, fromDate, toDate, minPrice, maxPrice);
 	}
 
 	public int getTotalCount() {
@@ -40,4 +38,6 @@ public class PaymentAdminService {
 	public List<PaymentRank> getTopUsers(int limit) {
 		return mapper.topUsers(limit);
 	}
+	
+	public List<PaymentRank> getCategorySummary() { return mapper.categorySummary(); }
 }

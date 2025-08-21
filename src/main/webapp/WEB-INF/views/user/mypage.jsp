@@ -91,7 +91,7 @@ th {
 		style="height: 80px;">
 		<div
 			class="d-flex justify-content-center align-items-center h-80 mb-2">
-			<a href="/book/list"> <img src="/img/book.png" height="65px"
+			<a href="/book/main"> <img src="/img/book.png" height="65px"
 				alt="로고" />
 			</a>
 		</div>
@@ -212,6 +212,7 @@ th {
 					<div class="card-body">
 						<c:choose>
 							<c:when test="${not empty shoppingCart}">
+
 								<form id="order-form"
 									action="${pageContext.request.contextPath}/payment/addressFormFromCart"
 									method="post">
@@ -251,6 +252,7 @@ th {
 									</div>
 									<button type="submit" class="btn btn-primary btn-block mt-3">주문하기</button>
 								</form>
+
 							</c:when>
 							<c:otherwise>
 								<p class="text-center">장바구니에 담긴 상품이 없습니다.</p>
@@ -307,7 +309,7 @@ th {
 															${fn:replace(payment.createdAt, "T", " ")}</td>
 													</c:if>
 													<td>${payment.title}</td>
-													<td><img src="/img/${payment.image}"
+													<td><img src="${payment.image}"
 														class="cart-item-img" /></td>
 													<td>${payment.genre}</td>
 													<td>${payment.publisher}</td>

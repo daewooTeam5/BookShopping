@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import domain.shopping_cart.dto.ShoppingCartDto;
 import domain.shopping_cart.entity.ShoppingCart;
 import domain.shopping_cart.service.ShoppingCartService;
+import global.exception.ApiException;
 
 @Controller
 @RequestMapping("/cart")
@@ -25,6 +26,9 @@ public class ShoppingCartController {
 
 	@PostMapping
 	public String addToCart(Authentication auth,ShoppingCart cart) {
+		if(auth==null) {
+			throw new ApiException("로그인후 이용해주세요");
+		}
 
 	 shoppingCartService.addToCart(cart,auth.getName());
 
