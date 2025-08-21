@@ -13,6 +13,7 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class UserEntity {
 
 	private Long id;

@@ -75,8 +75,14 @@ border:none;
 					<sec:authorize access="hasRole('ROLE_ADMIN')">
 						<a href="/book/admin/list"
 							class="btn btn-outline-danger btn-sm me-3">관리자 페이지</a>
+							<form action="/logout" method="post" style="display: inline-block">
+							<a href="/user/my-page"
+							class="btn btn-outline-success btn-sm me-2">내 정보</a>
+							<sec:csrfInput />
+							<button type='submit' class="btn btn-secondary btn-sm">로그아웃</button>
+						</form>
 					</sec:authorize>
-					<sec:authorize access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">
+					<sec:authorize access="hasRole('ROLE_USER')">
 					<div class="ti">USER</div>
 					<div class="me-3">
 						<a href="/user/my-page"
