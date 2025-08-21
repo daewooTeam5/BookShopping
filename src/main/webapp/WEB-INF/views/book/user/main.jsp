@@ -89,7 +89,7 @@
     background-color: #f5f5f5;
     padding: 30px 15px;
     border-radius: 10px;
-    margin-bottom: 60px; /* 아래 여백 증가 */
+    margin-bottom: 50px; /* 아래 여백 증가 */
 }
 .best-seller-section .book-card {
     margin: 0 auto;
@@ -98,6 +98,16 @@
 /* 공통 섹션 마진 */
 .popular-section {
     margin-left: 55px;
+}
+
+.allight{
+text-align:center;
+font-size:22px;
+border:none;
+font-weight: bold;
+margin-bottom:25px;
+line-height: 15px;
+
 }
 </style>
 </head>
@@ -193,4 +203,5 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+<div class="allight"> © 2025 Daewoo Team:2 All Rights Reserved.</div>
 </html>
