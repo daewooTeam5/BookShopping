@@ -119,7 +119,7 @@ line-height: 15px;
 
 <!-- 광고 슬라이더 -->
 <div id="adCarousel" class="carousel slide rounded overflow-hidden" 
-     data-bs-ride="carousel" data-bs-interval="500">
+     data-bs-ride="carousel" data-bs-interval="3000">
     <div class="carousel-inner rounded overflow-hidden">
         <div class="carousel-item active">
             <img src="https://contents.kyobobook.co.kr/advrcntr/IMAC/creatives/2025/08/13/66873/NEWBOOK.png" 
