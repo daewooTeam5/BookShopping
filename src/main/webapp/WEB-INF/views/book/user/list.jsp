@@ -66,7 +66,7 @@ border:none;
 			class="d-flex justify-content-between align-items-center  mb-4 position-relative" style="line-height:65px">
 
 			<div class="position-absolute top-0 start-50 translate-middle-x">
-				<a href="/book/list"> <img src="/img/book.png" height="65px" />
+				<a href="/book/main"> <img src="/img/book.png" height="65px" />
 				</a>
 			</div>
 
