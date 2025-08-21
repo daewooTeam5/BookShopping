@@ -1,4 +1,5 @@
 # BookShopping Project
+### 배포 주소: http://3.37.0.250/book/main  
 # Git Branch 전략 가이드 
 #### 브랜치 전략 : Git Flow
 [참고:우아한 형제들 기술 블로그](https://techblog.woowahan.com/2553/) 
@@ -40,6 +41,7 @@
   # Book (/book)
    * GET /list: 도서 목록 조회 (검색, 장르별 필터링, 페이징 기능 포함)
    * GET /view: 도서 상세 정보 조회
+   * GET /main: 메인화면 이동(인기도서,베스트셀러)
 
 
   # PaymentAdmin (/payment/admin)
@@ -49,13 +51,11 @@
    * POST /buyNow: 즉시 구매
    * POST /buyFromCart: 장바구니의 상품 구매 (선택 또는 전체)
 
-
   # ShoppingCart (/cart)
    * POST /: 장바구니에 상품 추가
    * POST /delete/{id}: 장바구니에서 상품 삭제
    * GET /my/{id}: 특정 사용자의 장바구니 목록 조회
    * POST /update-quantity: 장바구니 상품 수량 변경
-
 
   # User
    * GET /: 메인 페이지 (도서 목록으로 리다이렉트)
@@ -64,3 +64,5 @@
    * GET /login: 로그인 페이지
    * GET /register: 회원가입 폼
    * POST /register: 회원가입 처리
+ 
+   
