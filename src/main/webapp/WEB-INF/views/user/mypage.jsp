@@ -337,7 +337,7 @@ th {
 																value="${payment.quantity}" />
 
 															<button type="submit"
-																style="border: 1px solid lightgrey; border-radius: 3px;">영수증</button>
+																style="border: 1px solid lightgrey; border-radius: 3px;">출력</button>
 
 														</form>
 
