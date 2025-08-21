@@ -8,6 +8,8 @@ import domain.payment.user.service.PaymentService;
 import domain.shopping_cart.entity.ShoppingCart;
 import domain.shopping_cart.repository.ShoppingCartRepository;
 import domain.user.repository.UserRepository;
+import global.exception.ApiException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -40,7 +42,12 @@ public class PaymentController {
     @PostMapping("/addressForm")
     public ModelAndView addressFormForBuyNow(@RequestParam("bookId") Long bookId,
                                             @RequestParam(value = "quantity", defaultValue = "1") int quantity,
-                                            Authentication authentication) {
+                                            Authentication authentication ) {
+    	if(authentication==null) {
+    		throw new ApiException("로그인후 이용해주세요");
+
+    		
+    	}
         Long accountId = userMapper.getUserId(authentication.getName());
         List<Address> addresses = addressService.getAddressesByAccountId(accountId);
 
