@@ -27,42 +27,73 @@
    - pull Requst 를 날릴시 해당 브랜치는 폐기
    - 해당 기능에 추가 작업 필요시 브랜치명 뒤에 숫자를 올려서 1. 부터 작업
   
-# API 명세서 
+# API 명세서
 
- # BookAdmin (/book/admin)
-   * GET /list: 도서 목록 조회 (검색 기능 포함)
-   * GET /writeform: 도서 등록 폼으로 이동
-   * POST /write: 도서 등록
-   * GET /updateform: 도서 수정 폼으로 이동
-   * POST /update: 도서 정보 수정
-   * POST /delete: 도서 삭제
+## 📖 Book
 
+| Method | URL | Controller | Description | Parameters |
+| --- | --- | --- | --- | --- |
+| GET | `/book/main` | BookController | 메인 페이지 (인기 도서, 베스트셀러) | - |
+| GET | `/book/list` | BookController | 도서 목록 (검색, 장르 필터, 페이징) | `requestPage`, `searchField`, `keyword`, `genre` |
+| GET | `/book/view` | BookController | 도서 상세 정보 | `id` (도서 ID) |
 
-  # Book (/book)
-   * GET /list: 도서 목록 조회 (검색, 장르별 필터링, 페이징 기능 포함)
-   * GET /view: 도서 상세 정보 조회
-   * GET /main: 메인화면 이동(인기도서,베스트셀러)
+## 👤 User
 
+| Method | URL | Controller | Description | Parameters |
+| --- | --- | --- | --- | --- |
+| GET | `/` | UserController | 메인 페이지로 리다이렉트 | - |
+| GET | `/login` | UserController | 로그인 페이지 | - |
+| GET | `/user/login` | UserController | 로그인 페이지로 리다이렉트 | - |
+| GET | `/register` | UserController | 회원가입 페이지 | - |
+| POST | `/register` | UserController | 회원가입 처리 | `UserRegisterForm` |
+| GET | `/guest` | UserController | 게스트로 로그인 | - |
+| GET | `/user/my-page` | UserController | 마이페이지 (주소, 장바구니, 주문내역) | `Authentication` |
+| POST | `/user/receipt` | UserController | 영수증 상세 보기 | `receiptId`, `createdAt`, 등 영수증 정보 |
 
-  # PaymentAdmin (/payment/admin)
-   * GET /list: 결제 내역 목록 조회 (다양한 조건으로 검색 가능)
+## 🛒 Shopping Cart
 
-  # Payment (/payment)
-   * POST /buyNow: 즉시 구매
-   * POST /buyFromCart: 장바구니의 상품 구매 (선택 또는 전체)
+| Method | URL | Controller | Description | Parameters |
+| --- | --- | --- | --- | --- |
+| POST | `/cart` | ShoppingCartController | 장바구니에 상품 추가 | `Authentication`, `ShoppingCart` |
+| POST | `/cart/delete/{id}` | ShoppingCartController | 장바구니 상품 삭제 | `id` (장바구니 ID) |
+| POST | `/cart/update-quantity` | ShoppingCartController | 장바구니 상품 수량 변경 | `id`, `quantity` |
+| GET | `/cart/my/{id}` | ShoppingCartController | (API) 사용자의 장바구니 목록 조회 | `id` (사용자 ID) |
 
-  # ShoppingCart (/cart)
-   * POST /: 장바구니에 상품 추가
-   * POST /delete/{id}: 장바구니에서 상품 삭제
-   * GET /my/{id}: 특정 사용자의 장바구니 목록 조회
-   * POST /update-quantity: 장바구니 상품 수량 변경
+## 💳 Payment
 
-  # User
-   * GET /: 메인 페이지 (도서 목록으로 리다이렉트)
-   * GET /user/login: 로그인 페이지로 리다이렉트
-   * GET /user/my-page: 마이페이지 (사용자 정보, 장바구니, 결제 내역 조회)
-   * GET /login: 로그인 페이지
-   * GET /register: 회원가입 폼
-   * POST /register: 회원가입 처리
- 
-   
+| Method | URL | Controller | Description | Parameters |
+| --- | --- | --- | --- | --- |
+| POST | `/payment/addressForm` | PaymentController | 바로 구매 시, 주소 선택 폼 | `bookId`, `quantity`, `Authentication` |
+| POST | `/payment/addressFormFromCart` | PaymentController | 장바구니 구매 시, 주소 선택 폼 | `cartIds`, `Authentication` |
+| POST | `/payment/processPayment` | PaymentController | 기존 주소로 결제 처리 | `purchaseType`, `bookId`, `quantity`, `cartIds`, `addressId`, `Authentication` |
+| POST | `/payment/processPaymentWithNewAddress` | PaymentController | 새 주소로 결제 처리 | `purchaseType`, `bookId`, `quantity`, `cartIds`, `province`, `city`, `street`, `zipcode`, `Authentication` |
+
+## 📝 Review
+
+| Method | URL | Controller | Description | Parameters |
+| --- | --- | --- | --- | --- |
+| POST | `/review` | ReviewController | 리뷰 작성 | `Authentication`, `CreateReviewDto` |
+
+## 🏠 Address
+
+| Method | URL | Controller | Description | Parameters |
+| --- | --- | --- | --- | --- |
+| POST | `/address/add` | AddressController | 주소 추가 | `Address`, `Authentication` |
+
+## ⚙️ Admin - Book
+
+| Method | URL | Controller | Description | Parameters |
+| --- | --- | --- | --- | --- |
+| GET | `/book/admin/list` | BookAdminController | 도서 목록 (검색, 페이징) | `searchField`, `keyword`, `showDeleted`, `page` |
+| GET | `/book/admin/writeform` | BookAdminController | 도서 등록 폼 | - |
+| POST | `/book/admin/write` | BookAdminController | 도서 등록 | `Book`, `imageFile` |
+| GET | `/book/admin/updateform` | BookAdminController | 도서 수정 폼 | `id` (도서 ID) |
+| POST | `/book/admin/update` | BookAdminController | 도서 정보 수정 | `Book`, `imageFile`, `originalImage` |
+| POST | `/book/admin/delete` | BookAdminController | 도서 삭제 | `id` (도서 ID) |
+
+## ⚙️ Admin - Review
+
+| Method | URL | Controller | Description | Parameters |
+| --- | --- | --- | --- | --- |
+| GET | `/review/admin/list` | ReviewAdminController | 리뷰 목록 (검색, 통계) | `searchField`, `keyword` |
+| POST | `/review/admin/delete` | ReviewAdminController | 리뷰 삭제 | `id` (리뷰 ID) |
