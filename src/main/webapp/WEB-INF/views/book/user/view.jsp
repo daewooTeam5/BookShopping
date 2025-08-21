@@ -10,6 +10,15 @@
 <head>
 <meta charset="utf-8">
 <title>도서 상세 보기</title>
+
+<!-- Open Graph Meta Tags -->
+<c:set var="baseURL" value="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}" />
+<meta property="og:title" content="${book.title}" />
+<meta property="og:description" content="${book.introduction}" />
+<meta property="og:image" content="${baseURL}${book.image}" />
+<meta property="og:url" content="${baseURL}/book/view?id=${book.id}" />
+<meta property="og:type" content="book" />
+
 <script src="https://kit.fontawesome.com/6cbdf73c90.js" crossorigin="anonymous"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
@@ -158,6 +167,9 @@
 						<i class="fa-solid fa-cart-shopping me-1"></i>장바구니
 					</button>
 				</form>
+				<button type="button" class="btn btn-info btn-sm w-100 fs-8 mt-1" data-bs-toggle="modal" data-bs-target="#shareModal">
+					<i class="fa-solid fa-share-nodes me-1"></i>공유하기
+				</button>
 			</div>
 		</div>
 	</div>
@@ -265,6 +277,66 @@
 	</div>
 </div>
 
+<!-- 공유 모달 -->
+<div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="shareModalLabel">공유하기</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <div id="qrcode" class="mb-3 d-flex justify-content-center"></div>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="shareUrl" readonly>
+          <button class="btn btn-outline-secondary" type="button" id="copyBtn">복사</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const shareModal = document.getElementById('shareModal');
+    const qrcodeContainer = document.getElementById('qrcode');
+    const shareUrlInput = document.getElementById('shareUrl');
+    const copyBtn = document.getElementById('copyBtn');
+    let qrcode = null;
+
+    shareModal.addEventListener('show.bs.modal', function () {
+        const url = window.location.href;
+        shareUrlInput.value = url;
+        
+        // QR 코드 생성 (이미 생성된 경우 내용만 변경)
+        if (qrcode) {
+            qrcode.clear();
+            qrcode.makeCode(url);
+        } else {
+            qrcode = new QRCode(qrcodeContainer, {
+                text: url,
+                width: 350,
+                height: 350,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        }
+    });
+
+    copyBtn.addEventListener('click', function () {
+        shareUrlInput.select();
+        navigator.clipboard.writeText(shareUrlInput.value).then(() => {
+            alert('URL이 복사되었습니다.');
+        }).catch(err => {
+            console.error('URL 복사 실패:', err);
+            alert('URL 복사에 실패했습니다.');
+        });
+    });
+});
+</script>
 </body>
 </html>
