@@ -24,6 +24,18 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Create application.properties
+        run: |
+          mkdir -p src/main/resources
+          echo "${{ secrets.PROPERTIES }}" > src/main/resources/application.properties
+          echo "✅ application.properties 생성 완료!"
+
+      - name: Create db.properties
+        run: |
+          mkdir -p src/main/resources
+          echo "${{ secrets.DB }}" > src/main/resources/db.properties
+          echo "✅ db.properties 생성 완료!"
+
       - name: Build with Maven
         run: mvn clean package -DskipTests
 
@@ -32,7 +44,6 @@ jobs:
         with:
           name: build-artifact
           path: target/*.war
-
   cd:
     name: Run CD (배포)
     runs-on: ubuntu-latest
