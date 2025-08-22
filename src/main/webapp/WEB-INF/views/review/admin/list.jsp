@@ -73,7 +73,7 @@ body {
 			<!-- Dashboard Tab -->
 			<div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
 				<div class="d-flex flex-column flex-lg-row">
-					<div class="card shadow-sm mb-4 w-100 me-0 me-lg-0">
+					<%-- <div class="card shadow-sm mb-4 w-100 me-0 me-lg-0">
 						<div class="card-body">
 							<h5 class="card-title mb-3">⭐ 별점 분포</h5>
 							<c:choose>
@@ -98,7 +98,7 @@ body {
 								</c:otherwise>
 							</c:choose>
 						</div>
-					</div>
+					</div> --%>
 				</div>
 				<div class="d-flex flex-column flex-lg-row">
 					<div class="card shadow-sm mb-4 w-100 ms-0 ms-lg-2">
