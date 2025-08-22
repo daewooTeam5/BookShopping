@@ -15,7 +15,7 @@
 <c:set var="baseURL" value="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}" />
 <meta property="og:title" content="${book.title}" />
 <meta property="og:description" content="${book.introduction}" />
-<meta property="og:image" content="${baseURL}${book.image}" />
+<meta property="og:image" content="${book.image}" />
 <meta property="og:url" content="${baseURL}/book/view?id=${book.id}" />
 <meta property="og:type" content="book" />
 
