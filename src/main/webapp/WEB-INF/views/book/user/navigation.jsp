@@ -18,6 +18,9 @@
                     <a class="nav-link" href="/book/list?genre=외국어">외국어</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="/book/list?genre=자기계발">자기계발</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/book/list?genre=컴퓨터/IT">컴퓨터/IT</a>
                 </li>
             </ul>

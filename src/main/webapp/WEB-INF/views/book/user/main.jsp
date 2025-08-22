@@ -109,6 +109,10 @@ margin-bottom:25px;
 line-height: 15px;
 
 }
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1); /* 흰색 → 검정으로 뒤집기 */
+}
 </style>
 </head>
 <body class="container mt-4">
@@ -203,5 +207,5 @@ line-height: 15px;
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-<div class="allight"> © 2025 Daewoo Team:2 All Rights Reserved.</div>
+<div class="allight"> © 2025 Daewoo Team:5 All Rights Reserved.</div>
 </html>

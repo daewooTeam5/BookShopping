@@ -223,7 +223,7 @@ th {
 												<input type="checkbox" name="cartIds" value="${item.id}"
 													class="item-checkbox" checked>
 												<div class="item-details">
-													<img src="/img/${item.image}" alt="${item.title}"
+													<img src="${item.image}" alt="${item.title}"
 														class="cart-item-img ml-3">
 													<div class="item-info">
 														<h5>${item.title}</h5>

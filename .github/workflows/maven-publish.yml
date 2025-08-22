@@ -89,7 +89,7 @@ jobs:
             cp /home/ubuntu/$WAR_NAME webapps/ROOT.war
 
             echo "🚀 Tomcat 시작 중..."
-            ./bin/startup.sh
+            sudo ./bin/startup.sh
 
             echo "✅ 배포 완료!"
           EOF
