@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -61,7 +62,7 @@ public class BookService {
 			System.out.println(recommendedBooks);
 
 			return Arrays.asList(recommendedBooks);
-		} catch (Exception e) {
+		} catch (ResourceAccessException e) {
 			System.out.println(e);
 			return getRandomBooks();
 		}
