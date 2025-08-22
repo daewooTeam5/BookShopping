@@ -5,7 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import domain.review.admin.dto.DailyReviewStat;
+import domain.review.admin.dto.MonthlyReviewStat;
+import domain.review.admin.dto.YearlyReviewStat;
+import domain.review.admin.dto.RatingCount;
 import domain.review.admin.dto.TopRatedBook;
+import domain.review.admin.dto.TopReviewDto;
+import domain.review.admin.dto.WeekdayReviewCount;
 import domain.review.admin.entity.Review;
 import domain.review.admin.repository.ReviewAdminRepository;
 
@@ -39,6 +45,15 @@ public class ReviewAdminService {
     public List<TopRatedBook> getTop5ByAvgRating() {
         return repo.findTop5ByAvgRating();
     }
+    public  List<WeekdayReviewCount> getReviewForWeekday(){
+    	return repo.findReviewCountByWeekday();
+    }
+    public List<RatingCount> getAllRatingForCount(){
+    	return repo.findReviewCountByRating();
+    }
+    public List<TopReviewDto> getTopReviewer(){
+    	return repo.findTop5ReviewersWithAccount();
+    }
 
     private java.util.Optional<Long> safeLong(String s) {
         try { return java.util.Optional.of(Long.parseLong(s)); }
@@ -47,5 +62,17 @@ public class ReviewAdminService {
     
     public boolean delete(long id) {
         return repo.deleteById(id) > 0;
+    }
+
+    public List<DailyReviewStat> getDailyStats() {
+        return repo.findDailyStats();
+    }
+
+    public List<MonthlyReviewStat> getMonthlyStats() {
+        return repo.findMonthlyStats();
+    }
+
+    public List<YearlyReviewStat> getYearlyStats() {
+        return repo.findYearlyStats();
     }
 }

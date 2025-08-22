@@ -19,27 +19,22 @@ public class BookAdminService {
 
     public BookAdminService() {}
 
-    // 삭제 안 된 책 전체 조회
     public List<Book> findAll() {
         return mapper.findAll();
     }
 
-    // 삭제 안 된 책 검색
     public List<Book> searchByField(String field, String keyword) {
         return mapper.searchByField(field, keyword);
     }
 
-    // [★] 삭제된 책 포함 전체 조회 (관리자용)
     public List<Book> findAllWithDeleted() {
         return mapper.findAllWithDeleted();
     }
 
-    // [★] 삭제된 책 포함 검색 (관리자용)
     public List<Book> searchByFieldWithDeleted(String field, String keyword) {
         return mapper.searchByFieldWithDeleted(field, keyword);
     }
 
-    // 책 등록
     public boolean save(Book book, MultipartFile imageFile, HttpServletRequest request) {
         String realPath = request.getServletContext().getRealPath("/img");
         String originalName = imageFile.getOriginalFilename();
@@ -57,12 +52,10 @@ public class BookAdminService {
         }
     }
 
-    // 상세조회(삭제X만)
     public Book findById(int id) {
         return mapper.findById(id);
     }
 
-    // 수정(삭제X만)
     public boolean update(Book book, MultipartFile imageFile, HttpServletRequest request) {
         try {
             if (imageFile != null && !imageFile.isEmpty()) {
@@ -79,9 +72,31 @@ public class BookAdminService {
         }
     }
 
-    // 논리적 삭제
     public boolean delete(int id) {
         int result = mapper.delete(id);
         return result > 0;
+    }
+
+    public boolean restore(int id) {
+        return mapper.restore(id) > 0;
+    }
+
+    // 총 개수 (is_deleted = 'N')
+    public int countAll() {
+        return mapper.countAll();
+    }
+
+    // 페이지는 1부터 시작, size는 1 이상
+    public List<Book> findPage(int page, int size) {
+        if (page < 1) page = 1;
+        if (size < 1) size = 10;
+        int startRow = (page - 1) * size + 1; // 1, 11, 21 ...
+        int endRow   = page * size;           // 10, 20, 30 ...
+        return mapper.findPage(startRow, endRow);
+    }
+
+    // 편의 메서드: 기본 10개씩
+    public List<Book> findPage(int page) {
+        return findPage(page, 10);
     }
 }

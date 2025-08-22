@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -59,6 +60,30 @@ body {
 	min-width: 120px;
 	text-align: right;
 }
+
+.pay {
+	color: black;
+	background-color: lightgreen;
+	border: none;
+	border-radius: 6px;
+	font-size: 14px;
+	text-align: center;
+	align-items: center;
+}
+
+.payform {
+	margin: 0;
+	padding: 0;
+	display: inline;
+}
+
+td {
+	text-align: center;
+}
+
+th {
+	text-align: center;
+}
 </style>
 </head>
 <body>
@@ -66,15 +91,15 @@ body {
 		style="height: 80px;">
 		<div
 			class="d-flex justify-content-center align-items-center h-80 mb-2">
-			<a href="/book/list"> <img src="/img/book.png" height="65px"
+			<a href="/book/main"> <img src="/img/book.png" height="65px"
 				alt="로고" />
 			</a>
 		</div>
 	</header>
 	<div class="container">
 		<div class="row">
-            <div class="col-md-4">
-                <div class="card mb-4">
+			<div class="col-md-4">
+				<div class="card mb-4">
 					<div class="card-header">
 						<h3>내 정보</h3>
 					</div>
@@ -123,53 +148,61 @@ body {
 					</div>
 				</div>
 
-                <div class="card">
-                    <div class="card-header"><h3>배송지 관리</h3></div>
-                    <div class="card-body">
-                        <h5 class="mb-3">나의 배송지 목록</h5>
-                        <c:choose>
-                            <c:when test="${not empty addressList}">
-                                <ul class="list-group mb-3">
-                                    <c:forEach var="addr" items="${addressList}">
-                                        <li class="list-group-item">
-                                            (${addr.zipcode}) ${addr.province} ${addr.city} ${addr.street}
-                                        </li>
-                                    </c:forEach>
-                                </ul>
-                            </c:when>
-                            <c:otherwise>
-                                <p class="text-muted">저장된 배송지가 없습니다.</p>
-                            </c:otherwise>
-                        </c:choose>
-                        
-                        <button type="button" id="add-address-btn" class="btn btn-outline-info btn-block mb-3">새 배송지 추가</button>
+				<div class="card">
+					<div class="card-header">
+						<h3>배송지 관리</h3>
+					</div>
+					<div class="card-body">
+						<h5 class="mb-3">나의 배송지 목록</h5>
+						<c:choose>
+							<c:when test="${not empty addressList}">
+								<ul class="list-group mb-3">
+									<c:forEach var="addr" items="${addressList}">
+										<li class="list-group-item">(${addr.zipcode})
+											${addr.province} ${addr.city} ${addr.street}</li>
+									</c:forEach>
+								</ul>
+							</c:when>
+							<c:otherwise>
+								<p class="text-muted">저장된 배송지가 없습니다.</p>
+							</c:otherwise>
+						</c:choose>
 
-                        <form id="add-address-form" action="${pageContext.request.contextPath}/address/add" method="post" style="display:none;">
-                            <sec:csrfInput/>
-                            <h5 class="mt-3">새 배송지 입력</h5>
-                            <div class="form-group">
-                                <label>광역/도</label>
-                                <input type="text" name="province" class="form-control" placeholder="예: 서울특별시" required maxlength="100">
-                            </div>
-                            <div class="form-group">
-                                <label>시/군/구</label>
-                                <input type="text" name="city" class="form-control" placeholder="예: 강남구" required maxlength="100">
-                            </div>
-                            <div class="form-group">
-                                <label>상세주소</label>
-                                <input type="text" name="street" class="form-control" placeholder="예: 테헤란로 123" required maxlength="100">
-                            </div>
-                            <div class="form-group">
-                                <label>우편번호</label>
-                                <input type="text" name="zipcode" class="form-control" placeholder="5자리 숫자" required maxlength="6">
-                            </div>
-                            <button type="submit" class="btn btn-info btn-block">추가하기</button>
-                        </form>
-                    </div>
-                </div>
+						<button type="button" id="add-address-btn"
+							class="btn btn-outline-info btn-block mb-3">새 배송지 추가</button>
+
+						<form id="add-address-form"
+							action="${pageContext.request.contextPath}/address/add"
+							method="post" style="display: none;">
+							<sec:csrfInput />
+							<h5 class="mt-3">새 배송지 입력</h5>
+							<div class="form-group">
+								<label>광역/도</label> <input type="text" name="province"
+									class="form-control" placeholder="예: 서울특별시" required
+									maxlength="100">
+							</div>
+							<div class="form-group">
+								<label>시/군/구</label> <input type="text" name="city"
+									class="form-control" placeholder="예: 강남구" required
+									maxlength="100">
+							</div>
+							<div class="form-group">
+								<label>상세주소</label> <input type="text" name="street"
+									class="form-control" placeholder="예: 테헤란로 123" required
+									maxlength="100">
+							</div>
+							<div class="form-group">
+								<label>우편번호</label> <input type="text" name="zipcode"
+									class="form-control" placeholder="5자리 숫자" required
+									maxlength="6">
+							</div>
+							<button type="submit" class="btn btn-info btn-block">추가하기</button>
+						</form>
+					</div>
+				</div>
 			</div>
 
-            <div class="col-md-8">
+			<div class="col-md-8">
 				<div class="card">
 					<div
 						class="card-header d-flex justify-content-between align-items-center">
@@ -179,42 +212,47 @@ body {
 					<div class="card-body">
 						<c:choose>
 							<c:when test="${not empty shoppingCart}">
-                                <form id="order-form" action="${pageContext.request.contextPath}/payment/addressFormFromCart" method="post">
-                                    <sec:csrfInput/>
-                                    <div id="cart-items">
-                                        <c:forEach var="item" items="${shoppingCart}">
-                                            <div class="item-row" data-price="${item.price}">
-                                                <input type="checkbox" name="cartIds" value="${item.id}" class="item-checkbox" checked>
-                                                <div class="item-details">
-                                                    <img src="/img/${item.image}" alt="${item.title}"
-                                                        class="cart-item-img ml-3">
-                                                    <div class="item-info">
-                                                        <h5>${item.title}</h5>
-                                                        <span><fmt:formatNumber value="${item.price}"
-                                                                type="currency" currencySymbol="" />원</span>
-                                                    </div>
-                                                </div>
-                                                <div class="quantity-controls mx-4 d-flex">
-                                                    <input type="hidden" id="shop-item-id" name="id"
-                                                        value="${item.id}"> <input type="hidden"
-                                                        name="quantity" value="${item.quantity}">
-                                                    <button type="button"
-                                                        class="btn btn-secondary btn-sm quantity-minus">-</button>
-                                                    <input type="text"
-                                                        class="quantity-input form-control d-inline-block"
-                                                        value="${item.quantity}" readonly>
-                                                    <button type="button"
-                                                        class="btn btn-secondary btn-sm quantity-plus">+</button>
-                                                    <button type="button"
-                                                        class="btn btn-danger btn-sm delete-item-btn ml-2">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </c:forEach>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary btn-block mt-3">주문하기</button>
-                                </form>
+
+								<form id="order-form"
+									action="${pageContext.request.contextPath}/payment/addressFormFromCart"
+									method="post">
+									<sec:csrfInput />
+									<div id="cart-items">
+										<c:forEach var="item" items="${shoppingCart}">
+											<div class="item-row" data-price="${item.price}">
+												<input type="checkbox" name="cartIds" value="${item.id}"
+													class="item-checkbox" checked>
+												<div class="item-details">
+													<img src="${item.image}" alt="${item.title}"
+														class="cart-item-img ml-3">
+													<div class="item-info">
+														<h5>${item.title}</h5>
+														<span><fmt:formatNumber value="${item.price}"
+																type="currency" currencySymbol="" />원</span>
+													</div>
+												</div>
+												<div class="quantity-controls mx-4 d-flex">
+													<input type="hidden" id="shop-item-id" name="id"
+														value="${item.id}"> <input type="hidden"
+														name="quantity" value="${item.quantity}">
+													<button type="button"
+														class="btn btn-secondary btn-sm quantity-minus">-</button>
+													<input type="text"
+														class="quantity-input form-control d-inline-block"
+														value="${item.quantity}" readonly>
+													<button type="button"
+														class="btn btn-secondary btn-sm quantity-plus">+</button>
+													<button type="button"
+														class="btn btn-danger btn-sm delete-item-btn ml-2">
+														<i class="fas fa-trash"></i>
+													</button>
+												</div>
+											</div>
+										</c:forEach>
+									</div>
+									<button type="submit" class="btn btn-primary btn-block mt-3">주문하기</button>
+								</form>
+
 							</c:when>
 							<c:otherwise>
 								<p class="text-center">장바구니에 담긴 상품이 없습니다.</p>
@@ -227,7 +265,7 @@ body {
 			</div>
 		</div>
 
-        <div class="row mt-4">
+		<div class="row mt-4">
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header">
@@ -240,16 +278,19 @@ body {
 									<thead>
 										<tr>
 											<th>주문 ID</th>
-											<th>결제 시간</th>
+											<th>결제일</th>
 											<th>책 제목</th>
 											<th>이미지</th>
 											<th>장르</th>
 											<th>출판사</th>
 											<th>가격</th>
 											<th>수량</th>
+											<th>영수증</th>
+
 										</tr>
 									</thead>
 									<tbody>
+
 										<c:forEach var="entry" items="${groupedPayments}">
 											<c:set var="receiptId" value="${entry.key}" />
 											<c:set var="payments" value="${entry.value}" />
@@ -257,21 +298,53 @@ body {
 												<tr>
 													<c:if test="${loop.first}">
 														<td rowspan="${fn:length(payments)}">
-															P-${fn:split(receiptId, '-')[0]}-${fn:split(receiptId, '-')[1]}
+															<!-- 강조만 하기 -->
+															<h6
+																style="border: none; background: none; padding: 0; color: inherit; text-decoration: none;">
+																P-${fn:split(receiptId, '-')[0]}-${fn:split(receiptId, '-')[1]}
+															</h6>
+
 														</td>
 														<td rowspan="${fn:length(payments)}">
-																${payment.createdAt}
-														</td>
+															${fn:replace(payment.createdAt, "T", " ")}</td>
 													</c:if>
 													<td>${payment.title}</td>
-													<td><img src="/img/${payment.image}"
+													<td><img src="${payment.image}"
 														class="cart-item-img" /></td>
 													<td>${payment.genre}</td>
 													<td>${payment.publisher}</td>
 													<td><fmt:formatNumber value="${payment.price}"
 															type="currency" currencySymbol="" />원</td>
 													<td>${payment.quantity}</td>
+
+													<td>
+														<!-- 폼에다 input타입들을 히든으로 주어서 가져오기 -->
+														<form class="payform" action="/user/receipt" method="post"
+															var="item" items="${payment}" style="margin: 0;">
+
+															<input type="hidden" name="${_csrf.parameterName}"
+																value="${_csrf.token}" /> <input type="hidden"
+																name="receiptId" value="${receiptId}" /> <input
+																type="hidden" name="createdAt"
+																value="${payment.createdAt}" /> <input type="hidden"
+																name="title" value="${payment.title}" /> <input
+																type="hidden" name="image" value="${payment.image}" />
+															<input type="hidden" name="genre"
+																value="${payment.genre}" /> <input type="hidden"
+																name="publisher" value="${payment.publisher}" /> <input
+																type="hidden" name="price" value="${payment.price}" />
+															<input type="hidden" name="quantity"
+																value="${payment.quantity}" />
+
+															<button type="submit"
+																style="border: 1px solid lightgrey; border-radius: 3px;">출력</button>
+
+														</form>
+
+
+													</td>
 												</tr>
+
 											</c:forEach>
 										</c:forEach>
 									</tbody>
@@ -283,7 +356,7 @@ body {
 						</c:choose>
 						<c:if test="${not empty myPaymentList}">
 							<div class="mt-3 text-right">
-								<h4>총 수량: ${totalQuantity}개</h4>
+								<h4>총 수량: ${totalQuantity}권</h4>
 								<h4>
 									총 결제 금액:
 									<fmt:formatNumber value="${totalPaymentAmount}" type="currency"
@@ -394,6 +467,8 @@ body {
             }
         }).catch(() => alert('삭제 중 오류가 발생했습니다.'));
     }
+    
+    
 	</script>
 </body>
 </html>

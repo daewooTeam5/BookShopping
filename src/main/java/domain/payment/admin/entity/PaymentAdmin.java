@@ -14,14 +14,15 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class PaymentAdmin {
-	private int id;              // 결제 PK
-    private Date createdAt;      // 결제일
-    private String userName;     // 회원 이름
-    private String userId;       // 회원 아이디
-    private int bookId;          // 도서 PK
-    private String bookTitle;    // 도서명
-    private String bookAuthor;   // 저자
-    private String bookPublisher;// 출판사
-    private int bookPrice;       // 가격
-    private int quantity;		 // 수량
+	private int id;              // 寃곗젣 PK
+    private Date createdAt;      // 寃곗젣�씪
+    private String userName;     // �쉶�썝 �씠由�
+    private String userId;       // �쉶�썝 �븘�씠�뵒
+    private int bookId;          // �룄�꽌 PK
+    private String bookTitle;    // �룄�꽌紐�
+    private String bookAuthor;   // ���옄
+    private String bookPublisher;// 異쒗뙋�궗
+    private String bookGenre;
+    private int bookPrice;       // 媛�寃�
+    private int quantity;		 // �닔�웾
 }

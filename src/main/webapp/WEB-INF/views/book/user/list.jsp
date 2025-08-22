@@ -23,7 +23,7 @@
 	color: inherit; /* 부모의 글자 색상 상속 */
 	text-decoration: none;
 }
-
+a
 .book-title-link:hover, .genre-link:hover {
 	text-decoration: underline;
 	color: #007bff; /* 원하는 hover 색상 */
@@ -66,7 +66,7 @@ border:none;
 			class="d-flex justify-content-between align-items-center  mb-4 position-relative" style="line-height:65px">
 
 			<div class="position-absolute top-0 start-50 translate-middle-x">
-				<a href="/book/list"> <img src="/img/book.png" height="65px" />
+				<a href="/book/main"> <img src="/img/book.png" height="65px" />
 				</a>
 			</div>
 
@@ -75,8 +75,14 @@ border:none;
 					<sec:authorize access="hasRole('ROLE_ADMIN')">
 						<a href="/book/admin/list"
 							class="btn btn-outline-danger btn-sm me-3">관리자 페이지</a>
+							<form action="/logout" method="post" style="display: inline-block">
+							<a href="/user/my-page"
+							class="btn btn-outline-success btn-sm me-2">내 정보</a>
+							<sec:csrfInput />
+							<button type='submit' class="btn btn-secondary btn-sm">로그아웃</button>
+						</form>
 					</sec:authorize>
-					<sec:authorize access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">
+					<sec:authorize access="hasRole('ROLE_USER')">
 					<div class="ti">USER</div>
 					<div class="me-3">
 						<a href="/user/my-page"
@@ -113,6 +119,10 @@ border:none;
 			</c:choose>
 		</div>
 	</header>
+	
+	<div class="container narrow-container ">
+	<%@ include file="/WEB-INF/views/book/user/navigation.jsp" %>
+	</div>
 
 
 	<div class="container narrow-container mt-5">
@@ -151,7 +161,7 @@ border:none;
 						<div class="col">
 							<div class="d-flex align-items-start py-3 border-bottom">
 								<a href="/book/view?id=${book.id}"> <img
-									src="/img/${book.image}" class="img-thumbnail border-0"
+									src="${book.image}" class="img-thumbnail border-0"
 									style="width: 120px; height: 160px;">
 								</a>
 								<div class="ms-3 me-100 book-text">

@@ -31,28 +31,50 @@ public class BookAdminController {
         @RequestParam(value = "searchField", required = false, defaultValue = "title") String searchField,
         @RequestParam(value = "keyword", required = false) String keyword,
         @RequestParam(value = "showDeleted", required = false) String showDeleted,
+        @RequestParam(value = "page", required = false, defaultValue = "1") int page,   // ★ 추가: 페이지 파라미터
         ModelAndView mv) {
 
-        // 삭제된 책까지 포함해서 보여줄지 결정
         boolean includeDeleted = "Y".equals(showDeleted);
+        int size = 10; // ★ 한 페이지 10개
+        int total = 0;
+        int totalPages = 1;
 
+        // 검색어나 삭제 포함이면 기존 방식 유지(전체 출력), 페이징은 표시만 1페이지로 고정
         if (keyword != null && !keyword.isEmpty()) {
             if (includeDeleted) {
                 mv.addObject("list", service.searchByFieldWithDeleted(searchField, keyword));
             } else {
                 mv.addObject("list", service.searchByField(searchField, keyword));
             }
+            total = ( (java.util.List<?>) mv.getModel().get("list") ).size();
+            totalPages = 1; // 페이징 비활성화 느낌으로 1페이지 고정
+            page = 1;
+        } else if (includeDeleted) {
+            mv.addObject("list", service.findAllWithDeleted());
+            total = ( (java.util.List<?>) mv.getModel().get("list") ).size();
+            totalPages = 1; // 페이징 비활성화 느낌으로 1페이지 고정
+            page = 1;
         } else {
-            if (includeDeleted) {
-                mv.addObject("list", service.findAllWithDeleted());
-            } else {
-                mv.addObject("list", service.findAll());
-            }
+            // ★ 기본 목록(삭제 N, 검색 X)에는 페이징 적용
+            total = service.countAll();
+            totalPages = (int) Math.ceil(total / (double) size);
+            if (totalPages == 0) totalPages = 1;
+            if (page < 1) page = 1;
+            if (page > totalPages) page = totalPages;
+
+            mv.addObject("list", service.findPage(page, size));
         }
 
         mv.addObject("searchField", searchField);
         mv.addObject("keyword", keyword);
-        mv.addObject("showDeleted", showDeleted); // 체크박스 상태 유지용
+        mv.addObject("showDeleted", showDeleted);
+
+        // ★ 페이징 메타데이터 전달
+        mv.addObject("page", page);
+        mv.addObject("size", size);
+        mv.addObject("total", total);
+        mv.addObject("totalPages", totalPages);
+
         mv.setViewName("book/admin/list");
         return mv;
     }
@@ -92,9 +114,9 @@ public class BookAdminController {
             HttpServletRequest request,
             HttpServletResponse response) {
 
-        // 이미지가 비어있다면 기존 이미지 유지
+        // 이미지가 비어있으면 기존 이미지 유지
         if (imageFile == null || imageFile.isEmpty()) {
-            book.setImage(originalImage);  // 기존 이미지 유지
+            book.setImage(originalImage);
         }
 
         boolean success = service.update(book, imageFile, request);

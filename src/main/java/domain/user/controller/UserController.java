@@ -18,6 +18,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import domain.address.entity.Address;
 import domain.address.service.AddressService;
@@ -77,13 +79,38 @@ public class UserController {
         userService.registerUser(user);
         return "redirect:/login"; 
     }
+    
+    @PostMapping("/user/receipt")
+    public String receipt(
+            @RequestParam String receiptId,
+            @RequestParam String createdAt,
+            @RequestParam String title,
+            @RequestParam String image,
+            @RequestParam String genre,
+            @RequestParam String publisher,
+            @RequestParam int price,
+            @RequestParam int quantity,
+            Model model) {
+
+        model.addAttribute("receiptId", receiptId);
+        model.addAttribute("createdAt", createdAt);
+        model.addAttribute("title", title);
+        model.addAttribute("image", image);
+        model.addAttribute("genre", genre);
+        model.addAttribute("publisher", publisher);
+        model.addAttribute("price", price);
+        model.addAttribute("quantity", quantity);
+
+        return "user/receipt";
+    }
+
 
     private final PaymentService paymentService;
     private final AddressService addressService; // AddressService 주입
 
     @GetMapping("/")
     public String mainPage() {
-        return "redirect:/book/list";
+        return "redirect:/book/main";
     }
 
     @GetMapping("user/login")
