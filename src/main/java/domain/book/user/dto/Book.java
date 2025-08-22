@@ -20,6 +20,7 @@ public class Book {
 	private Integer price;
 	private String genre;
 	private Date published_at;
+	private Date publishedAt;
 	private Integer page;
 	private String introduction; 
 	

@@ -42,6 +42,8 @@ public class BookService {
         return dao.findRandomBooks();
     }
     public List<Book> getRecommandBook(Long currentId) {
+    	try {
+    		
     	System.out.println("call python api ");
         String url = "http://127.0.0.1:8848/recommend_by_id?book_id=" + currentId + "&top_n=5";
 
@@ -50,6 +52,12 @@ public class BookService {
         System.out.println(recommendedBooks);
 
         return Arrays.asList(recommendedBooks);
+    	}catch(Exception e) {
+    		System.out.println(e);
+    		
+    	}finally {
+    		return getRandomBooks();
+    	}
     }
 	
 	public PageList getPageList(int requestPage, String field, String keyword, String genre) {

@@ -146,7 +146,7 @@
 				</tr>
 				<tr>
 					<th class="bg-light">발행일</th>
-					<td>${book.published_at}</td>
+					<td>${book.publishedAt}</td>
 				</tr>
 			</table>
 			<p class="mt-4">${book.introduction}</p>
