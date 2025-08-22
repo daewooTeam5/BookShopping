@@ -104,6 +104,10 @@
                 <td>${fn:replace(createdAt, "T", " ")}</td><!-- T를 제외하고 출력 -->
             </tr>
             <tr>
+                <th>영수증 ID </th>
+                <td>${receiptId}</td>
+            </tr>
+            <tr>
                 <th>책 제목</th>
                 <td>${title}</td>
             </tr>
@@ -133,7 +137,7 @@
 
     <div class="button-group">
         <button onclick="history.back()" class="back-button">뒤로가기</button>
-        <button onclick="if(confirm('영수증을 출력하시겠습니까?')) { alert('영수증이 출력되었습니다.'); }" class="printbtn">출력</button>
+        <button onclick="if(confirm('영수증을 출력하시겠습니까?')) { window.print(); }" class="printbtn">출력</button>
     </div>
 </body>
 </html>
