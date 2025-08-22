@@ -1,13 +1,14 @@
 package domain.book.user.dto;
 
-import java.sql.Date;
+import java.util.Date;
 
-import org.springframework.stereotype.Component;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,8 +20,11 @@ public class Book {
 	private String image;
 	private Integer price;
 	private String genre;
-	private Date published_at;
+	@JsonIgnore
 	private Date publishedAt;
+	@JsonIgnore
+	private Date published_at;
+
 	private Integer page;
 	private String introduction; 
 	
