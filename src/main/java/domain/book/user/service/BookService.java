@@ -4,8 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import domain.book.user.dto.Book;
 import domain.book.user.dto.GenreCount;
@@ -45,6 +50,11 @@ public class BookService {
 
 			System.out.println("call python api ");
 			String url = "http://127.0.0.1:8848/recommend_by_id?book_id=" + currentId + "&top_n=5";
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.registerModule(new JavaTimeModule());
+			mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+			restTemplate.getMessageConverters().add(0, new MappingJackson2HttpMessageConverter(mapper));
 
 			// API 호출
 			Book[] recommendedBooks = restTemplate.getForObject(url, Book[].class);
