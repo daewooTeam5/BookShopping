@@ -106,7 +106,7 @@
 		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
-			<version>6.3.0</version>
+			<version>7.0.2</version>
 			<!-- <version>3.4.5</version> -->
 		</dependency>
 
@@ -205,6 +205,18 @@
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
 			<version>2.15.0</version> <!-- Spring 버전에 맞춰 최신 안정 버전으로 -->
+		</dependency>
+
+		<!-- flyway -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+			<version>11.11.2</version> <!-- 최신 안정 버전 -->
+		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-database-oracle</artifactId>
+			<version>11.11.2</version> <!-- flyway-core와 버전 맞춰야 함 -->
 		</dependency>
 	</dependencies>
 </project>
