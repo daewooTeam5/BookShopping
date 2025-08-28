@@ -168,7 +168,7 @@ border:none;
 									<h5 class="mb-1">
 										<a href="/book/view?id=${book.id}" class="book-title-link">${book.title}</a>
 									</h5>
-									<p class="text-muted mb-1">${book.author}·${book.publisher}·${book.published_at}</p>
+									<p class="text-muted mb-1">${book.author}·${book.publisher}·<fmt:formatDate value="${book.publishedAt}" pattern="yyyy-MM"/></p>
 									<p class="fw-bold mb-1">
 										<fmt:formatNumber value="${book.price}" type="number"
 											groupingUsed="true" />
