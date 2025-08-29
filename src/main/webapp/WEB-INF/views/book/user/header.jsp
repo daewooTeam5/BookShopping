@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <script src="https://kit.fontawesome.com/6cbdf73c90.js" crossorigin="anonymous"></script>
-
 <div class="container narrow-container text-end" style="margin-top: 10px; margin-bottom: -10px; font-size: 0.8em;">
     <sec:authorize access="isAnonymous()">
         <a href="/login" class="text-decoration-none text-secondary me-2">로그인</a>
@@ -17,10 +16,10 @@
     </sec:authorize>
 </div>
 
-<header class="container narrow-container mt-3 border-bottom">
-    <div class="d-flex justify-content-between align-items-center mb-4 position-relative" style="line-height:65px">
+<header class="container narrow-container mt-3 border-bottom fixed-top bg-white" style="z-index:1030; height: 70px;">
+    <div class="d-flex justify-content-between align-items-center h-100 position-relative">
         <!-- 중앙 로고 -->
-        <div class="position-absolute top-0 start-50 translate-middle-x">
+        <div class="position-absolute top-50 start-50 translate-middle">
             <a href="/book/main">
                 <img src="/img/book.png" height="65px"/>
             </a>
@@ -51,6 +50,10 @@
         </div>
     </div>
 </header>
+
+<!-- 컨텐츠가 헤더 밑으로 올라오지 않도록 여백 확보 -->
+<div style="height: 70px;"></div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const cartIcon = document.getElementById('cart-popover');
