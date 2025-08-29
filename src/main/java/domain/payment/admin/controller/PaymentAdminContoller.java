@@ -18,6 +18,8 @@ public class PaymentAdminContoller {
         this.service = service;
     }
 
+    
+
     @RequestMapping("list")
     public ModelAndView list(
             @RequestParam(value = "userName",   required = false) String userName,
@@ -29,17 +31,21 @@ public class PaymentAdminContoller {
             @RequestParam(value = "toDate",     required = false) String toDate,
             @RequestParam(value = "minPrice",   required = false) Integer minPrice,
             @RequestParam(value = "maxPrice",   required = false) Integer maxPrice,
-            @RequestParam(value = "page",       required = false, defaultValue = "1") int page, // ¡Ú Ãß°¡: ÆäÀÌÁö ÆÄ¶ó¹ÌÅÍ
+            @RequestParam(value = "page",       required = false, defaultValue = "1") int page, // ï¿½ï¿½ ï¿½ß°ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½
             ModelAndView mv) {
 
-        // ----- ¿ä¾à Á¤º¸(±âÁ¸ À¯Áö) -----
+        // ----- ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½) -----
         mv.addObject("totalCount",  service.getTotalCount());
         mv.addObject("totalAmount", service.getTotalAmount());
         mv.addObject("topBooks",    service.getTopBooks(5));
         mv.addObject("topUsers",    service.getTopUsers(5));
         mv.addObject("categorySummary", service.getCategorySummary());
 
-        // ----- °Ë»ö ¿©ºÎ ÆÇ´Ü -----
+        // Add sales data for publishers and authors
+        mv.addObject("publisherSales", service.getAllPublisherSales());
+        mv.addObject("authorSales", service.getAllAuthorSales());
+
+        // ----- ï¿½Ë»ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½ -----
         boolean hasFilter =
                 notEmpty(userName) || notEmpty(userId) || notEmpty(bookTitle) ||
                 notEmpty(publisher) || notEmpty(genre) ||
@@ -51,28 +57,28 @@ public class PaymentAdminContoller {
         int totalPages;
 
         if (hasFilter) {
-            // °Ë»ö ¸ðµå: Ç¥ = ÀüÃ¼ °Ë»ö°á°ú(±âÁ¸°ú µ¿ÀÏ), Â÷Æ® = ÀüÃ¼ °Ë»ö°á°ú
+            // ï¿½Ë»ï¿½ ï¿½ï¿½ï¿½: Ç¥ = ï¿½ï¿½Ã¼ ï¿½Ë»ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½), ï¿½ï¿½Æ® = ï¿½ï¿½Ã¼ ï¿½Ë»ï¿½ï¿½ï¿½ï¿½
             var searched = service.search(
                     userName, userId, bookTitle, publisher, genre, fromDate, toDate, minPrice, maxPrice
             );
-            mv.addObject("paymentList", searched); // Å×ÀÌºí
-            mv.addObject("chartList",   searched); // ¡Ú Â÷Æ® Àü¿ë(ÀüÃ¼)
+            mv.addObject("paymentList", searched); // ï¿½ï¿½ï¿½Ìºï¿½
+            mv.addObject("chartList",   searched); // ï¿½ï¿½ ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½Ã¼)
             total = searched.size();
             totalPages = 1;
             page = 1;
         } else {
-            // ±âº» ¸ñ·Ï: Ç¥ = ÆäÀÌÂ¡, Â÷Æ® = ÀüÃ¼ ¸ñ·Ï
+            // ï¿½âº» ï¿½ï¿½ï¿½: Ç¥ = ï¿½ï¿½ï¿½ï¿½Â¡, ï¿½ï¿½Æ® = ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½
             total = service.getListCount();
             totalPages = (int) Math.ceil(total / (double) size);
             if (totalPages == 0) totalPages = 1;
             if (page < 1) page = 1;
             if (page > totalPages) page = totalPages;
 
-            mv.addObject("paymentList", service.findPage(page, size)); // Å×ÀÌºí(ÆäÀÌÂ¡)
-            mv.addObject("chartList",   service.findAll());            // ¡Ú Â÷Æ® Àü¿ë(ÀüÃ¼)
+            mv.addObject("paymentList", service.findPage(page, size)); // ï¿½ï¿½ï¿½Ìºï¿½(ï¿½ï¿½ï¿½ï¿½Â¡)
+            mv.addObject("chartList",   service.findAll());            // ï¿½ï¿½ ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½Ã¼)
         }
 
-        // °Ë»ö Æû °ª À¯Áö
+        // ï¿½Ë»ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         mv.addObject("userName", userName);
         mv.addObject("userId", userId);
         mv.addObject("bookTitle", bookTitle);
@@ -83,7 +89,7 @@ public class PaymentAdminContoller {
         mv.addObject("minPrice", minPrice);
         mv.addObject("maxPrice", maxPrice);
 
-        // ÆäÀÌÂ¡ ¸ÞÅ¸µ¥ÀÌÅÍ Àü´Þ
+        // ï¿½ï¿½ï¿½ï¿½Â¡ ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         mv.addObject("page", page);
         mv.addObject("size", size);
         mv.addObject("total", total);
@@ -93,7 +99,7 @@ public class PaymentAdminContoller {
         return mv;
     }
 
-    // ----- À¯Æ¿ -----
+    // ----- ï¿½ï¿½Æ¿ -----
     private boolean notEmpty(String s) {
         return s != null && !s.isEmpty();
     }

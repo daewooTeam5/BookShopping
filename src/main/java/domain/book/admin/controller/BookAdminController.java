@@ -10,11 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.GetMapping; // Add GetMapping
+import org.springframework.web.bind.annotation.PathVariable; // Add PathVariable
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import domain.book.admin.entity.Book;
 import domain.book.admin.service.BookAdminService;
+import domain.book.admin.dto.BookDetailDto; // Add BookDetailDto import
 
 @Controller
 @RequestMapping("/book/admin")
@@ -76,6 +79,15 @@ public class BookAdminController {
         mv.addObject("totalPages", totalPages);
 
         mv.setViewName("book/admin/list");
+        return mv;
+    }
+
+    @GetMapping("/detail/{id}") // New method for book details
+    public ModelAndView detail(@PathVariable("id") Long id, ModelAndView mv) {
+        BookDetailDto bookDetail = service.getBookDetails(id);
+        System.out.println(bookDetail);
+        mv.addObject("bookDetail", bookDetail);
+        mv.setViewName("book/admin/details");
         return mv;
     }
 

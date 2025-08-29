@@ -11,11 +11,18 @@ import org.springframework.web.multipart.MultipartFile;
 
 import domain.book.admin.entity.Book;
 import domain.book.admin.repository.BookAdminRepository;
+import domain.book.admin.repository.BookAdminMapper; // Import BookAdminMapper
+import domain.book.admin.dto.BookDetailDto; // Import BookDetailDto
+import domain.book.admin.dto.BookSalesDto; // Import BookSalesDto
+import domain.book.admin.dto.RatingCountDto; // Import RatingCountDto
 
 @Service("bookAdminService")
 public class BookAdminService {
     @Autowired
     BookAdminRepository mapper;
+
+    @Autowired
+    BookAdminMapper bookAdminMapper; // Inject BookAdminMapper
 
     public BookAdminService() {}
 
@@ -98,5 +105,22 @@ public class BookAdminService {
     // 편의 메서드: 기본 10개씩
     public List<Book> findPage(int page) {
         return findPage(page, 10);
+    }
+
+    // New method to get book details
+    public BookDetailDto getBookDetails(Long bookId) {
+        Book book = bookAdminMapper.findBookById(bookId);
+        BookSalesDto sales = bookAdminMapper.findBookSalesStats(bookId);
+        List<RatingCountDto> ratings = bookAdminMapper.findBookRatingDistribution(bookId);
+        System.out.println(ratings);
+        List<domain.payment.user.dto.Payment> payments = bookAdminMapper.findPaymentsByBookId(bookId);
+
+        BookDetailDto detailDto = new BookDetailDto();
+        detailDto.setBook(book);
+        detailDto.setSales(sales);
+        detailDto.setRatingDistribution(ratings);
+        detailDto.setPayments(payments);
+
+        return detailDto;
     }
 }

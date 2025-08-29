@@ -105,4 +105,14 @@ public interface BookRepository {
 
     @Select("SELECT * FROM (SELECT * FROM book WHERE is_deleted = 'N' ORDER BY DBMS_RANDOM.VALUE) WHERE ROWNUM <= 5")
     List<Book> findRandomBooks();
+
+    @Select({
+        "<script>",
+        "SELECT * FROM book WHERE is_deleted = 'N' AND id IN",
+        "<foreach item='id' collection='ids' open='(' separator=',' close=')'>",
+        "#{id}",
+        "</foreach>",
+        "</script>"
+    })
+    List<Book> findBooksByIds(@Param("ids") List<Long> ids);
 }

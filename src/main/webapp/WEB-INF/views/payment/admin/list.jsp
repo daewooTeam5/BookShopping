@@ -265,7 +265,53 @@ body {
 				</div>
 			</div>
 		</div>
+		<div class="row mb-5 g-4">
+			<!-- 출판사 매출 -->
+			<div class="col-12 col-lg-6">
+				<div class="card summary-card shadow-sm">
+					<div
+						class="card-header d-flex justify-content-between align-items-center">
+						<span>출판사별 매출</span>
+					</div>
+					<div class="card-body chart-container">
+						<div class="h-100">
+							<c:choose>
+								<c:when test="${not empty publisherSales}">
+									<canvas id="publisherChart"></canvas>
+								</c:when>
+								<c:otherwise>
+									<div class="text-secondary text-center py-3">표시할 데이터가
+										없습니다.</div>
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</div>
+				</div>
+			</div>
 
+			<!-- 저자 매출 -->
+			<div class="col-12 col-lg-6">
+				<div class="card summary-card shadow-sm">
+					<div
+						class="card-header d-flex justify-content-between align-items-center">
+						<span>저자별 매출</span>
+					</div>
+					<div class="card-body chart-container">
+						<div class="h-100">
+							<c:choose>
+								<c:when test="${not empty authorSales}">
+									<canvas id="authorChart"></canvas>
+								</c:when>
+								<c:otherwise>
+									<div class="text-secondary text-center py-3">표시할 데이터가
+										없습니다.</div>
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<!-- 검색 폼 -->
 		<form
 			class="search-box row gy-2 gx-3 align-items-center justify-content-center mb-5"
@@ -627,6 +673,75 @@ function aggTop5Books7d(){
 	    style: 'currency', currency: 'KRW'
 	  }).format(tAmount);
 	})();
+</script>
+<script>
+    // 색상 배열 생성
+    const colors = [
+        'rgba(255, 99, 132, 0.6)',
+        'rgba(54, 162, 235, 0.6)',
+        'rgba(255, 206, 86, 0.6)',
+        'rgba(75, 192, 192, 0.6)',
+        'rgba(153, 102, 255, 0.6)',
+        'rgba(255, 159, 64, 0.6)'
+    ];
+
+    // Publisher Sales 데이터
+    const publisherSales = [
+        <c:forEach var="ps" items="${publisherSales}">
+            { publisher: "${ps.publisher}", totalSales: ${ps.totalSales} },
+        </c:forEach>
+    ];
+
+    if(publisherSales.length > 0){
+        const ctxPub = document.getElementById('publisherChart').getContext('2d');
+        new Chart(ctxPub, {
+            type: 'bar',
+            data: {
+                labels: publisherSales.map(p => p.publisher),
+                datasets: [{
+                    label: '매출',
+                    data: publisherSales.map(p => p.totalSales),
+                    backgroundColor: publisherSales.map((_, i) => colors[i % colors.length]),
+                    borderColor: publisherSales.map((_, i) => colors[i % colors.length].replace('0.6','1')),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } }, // 레전드 제거
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    }
+
+    // Author Sales 데이터
+    const authorSales = [
+        <c:forEach var="as" items="${authorSales}">
+            { author: "${as.author}", totalSales: ${as.totalSales} },
+        </c:forEach>
+    ];
+
+    if(authorSales.length > 0){
+        const ctxAuthor = document.getElementById('authorChart').getContext('2d');
+        new Chart(ctxAuthor, {
+            type: 'bar',
+            data: {
+                labels: authorSales.map(a => a.author),
+                datasets: [{
+                    label: '매출',
+                    data: authorSales.map(a => a.totalSales),
+                    backgroundColor: authorSales.map((_, i) => colors[i % colors.length]),
+                    borderColor: authorSales.map((_, i) => colors[i % colors.length].replace('0.6','1')),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } }, // 레전드 제거
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    }
 </script>
 </body>
 </html>

@@ -146,9 +146,11 @@ body {
 										<span class="text-success">정상</span>
 									</c:otherwise>
 								</c:choose></td>
-							<td class="text-center"><a
-								href="${pageContext.request.contextPath}/book/admin/updateform?id=${book.id}"
-								class="btn btn-sm btn-outline-primary btn-action mb-1">수정</a>
+							<td class="text-center">
+								<a href="${pageContext.request.contextPath}/book/admin/detail/${book.id}"
+									class="btn btn-sm btn-outline-info btn-action mb-1">상세보기</a>
+								<a href="${pageContext.request.contextPath}/book/admin/updateform?id=${book.id}"
+									class="btn btn-sm btn-outline-primary btn-action mb-1">수정</a>
 								<form method="post"
 									action="${pageContext.request.contextPath}/book/admin/delete"
 									style="display: inline;"

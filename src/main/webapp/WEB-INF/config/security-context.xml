@@ -24,6 +24,7 @@
 			access="permitAll" />
 		<intercept-url pattern="/payment/**" access="permitAll" />
 
+
 		<!-- 관리자만 접근 가능한 경로: admin 아래부터 먼저 처리 -->
 		<intercept-url pattern="/payment/admin/**"
 			access="hasRole('ROLE_ADMIN')" />
@@ -53,9 +54,8 @@
 			user-service-ref="loginServiceWithSecurity">
 		</authentication-provider>
 	</authentication-manager>
-	<beans:bean id="customAuthenticationSuccessHandler"
-		class="global.security.CustomAuthenticationSuccessHandler" />
 
 	<beans:bean id="customAccessDeniedHandler"
 		class="global.security.CustomAccessDeniedHandler" />
+
 </beans:beans>

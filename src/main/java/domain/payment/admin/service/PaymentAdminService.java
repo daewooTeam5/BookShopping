@@ -1,10 +1,14 @@
 package domain.payment.admin.service;
 
+import java.util.Collections;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import domain.payment.admin.dto.AuthorSalesDto;
 import domain.payment.admin.dto.PaymentRank;
+import domain.payment.admin.dto.PublisherSalesDto;
 import domain.payment.admin.entity.PaymentAdmin;
 import domain.payment.admin.repository.PaymentAdminMapper;
 
@@ -23,12 +27,12 @@ public class PaymentAdminService {
         return mapper.search(userName, userId, bookTitle, publisher, genre, fromDate, toDate, minPrice, maxPrice);
     }
 
-    // KPI: ÀüÃ¼ °áÁ¦ "°Ç¼ö"(¼ö·® ÇÕ°è) - ±âÁ¸ À¯Áö
+    // KPI: ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ "ï¿½Ç¼ï¿½"(ï¿½ï¿½ï¿½ï¿½ ï¿½Õ°ï¿½) - ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public int getTotalCount() {
         return mapper.countAll();
     }
 
-    // KPI: ÀüÃ¼ °áÁ¦ ±Ý¾× - ±âÁ¸ À¯Áö
+    // KPI: ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½Ý¾ï¿½ - ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public int getTotalAmount() {
         return mapper.sumAll();
     }
@@ -46,15 +50,15 @@ public class PaymentAdminService {
     }
 
     // =========================
-    // Ãß°¡: ÆäÀÌÂ¡ Áö¿ø
+    // ï¿½ß°ï¿½: ï¿½ï¿½ï¿½ï¿½Â¡ ï¿½ï¿½ï¿½ï¿½
     // =========================
 
-    // ÆäÀÌÁö³×ÀÌ¼Ç¿ë: ¸®½ºÆ® ÃÑ "Çà ¼ö"
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼Ç¿ï¿½: ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ "ï¿½ï¿½ ï¿½ï¿½"
     public int getListCount() {
         return mapper.listCount();
     }
 
-    // page´Â 1ºÎÅÍ, size´Â 1 ÀÌ»ó
+    // pageï¿½ï¿½ 1ï¿½ï¿½ï¿½ï¿½, sizeï¿½ï¿½ 1 ï¿½Ì»ï¿½
     public List<PaymentAdmin> findPage(int page, int size) {
         if (page < 1) page = 1;
         if (size < 1) size = 10;
@@ -63,8 +67,16 @@ public class PaymentAdminService {
         return mapper.findPage(startRow, endRow);
     }
 
-    // ÆíÀÇ ¸Þ¼­µå: ±âº» 10°³¾¿
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½: ï¿½âº» 10ï¿½ï¿½ï¿½ï¿½
     public List<PaymentAdmin> findPage(int page) {
         return findPage(page, 10);
+    }
+
+    public List<PublisherSalesDto> getAllPublisherSales() {
+        return mapper.findAllPublisherSales();
+    }
+
+    public List<AuthorSalesDto> getAllAuthorSales() {
+        return mapper.findAllAuthorSales();
     }
 }
