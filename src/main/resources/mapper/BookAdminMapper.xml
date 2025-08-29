@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="domain.book.admin.repository.BookAdminMapper">
+
+    <select id="findBookById" parameterType="long" resultType="domain.book.admin.entity.Book">
+        SELECT
+            id,
+            title,
+            author,
+            publisher,
+            price,
+            published_at AS publishedAt,
+            genre,
+            page,
+            image,
+            is_deleted AS isDeleted
+        FROM
+            book
+        WHERE
+            id = #{id}
+    </select>
+
+    <select id="findBookSalesStats" parameterType="long" resultType="domain.book.admin.dto.BookSalesDto">
+        SELECT
+            COALESCE(SUM(pd.quantity), 0) AS totalPurchaseCount,
+            COALESCE(SUM(pd.quantity * b.price), 0) AS totalSalesAmount
+        FROM
+            payment pd
+        JOIN
+            book b ON pd.book_id = b.id
+        WHERE
+            b.id = #{bookId}
+    </select>
+
+    <select id="findBookRatingDistribution" parameterType="long" resultType="domain.book.admin.dto.RatingCountDto">
+        SELECT
+            ratings,
+            COUNT(id) AS count
+        FROM
+            review
+        WHERE
+            book_id = #{bookId}
+        GROUP BY
+            ratings
+        ORDER BY
+            ratings
+    </select>
+
+    <select id="findPaymentsByBookId" parameterType="long" resultType="domain.payment.user.dto.Payment">
+        SELECT
+            p.id AS paymentId,
+            p.account_id AS accountId,
+            p.book_id AS bookId,
+            p.quantity,
+            b.price AS price,
+            p.created_at AS createdAt
+        FROM
+            payment p
+        JOIN
+            book b
+        ON
+            b.id = p.book_id
+        WHERE
+            p.book_id = #{bookId}
+        ORDER BY
+            createdAt DESC
+    </select>
+
+</mapper>

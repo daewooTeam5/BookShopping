@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import domain.payment.admin.dto.PaymentRank;
+import domain.payment.admin.dto.PublisherSalesDto;
+import domain.payment.admin.dto.AuthorSalesDto;
 import domain.payment.admin.entity.PaymentAdmin;
 
 @Mapper
@@ -113,4 +115,11 @@ public interface PaymentAdminMapper {
         "WHERE rn BETWEEN #{startRow} AND #{endRow}"
     )
     List<PaymentAdmin> findPage(@Param("startRow") int startRow, @Param("endRow") int endRow);
+
+    // 출판사별 매출 TOP 5
+    // 전체 출판사별 매출
+    List<PublisherSalesDto> findAllPublisherSales();
+
+    // 전체 저자별 매출
+    List<AuthorSalesDto> findAllAuthorSales();
 }

@@ -17,6 +17,7 @@ import domain.book.user.dto.Book;
 import domain.book.user.dto.GenreCount;
 import domain.book.user.dto.PageList;
 import domain.book.user.repository.BookRepository;
+import java.util.ArrayList;
 
 @Service
 public class BookService {
@@ -28,6 +29,13 @@ public class BookService {
 
 	public Book detail(Long id) {
 		return dao.findById(id);
+	}
+
+	public List<Book> findBooksByIds(List<Long> ids) {
+		if (ids == null || ids.isEmpty()) {
+			return new ArrayList<>();
+		}
+		return dao.findBooksByIds(ids);
 	}
 
 	public List<GenreCount> getGenreCounts() {

@@ -14,7 +14,9 @@ import domain.review.user.repository.ReviewRepository;
 
 
 import org.springframework.web.bind.annotation.RequestMethod;
-
+import org.springframework.web.bind.annotation.ResponseBody;
+import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
 
 
 
@@ -26,6 +28,12 @@ public class BookController {
 	BookService service;
 	@Autowired
 	ReviewRepository reviewRepository;
+
+	@GetMapping("/api/books-by-ids")
+	@ResponseBody
+	public List<Book> getBooksByIds(@RequestParam("ids") List<Long> ids) {
+		return service.findBooksByIds(ids);
+	}
 
 	@RequestMapping("list")
 	public String list(

@@ -24,5 +24,6 @@ public class Payment {
     private int quantity;       // 수량
     private String receiptId;   // 영수증 번호 (거래 식별용)
     private Long addressId;     // 배송지 주소 ID (FK, address 테이블 참조)
+    private Long price;
 }
 
