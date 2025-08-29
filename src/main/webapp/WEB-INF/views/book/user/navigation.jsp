@@ -9,13 +9,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="/book/list?genre=경제경영">경제경영</a>
+                    <a class="nav-link" href="/book/list?genre=과학">과학</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/book/list?genre=만화">만화</a>
+                    <a class="nav-link" href="/book/list?genre=에세이">에세이</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/book/list?genre=외국어">외국어</a>
+                    <a class="nav-link" href="/book/list?genre=여행">여행</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/book/list?genre=자기계발">자기계발</a>
