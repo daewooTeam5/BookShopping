@@ -84,33 +84,38 @@
 	</select>
 
 	<!-- 전체 출판사별 매출 -->
-	<select id="findAllPublisherSales" resultType="domain.payment.admin.dto.PublisherSalesDto">
-	    SELECT
-	        b.publisher AS publisher,
-	        SUM(b.price * p.quantity) AS totalSales
-	    FROM
-	        payment p
-	    JOIN
-	        book b ON p.book_id = b.id
-	    GROUP BY
-	        b.publisher
-	    ORDER BY
-	        totalSales DESC
-	</select>
+<!-- 상위 5개 출판사 매출 -->
+<select id="findAllPublisherSales" resultType="domain.payment.admin.dto.PublisherSalesDto">
+    SELECT * FROM (
+        SELECT
+            b.publisher AS publisher,
+            SUM(b.price * p.quantity) AS totalSales
+        FROM
+            payment p
+        JOIN
+            book b ON p.book_id = b.id
+        GROUP BY
+            b.publisher
+        ORDER BY
+            totalSales DESC
+    ) WHERE ROWNUM &lt;= 5
+</select>
 
-	<!-- 전체 저자별 매출 -->
-	<select id="findAllAuthorSales" resultType="domain.payment.admin.dto.AuthorSalesDto">
-	    SELECT
-	        b.author AS author,
-	        SUM(b.price * p.quantity) AS totalSales
-	    FROM
-	        payment p
-	    JOIN
-	        book b ON p.book_id = b.id
-	    GROUP BY
-	        b.author
-	    ORDER BY
-	        totalSales DESC
-	</select>
+<!-- 상위 5개 저자 매출 -->
+<select id="findAllAuthorSales" resultType="domain.payment.admin.dto.AuthorSalesDto">
+    SELECT * FROM (
+        SELECT
+            b.author AS author,
+            SUM(b.price * p.quantity) AS totalSales
+        FROM
+            payment p
+        JOIN
+            book b ON p.book_id = b.id
+        GROUP BY
+            b.author
+        ORDER BY
+            totalSales DESC
+    ) WHERE ROWNUM &lt;= 5
+</select>
 
 </mapper>
